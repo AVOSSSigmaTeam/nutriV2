@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.17";
+const version = "2.0.18";
 
 history.scrollRestoration = "manual";
 
@@ -1649,6 +1649,11 @@ function initBMICalculator(page) {
   const rangeIndicatorText = page.querySelector("#bmi-inidicator-text-main");
   const rangeIndicatorSecondaryText = page.querySelector("#bmi-inidicator-text-secondary");
 
+  const weightMIN = 30;
+  const weightMAX = 300;
+  const heightMIN = 100;
+  const heightMAX = 250;
+
   function updateText(BMI, range) {
 
     let inidicatorText = "";
@@ -1690,18 +1695,18 @@ function initBMICalculator(page) {
     let weight = weightInput.value;
     let height = heightInput.value;
 
-    if (weight < 20) {
-      weight = 20; weightInput.classList.add("error");
-    } else if (weight > 350) {
-      weight = 350; weightInput.classList.add("error");
+    if (weight < weightMIN) {
+      weight = weightMIN; weightInput.classList.add("error");
+    } else if (weight > weightMAX) {
+      weight = weightMAX; weightInput.classList.add("error");
     } else {
       weightInput.classList.remove("error");
     }
 
-    if (height < 25) {
-      height = 25; heightInput.classList.add("error");
-    } else if (height > 300) {
-      height = 300; heightInput.classList.add("error");
+    if (height < heightMIN) {
+      height = heightMIN; heightInput.classList.add("error");
+    } else if (height > heightMAX) {
+      height = heightMAX; heightInput.classList.add("error");
     } else {
       heightInput.classList.remove("error");
     }
@@ -1825,11 +1830,11 @@ function initTDEECalculator(page) {
 
   function inputCheck() {
 
-    let ageError = singleInputCheck(ageInput, ageInputMin, ageInputMax);
+    let ageError = singleInputCheck(ageInput, ageMIN, ageMAX);
 
-    let heightError = singleInputCheck(heightInput, heightInputMin, heightInputMax);
+    let heightError = singleInputCheck(heightInput, heightMIN, heightMAX);
 
-    let weightError = singleInputCheck(weightInput, weightInputMin, weightInputMax);
+    let weightError = singleInputCheck(weightInput, weightMIN, weightMAX);
 
     let selectError = false;
     let selectedActivityLevel = parseInt(activitySelect.value);
@@ -1847,18 +1852,25 @@ function initTDEECalculator(page) {
 
   const calcButton = document.querySelector("#tdee-calc");
   const weightInput = document.querySelector("#tdee-weight");
-  const weightInputMin = weightInput.getAttribute("min");
-  const weightInputMax = weightInput.getAttribute("max");
+  // const weightInputMin = weightInput.getAttribute("min");
+  // const weightInputMax = weightInput.getAttribute("max");
   const heightInput = document.querySelector("#tdee-height");
-  const heightInputMin = heightInput.getAttribute("min");
-  const heightInputMax = heightInput.getAttribute("max");
+  // const heightInputMin = heightInput.getAttribute("min");
+  // const heightInputMax = heightInput.getAttribute("max");
   const ageInput = document.querySelector("#tdee-age");
-  const ageInputMin = ageInput.getAttribute("min");
-  const ageInputMax = ageInput.getAttribute("max");
+  // const ageInputMin = ageInput.getAttribute("min");
+  // const ageInputMax = ageInput.getAttribute("max");
   const activitySelect = document.querySelector("#activity-select");
   const activityLevelResultRows = document.querySelectorAll(".tdee-result-row");
 
   const resultBMR = document.getElementById("0");
+  
+  const weightMIN = 30;
+  const weightMAX = 300;
+  const heightMIN = 100;
+  const heightMAX = 250;
+  const ageMIN = 18;
+  const ageMAX = 100;
 
   calcButton.addEventListener('click', inputCheck);
 
@@ -2065,5 +2077,8 @@ function initTestimonialMarqueeAnimation(page) {
 // TODO init nav mobile menu animation
 
 // TODO modify TDEE calculator to calculate automatically if all fields are valid, without needing to click the calculate button
+// TODO check BMI calc input flow
+// TODO make BMI calc input limits match code limits
+// TODO make TDEE calc input limits match code limits
 
-// TODO fix pages that cant scroll on fisrt load
+// TODO test phone input on contact
