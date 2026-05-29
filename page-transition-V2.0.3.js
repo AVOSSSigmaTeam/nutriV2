@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.2";
+const version = "2.0.3";
 
 history.scrollRestoration = "manual";
 
@@ -484,7 +484,7 @@ barba.init({
   transitions: [
     {
       name: "default",
-      sync: false,
+      sync: true,
 
       async once(data) {
         if (DEBUG) console.log("Barba init once", version);
@@ -2046,5 +2046,3 @@ function initTestimonialMarqueeAnimation(page) {
 // TODO fix popup open and close animation
 
 // TODO init nav mobile menu animation
-
-// TODO test git
