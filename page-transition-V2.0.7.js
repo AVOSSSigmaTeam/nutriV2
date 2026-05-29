@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.6";
+const version = "2.0.7";
 
 history.scrollRestoration = "manual";
 
@@ -210,7 +210,7 @@ async function runPageEnterAnimation(next) {
 
   const getY = normalizePaths(transitionLogoPath);
 
-  await resetPage(next);
+  // await resetPage(next);
 
   const tl = gsap.timeline();
 
@@ -631,9 +631,9 @@ function initLenis() {
 // }
 
 // function resetPage(container, { scrollAnchor = true } = {}) {
-function resetPage(container, crossPage = false) {
+function resetPage(container) {
   
-  if (crossPage) window.scrollTo(0, 0);
+  // window.scrollTo(0, 0);
 
   gsap.set(container, {
     clearProps: "position,left,right,transform"
