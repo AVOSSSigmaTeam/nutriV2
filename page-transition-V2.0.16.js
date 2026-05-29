@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.15";
+const version = "2.0.16";
 
 history.scrollRestoration = "manual";
 
@@ -349,6 +349,7 @@ function runFirstLoadAnimation(next) {
 
   tl.add("pageReady");
   // tl.call(resetPage, [next], "pageReady");
+  await resetPage(next);
 
   return new Promise(resolve => {
     tl.call(resolve, [], "pageReady");
@@ -728,7 +729,7 @@ function isCrossPageAnchorLink(url) {
   );
 }
 
-function initCrossPageAnchorLinks() {
+function initCrossPageAnchorLinks() { // TODO check if this function works propperly, as it is only called on first page load.
   document.addEventListener("click", (event) => {
     const link = event.target.closest("a[href]");
     if (!link) return;
@@ -2059,6 +2060,10 @@ function initTestimonialMarqueeAnimation(page) {
 
 // TODO handle anchor links
 
-// TODO fix popup open and close animation
+// TODO move popup open and close animation here
 
 // TODO init nav mobile menu animation
+
+// TODO modify TDEE calculator to calculate automatically if all fields are valid, without needing to click the calculate button
+
+// TODO fix pages that cant scroll on fisrt load
