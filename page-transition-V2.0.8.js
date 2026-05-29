@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.7";
+const version = "2.0.8";
 
 history.scrollRestoration = "manual";
 
@@ -210,7 +210,7 @@ async function runPageEnterAnimation(next) {
 
   const getY = normalizePaths(transitionLogoPath);
 
-  // await resetPage(next);
+  await resetPage(next);
 
   const tl = gsap.timeline();
 
@@ -283,7 +283,7 @@ async function runPageEnterAnimation(next) {
   });
 }
 
-function runFirstLoadAnimation(next) {
+async function runFirstLoadAnimation(next) {
   const transitionWrap = document.querySelector("[data-transition-init-wrap]");
   const transitionPanel = transitionWrap.querySelector("[data-transition-init-panel]");
   const transitionPanelTop = transitionWrap.querySelector("[data-transition-init-panel-top]");
@@ -292,6 +292,8 @@ function runFirstLoadAnimation(next) {
   const transitionLogoPath = transitionWrap.querySelectorAll("path");
 
   const getY = normalizePaths(transitionLogoPath);
+
+  await resetPage(next);
 
   const tl = gsap.timeline();
 
@@ -345,7 +347,7 @@ function runFirstLoadAnimation(next) {
   }, ">");
 
   tl.add("pageReady");
-  tl.call(resetPage, [next], "pageReady");
+  // tl.call(resetPage, [next], "pageReady");
 
   return new Promise(resolve => {
     tl.call(resolve, [], "pageReady");
@@ -630,8 +632,8 @@ function initLenis() {
 //   if (DEBUG) console.log("Page reset");
 // }
 
-// function resetPage(container, { scrollAnchor = true } = {}) {
-function resetPage(container) {
+function resetPage(container, { scrollAnchor = true } = {}) {
+// function resetPage(container) {
   
   // window.scrollTo(0, 0);
 
@@ -650,9 +652,9 @@ function resetPage(container) {
         if (hasLenis) lenis.resize();
         if (hasScrollTrigger) ScrollTrigger.refresh();
 
-        // if (scrollAnchor) {
+        if (scrollAnchor) {
           scrollToPendingAnchor(container);
-        // }
+        }
 
         resolve();
       });
