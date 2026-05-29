@@ -1,5 +1,7 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
+const version = "2.0.1";
+
 history.scrollRestoration = "manual";
 
 let lenis = null;
@@ -25,7 +27,7 @@ CustomEase.create("smooth", "M0,0 C0.38,0.005 0.215,1 1,1");
 CustomEase.create("outQuad", "M0,0 C0.25,0.46 0.45,0.94 1,1");
 gsap.defaults({ ease: "default", duration: durationDefault });
 
-const DEBUG = false;
+const DEBUG = true;
 
 const colors = {
   "color-Text": "#212121",
@@ -485,7 +487,7 @@ barba.init({
       sync: false,
 
       async once(data) {
-        if (DEBUG) console.log("Barba once");
+        if (DEBUG) console.log("Barba init once", version);
         initOnceFunctions();
         applyThemeFrom(data.next.container);
 
