@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.9";
+const version = "2.0.10";
 
 history.scrollRestoration = "manual";
 
@@ -812,7 +812,7 @@ function initSkipLink() {
     target.focus();
   });
 
-  if (DEBUG) console.log("Skip link initialized");
+  // if (DEBUG) console.log("Skip link initialized");
 
 }
 
@@ -895,7 +895,7 @@ function initPlanPopup(page) {
     trigger.addEventListener("click", closePopup, { signal: controller.signal });
   });
 
-  if (DEBUG) console.log("Plan popup initialized");
+  // if (DEBUG) console.log("Plan popup initialized");
 }
 
 // footer
@@ -1003,7 +1003,7 @@ function initOpeningHours(page) {
     page.addEventListener('visibilitychange', visHandler);
   });
 
-  if (DEBUG) console.log("Opening hours initialized");
+  // if (DEBUG) console.log("Opening hours initialized");
 
 }
 function initFooterSignature(page) {
@@ -1077,7 +1077,7 @@ function initFooterSignature(page) {
     }
   })
 
-  if (DEBUG) console.log("Footer signature animation initialized");
+  // if (DEBUG) console.log("Footer signature animation initialized");
 
 }
 function setCopyrightYear(page) {
@@ -1086,7 +1086,7 @@ function setCopyrightYear(page) {
   const currentYear = new Date().getFullYear();
   yearElement.textContent = currentYear;
 
-  if (DEBUG) console.log("Copyright year set to", currentYear);
+  // if (DEBUG) console.log("Copyright year set to", currentYear);
 
 }
 function initFooterLinkHoverAnimation(page) {
@@ -1123,7 +1123,7 @@ function initFooterLinkHoverAnimation(page) {
     });
   });
 
-  if (DEBUG) console.log("Footer link hover animation initialized");
+  // if (DEBUG) console.log("Footer link hover animation initialized");
 
 }
 function initCopyEmailClipboard(page) {
@@ -1189,7 +1189,7 @@ function initCopyEmailClipboard(page) {
     });
   });
 
-  if (DEBUG) console.log("Copy email to clipboard initialized");
+  // if (DEBUG) console.log("Copy email to clipboard initialized");
 
 }
 function initFooterLogoFlowerSpin(page) {
@@ -1218,7 +1218,7 @@ function initFooterLogoFlowerSpin(page) {
     },
   });
 
-  if (DEBUG) console.log("Footer logo flower spin initialized");
+  // if (DEBUG) console.log("Footer logo flower spin initialized");
 
 }
 
@@ -1228,13 +1228,13 @@ function formRandomUUID(form) {
   const formName = form.getAttribute("data-name") || "Nova Poruka - ";
   const newFormName = `${formName} ,#${uuid}`;
   form.setAttribute("data-name", newFormName);
-  if (DEBUG) console.log(`Form "${formName}" assigned UUID: ${uuid}`);
+  // if (DEBUG) console.log(`Form "${formName}" assigned UUID: ${uuid}`);
 
-  if (DEBUG) console.log("Form random UUID assigned", {
-    form,
-    uuid,
-    newFormName
-  });
+  // if (DEBUG) console.log("Form random UUID assigned", {
+  //   form,
+  //   uuid,
+  //   newFormName
+  // });
 
 }
 function linkFormButtons(page) {
@@ -1254,7 +1254,7 @@ function linkFormButtons(page) {
     });
   });
 
-  if (DEBUG) console.log("Form buttons linked");
+  // if (DEBUG) console.log("Form buttons linked");
 
 }
 function initBasicFormValidation(page) {
@@ -1378,7 +1378,7 @@ function initBasicFormValidation(page) {
     });
   });
 
-  if (DEBUG) console.log("Basic form validation initialized");
+  // if (DEBUG) console.log("Basic form validation initialized");
 
 }
 
@@ -1464,7 +1464,7 @@ function initFAQ(page) {
 
         item.setAttribute("data-faq-open", "true");
 
-        if (DEBUG) console.log("FAQ item opened:", question.textContent.trim(), item.getAttribute("data-faq-open"));
+        // if (DEBUG) console.log("FAQ item opened:", question.textContent.trim(), item.getAttribute("data-faq-open"));
 
       }
     });
@@ -1496,7 +1496,7 @@ function initFAQSectionAnimation(page) {
       markers: DEBUG,
     }
   });
-  if (DEBUG) console.log("FAQ section animation initialized");
+  // if (DEBUG) console.log("FAQ section animation initialized");
 }
 
 // steps flower animation
@@ -1531,7 +1531,7 @@ function initStepsFlowerAnimation(page) {
     });
   }
 
-  if (DEBUG) console.log("Steps flower animation initialized");
+  // if (DEBUG) console.log("Steps flower animation initialized");
 
 }
 
@@ -1548,7 +1548,7 @@ function initBlogPostDate(page) {
     dateElement.textContent = date.getDate() + ". " + monthText[date.getMonth()] + " " + date.getFullYear();
   });
 
-  if (DEBUG) console.log("Blog post dates initialized");
+  // if (DEBUG) console.log("Blog post dates initialized");
 
 }
 function initBlogPostFilter(page) {
@@ -1607,7 +1607,7 @@ function initBlogPostFilter(page) {
     });
   });
 
-  if (DEBUG) console.log("Blog post filter initialized");
+  // if (DEBUG) console.log("Blog post filter initialized");
 
 }
 function initBlogPostHoverAnimation(page) {
@@ -1629,7 +1629,7 @@ function initBlogPostHoverAnimation(page) {
     animationTrigger.addEventListener("mouseleave", () => { animateButtonHoverOFF(animationElements); });
   });
 
-  if (DEBUG) console.log("Blog post hover animation initialized");
+  // if (DEBUG) console.log("Blog post hover animation initialized");
 }
 
 
@@ -1731,7 +1731,7 @@ function initBMICalculator(page) {
 
   window.addEventListener("resize", calcBMI);
 
-  if (DEBUG) console.log("BMI calculator initialized");
+  // if (DEBUG) console.log("BMI calculator initialized");
 
 }
 
@@ -1859,7 +1859,7 @@ function initTDEECalculator(page) {
 
   calcButton.addEventListener('click', inputCheck);
 
-  if (DEBUG) console.log("TDEE calculator initialized");
+  // if (DEBUG) console.log("TDEE calculator initialized");
 
 }
 
@@ -1879,7 +1879,7 @@ function initNavButtonAnimation() {
     button.addEventListener("mouseleave", () => { animateButtonHoverOFF(animationElements); });
   });
 
-  if (DEBUG) console.log("Nav button animation initialized");
+  // if (DEBUG) console.log("Nav button animation initialized");
 
 }
 function initNavLinkHoverAnimation() {
@@ -1916,7 +1916,7 @@ function initNavLinkHoverAnimation() {
     });
   });
 
-  if (DEBUG) console.log("Nav link hover animation initialized");
+  // if (DEBUG) console.log("Nav link hover animation initialized");
 
 }
 
@@ -1947,7 +1947,7 @@ function initButtonHoverAnimation(page) {
     button.addEventListener("mouseleave", () => { animateButtonHoverOFF(animationElements); });
   });
 
-  if (DEBUG) console.log("Button hover animation initialized");
+  // if (DEBUG) console.log("Button hover animation initialized");
 
 }
 
@@ -1985,20 +1985,20 @@ function initSixCardAnimations(page) {
 
   });
 
-  if (DEBUG) console.log("Six card animation initialized");
+  // if (DEBUG) console.log("Six card animation initialized");
 }
 
 function initClientMarqueeAnimation(page) {
   const marqueeTracks = page.querySelectorAll("[data-marquee-track]");
   if (marqueeTracks.length === 0) {
-    if (DEBUG) console.log("No marquee tracks found, skipping marquee animation initialization");
+    // if (DEBUG) console.log("No marquee tracks found, skipping marquee animation initialization");
     return;
   }
 
   marqueeTracks.forEach(track => {
     const marqueeItems = track.querySelectorAll("[data-marquee-item]");
     if (marqueeItems.length === 0) {
-      if (DEBUG) console.log("No marquee items found for this track, skipping...");
+      // if (DEBUG) console.log("No marquee items found for this track, skipping...");
       return;
     }
     marqueeItems.forEach(item => {
@@ -2019,19 +2019,19 @@ function initClientMarqueeAnimation(page) {
     });
   });
 
-  if (DEBUG) console.log("Marquee tracks initialized");
+  // if (DEBUG) console.log("Marquee tracks initialized");
 }
 
 function initTestimonialMarqueeAnimation(page) {
   const testimonialMarqueeSection = page.querySelectorAll("[data-testimonial-marquee-section]");
   if (testimonialMarqueeSection.length === 0) {
-    if (DEBUG) console.log("No testimonial marquee section found, skipping testimonial marquee animation initialization");
+    // if (DEBUG) console.log("No testimonial marquee section found, skipping testimonial marquee animation initialization");
     return;
   }
   testimonialMarqueeSection.forEach(section => {
     const marqueeItems = section.querySelectorAll("[data-testimonial-marquee-item]");
     if (marqueeItems.length === 0) {
-      if (DEBUG) console.log("No testimonial marquee items found for this section, skipping...");
+      // if (DEBUG) console.log("No testimonial marquee items found for this section, skipping...");
       return;
     }
     marqueeItems.forEach(item => {
@@ -2052,7 +2052,7 @@ function initTestimonialMarqueeAnimation(page) {
     });
   });
 
-  if (DEBUG) console.log("Testimonial marquee tracks initialized");
+  // if (DEBUG) console.log("Testimonial marquee tracks initialized");
 }
 
 // TODO handle anchor links
