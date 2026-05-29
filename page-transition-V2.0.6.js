@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.5";
+const version = "2.0.6";
 
 history.scrollRestoration = "manual";
 
@@ -629,8 +629,11 @@ function initLenis() {
 
 //   if (DEBUG) console.log("Page reset");
 // }
-function resetPage(container, { scrollAnchor = true } = {}) {
-  window.scrollTo(0, 0);
+
+// function resetPage(container, { scrollAnchor = true } = {}) {
+function resetPage(container, crossPage = false) {
+  
+  if (crossPage) window.scrollTo(0, 0);
 
   gsap.set(container, {
     clearProps: "position,left,right,transform"
@@ -647,9 +650,9 @@ function resetPage(container, { scrollAnchor = true } = {}) {
         if (hasLenis) lenis.resize();
         if (hasScrollTrigger) ScrollTrigger.refresh();
 
-        if (scrollAnchor) {
+        // if (scrollAnchor) {
           scrollToPendingAnchor(container);
-        }
+        // }
 
         resolve();
       });
