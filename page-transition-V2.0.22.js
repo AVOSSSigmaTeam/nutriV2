@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.21";
+const version = "2.0.22";
 
 history.scrollRestoration = "manual";
 
@@ -1821,7 +1821,7 @@ function initTDEECalculator(page) {
 
   function singleInputCheck(element, min, max) {
     let value = element.value;
-    if (value != "" && parseInt(value) > parseInt(min) && parseInt(value) < parseInt(max)) {
+    if (value != "" && parseInt(value) >= parseInt(min) && parseInt(value) <= parseInt(max)) {
       element.classList.remove("error");
       return false;
     } else {
