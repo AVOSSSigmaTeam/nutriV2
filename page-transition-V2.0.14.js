@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.12";
+const version = "2.0.14";
 
 history.scrollRestoration = "manual";
 
@@ -210,7 +210,7 @@ async function runPageEnterAnimation(next) {
 
   const getY = normalizePaths(transitionLogoPath);
 
-  await resetPage(next);
+  // await resetPage(next);
 
   const tl = gsap.timeline();
 
@@ -276,6 +276,8 @@ async function runPageEnterAnimation(next) {
   }, ">");
 
   tl.add("pageReady");
+  await resetPage(next);
+
   // tl.call(resetPage, [next], "pageReady");
 
   return new Promise(resolve => {
