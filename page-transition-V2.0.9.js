@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.8";
+const version = "2.0.9";
 
 history.scrollRestoration = "manual";
 
@@ -635,7 +635,8 @@ function initLenis() {
 function resetPage(container, { scrollAnchor = true } = {}) {
 // function resetPage(container) {
   
-  // window.scrollTo(0, 0);
+  window.scrollTo(0, 0);
+  if (DEBUG) console.log("Page scroll reset to top");
 
   gsap.set(container, {
     clearProps: "position,left,right,transform"
@@ -656,11 +657,11 @@ function resetPage(container, { scrollAnchor = true } = {}) {
           scrollToPendingAnchor(container);
         }
 
+        if (DEBUG) console.log("Page reset");
         resolve();
       });
     });
   });
-  if (DEBUG) console.log("Page reset");
 }
 
 function debounceOnWidthChange(fn, ms) {
