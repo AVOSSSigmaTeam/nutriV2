@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.14";
+const version = "2.0.15";
 
 history.scrollRestoration = "manual";
 
@@ -210,7 +210,7 @@ async function runPageEnterAnimation(next) {
 
   const getY = normalizePaths(transitionLogoPath);
 
-  // await resetPage(next);
+  await resetPage(next);
 
   const tl = gsap.timeline();
 
@@ -221,9 +221,9 @@ async function runPageEnterAnimation(next) {
     return new Promise(resolve => tl.call(resolve, [], "pageReady"));
   }
 
-  if (DEBUG) {
-    tl.set(next, { backgroundColor: "blue" }, 0);
-  }
+  // if (DEBUG) {
+  //   tl.set(next, { backgroundColor: "blue" }, 0);
+  // }
 
   tl.add("startEnter", 1.35);
 
@@ -276,8 +276,6 @@ async function runPageEnterAnimation(next) {
   }, ">");
 
   tl.add("pageReady");
-  await resetPage(next);
-
   // tl.call(resetPage, [next], "pageReady");
 
   return new Promise(resolve => {
@@ -285,7 +283,8 @@ async function runPageEnterAnimation(next) {
   });
 }
 
-async function runFirstLoadAnimation(next) {
+// async function runFirstLoadAnimation(next) {
+function runFirstLoadAnimation(next) {
   const transitionWrap = document.querySelector("[data-transition-init-wrap]");
   const transitionPanel = transitionWrap.querySelector("[data-transition-init-panel]");
   const transitionPanelTop = transitionWrap.querySelector("[data-transition-init-panel-top]");
@@ -295,7 +294,7 @@ async function runFirstLoadAnimation(next) {
 
   const getY = normalizePaths(transitionLogoPath);
 
-  await resetPage(next);
+  // await resetPage(next);
 
   const tl = gsap.timeline();
 
@@ -425,9 +424,9 @@ function runPageLeaveAnimation(current, next) {
     ease: "expo.out",
   }, 0.25);
 
-  if (DEBUG) {
-    tl.set(current, { backgroundColor: "red" }, 0);
-  }
+  // if (DEBUG) {
+  //   tl.set(current, { backgroundColor: "red" }, 0);
+  // }
 
   tl.fromTo(current, {
     y: "0vh"
