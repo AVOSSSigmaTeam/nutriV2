@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.19";
+const version = "2.0.20";
 
 history.scrollRestoration = "manual";
 
@@ -1852,14 +1852,8 @@ function initTDEECalculator(page) {
 
   const calcButton = document.querySelector("#tdee-calc");
   const weightInput = document.querySelector("#tdee-weight");
-  // const weightInputMin = weightInput.getAttribute("min");
-  // const weightInputMax = weightInput.getAttribute("max");
   const heightInput = document.querySelector("#tdee-height");
-  // const heightInputMin = heightInput.getAttribute("min");
-  // const heightInputMax = heightInput.getAttribute("max");
   const ageInput = document.querySelector("#tdee-age");
-  // const ageInputMin = ageInput.getAttribute("min");
-  // const ageInputMax = ageInput.getAttribute("max");
   const activitySelect = document.querySelector("#activity-select");
   const activityLevelResultRows = document.querySelectorAll(".tdee-result-row");
   const genderInputs = document.querySelectorAll('input[name="gender"]');
@@ -1870,15 +1864,27 @@ function initTDEECalculator(page) {
   let selectError = true;
 
   weightInput.addEventListener("change", () => {
+    weightError = singleInputCheck(weightInput, weightMIN, weightMAX);
     if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
   });
   heightInput.addEventListener("change", () => {
+    heightError = singleInputCheck(heightInput, heightMIN, heightMAX);
     if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
   }); 
   ageInput.addEventListener("change", () => {
+    ageError = singleInputCheck(ageInput, ageMIN, ageMAX);
     if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); } 
   });
   activitySelect.addEventListener("change", () => {
+    selectError = false;
+    let selectedActivityLevel = parseInt(activitySelect.value);
+    if (selectedActivityLevel != 0) {
+      activitySelect.classList.remove("error");
+      selectError = false;
+    } else {
+      activitySelect.classList.add("error");
+      selectError = true;
+    }
     if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
   });
 
@@ -1900,7 +1906,7 @@ function initTDEECalculator(page) {
 
   calcButton.addEventListener('click', inputCheck);
 
-  // if (DEBUG) console.log("TDEE calculator initialized");
+  if (DEBUG) console.log("TDEE calculator initialized");
 
 }
 
