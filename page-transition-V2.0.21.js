@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.20";
+const version = "2.0.21";
 
 history.scrollRestoration = "manual";
 
@@ -1752,11 +1752,13 @@ function initTDEECalculator(page) {
 
   function womenBMR(weight, height, age) {
     let result = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+    result = Math.round((result + Number.EPSILON) * 100) / 100;
     return result;
   }
 
   function menBMR(weight, height, age) {
     let result = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+    result = Math.round((result + Number.EPSILON) * 100) / 100;
     return result;
   }
 
