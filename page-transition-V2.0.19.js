@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.18";
+const version = "2.0.19";
 
 history.scrollRestoration = "manual";
 
@@ -1830,13 +1830,13 @@ function initTDEECalculator(page) {
 
   function inputCheck() {
 
-    let ageError = singleInputCheck(ageInput, ageMIN, ageMAX);
+    ageError = singleInputCheck(ageInput, ageMIN, ageMAX);
 
-    let heightError = singleInputCheck(heightInput, heightMIN, heightMAX);
+    heightError = singleInputCheck(heightInput, heightMIN, heightMAX);
 
-    let weightError = singleInputCheck(weightInput, weightMIN, weightMAX);
+    weightError = singleInputCheck(weightInput, weightMIN, weightMAX);
 
-    let selectError = false;
+    selectError = false;
     let selectedActivityLevel = parseInt(activitySelect.value);
     if (selectedActivityLevel != 0) {
       activitySelect.classList.remove("error");
@@ -1862,6 +1862,32 @@ function initTDEECalculator(page) {
   // const ageInputMax = ageInput.getAttribute("max");
   const activitySelect = document.querySelector("#activity-select");
   const activityLevelResultRows = document.querySelectorAll(".tdee-result-row");
+  const genderInputs = document.querySelectorAll('input[name="gender"]');
+
+  let ageError = true;
+  let heightError = true;
+  let weightError = true;
+  let selectError = true;
+
+  weightInput.addEventListener("change", () => {
+    if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
+  });
+  heightInput.addEventListener("change", () => {
+    if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
+  }); 
+  ageInput.addEventListener("change", () => {
+    if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); } 
+  });
+  activitySelect.addEventListener("change", () => {
+    if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
+  });
+
+
+  genderInputs.forEach(input => {
+    input.addEventListener("change", () => {
+      if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
+    });
+  });
 
   const resultBMR = document.getElementById("0");
   
@@ -2078,7 +2104,5 @@ function initTestimonialMarqueeAnimation(page) {
 
 // TODO modify TDEE calculator to calculate automatically if all fields are valid, without needing to click the calculate button
 // TODO check BMI calc input flow
-// TODO make BMI calc input limits match code limits
-// TODO make TDEE calc input limits match code limits
 
 // TODO test phone input on contact
