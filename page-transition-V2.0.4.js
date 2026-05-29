@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.3";
+const version = "2.0.4";
 
 history.scrollRestoration = "manual";
 
@@ -416,6 +416,10 @@ function runPageLeaveAnimation(current, next) {
     duration: 0.8,
     ease: "expo.out",
   }, 0.25);
+
+  if (DEBUG) {
+    tl.set(current, { backgroundColor: "red" }, 0);
+  }
 
   tl.fromTo(current, {
     y: "0vh"
