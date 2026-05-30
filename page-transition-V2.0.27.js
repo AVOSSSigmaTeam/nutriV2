@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.26";
+const version = "2.0.27";
 
 history.scrollRestoration = "manual";
 
@@ -829,34 +829,49 @@ function initPlanPopup(page) {
   // const allPopups = Array.from(page.querySelectorAll("[data-plan-popup]"));
   // const blurTargets = page.querySelectorAll(".popup-background-blur");
 
-  const popupTriggers = page.querySelectorAll("[data-plan-popup-trigger]") || document.querySelectorAll("[data-plan-popup-trigger]");
-  const popupCloseTriggers = page.querySelectorAll("[data-popup-close-trigger]") || document.querySelectorAll("[data-popup-close-trigger]");
   const popupWrapper = page.querySelector("[data-plan-popup-wrapper]") || document.querySelector("[data-plan-popup-wrapper]");
-  const allPopups = Array.from(page.querySelectorAll("[data-plan-popup]")) || Array.from(document.querySelectorAll("[data-plan-popup]"));
-  const blurTargets = page.querySelectorAll(".popup-background-blur") || document.querySelectorAll(".popup-background-blur");
-
-  if (popupTriggers.length === 0) {
-    if (DEBUG) console.warn("No plan popup triggers found");
-  }
   if (!popupWrapper) {
     if (DEBUG) console.warn("Plan popup wrapper not found");
-  }
-  if (popupCloseTriggers.length === 0) {
-    if (DEBUG) console.warn("No plan popup close triggers found");
-  }
-  if (allPopups.length === 0) {
-    if (DEBUG) console.warn("No plan popups found");
-  }
-
-  if (!popupTriggers.length || !popupWrapper || !popupCloseTriggers.length || !allPopups.length) {
-    // if (DEBUG) console.warn("Plan popup elements not found", {
-    //   popupTriggers,
-    //   popupWrapper,
-    //   popupCloseTriggers,
-    //   allPopups
-    // });
     return;
   }
+
+  const popupTriggers = page.querySelectorAll("[data-plan-popup-trigger]") || document.querySelectorAll("[data-plan-popup-trigger]");
+  if (popupTriggers.length === 0) {
+    if (DEBUG) console.warn("No plan popup triggers found");
+    return;
+  }
+
+  // const allPopups = Array.from(page.querySelectorAll("[data-plan-popup]")) || Array.from(document.querySelectorAll("[data-plan-popup]"));
+  const allPopups = Array.from(popupWrapper.querySelectorAll("[data-plan-popup]"));
+  if (allPopups.length === 0) {
+    if (DEBUG) console.warn("No plan popups found");
+    return;
+  }
+
+  // const popupCloseTriggers = page.querySelectorAll("[data-popup-close-trigger]") || document.querySelectorAll("[data-popup-close-trigger]");
+  const popupCloseTriggers = popupWrapper.querySelectorAll("[data-popup-close-trigger]");
+  if (popupCloseTriggers.length === 0) {
+    if (DEBUG) console.warn("No plan popup close triggers found");
+    return;
+  }
+  
+  // const blurTargets = page.querySelectorAll(".popup-background-blur") || document.querySelectorAll(".popup-background-blur");
+  const blurTargets = popupWrapper.querySelectorAll(".popup-background-blur");
+  if (blurTargets.length === 0) {
+    if (DEBUG) console.warn("No plan popup blur targets found");
+    return;
+  }
+
+
+  // if (!popupTriggers.length || !popupWrapper || !popupCloseTriggers.length || !allPopups.length) {
+  //   // if (DEBUG) console.warn("Plan popup elements not found", {
+  //   //   popupTriggers,
+  //   //   popupWrapper,
+  //   //   popupCloseTriggers,
+  //   //   allPopups
+  //   // });
+  //   return;
+  // }
 
   // Prevent duplicate listeners if this container is initialized again
   if (popupWrapper._planPopupCleanup) popupWrapper._planPopupCleanup();
