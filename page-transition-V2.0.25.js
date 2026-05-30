@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.24";
+const version = "2.0.25";
 
 history.scrollRestoration = "manual";
 
@@ -163,9 +163,9 @@ function initAfterEnterFunctions(next) {
     // case "home":
     //   if (has('[data-steps-section]')) initStepsFlowerAnimation(nextPage);
     //   break;
-    case "popup-build":
-      initPlanPopup(nextPage);
-      break;
+    // case "popup-build":
+    //   initPlanPopup(nextPage);
+    //   break;
     // case "blog":
     //   break;
     // case "blog-post":
