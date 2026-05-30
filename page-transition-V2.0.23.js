@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.22";
+const version = "2.0.23";
 
 history.scrollRestoration = "manual";
 
@@ -101,9 +101,9 @@ function initBeforeEnterFunctions(next) {
   switch (pageName) {
     // case "home":
     //   break;
-    case "popup-build":
-      initPlanPopup(nextPage);
-      break;
+    // case "popup-build":
+    //   initPlanPopup(nextPage);
+    //   break;
     case "blog":
       initBlogPostDate(nextPage);
       initBlogPostFilter(nextPage);
@@ -159,12 +159,13 @@ function initAfterEnterFunctions(next) {
   const pageName = nextPage.getAttribute("data-page-name") || '';
   if (DEBUG) console.log(pageName);
 
-  // switch (pageName) {
+  switch (pageName) {
     // case "home":
     //   if (has('[data-steps-section]')) initStepsFlowerAnimation(nextPage);
     //   break;
-    // case "popup-build":
-    //   break;
+    case "popup-build":
+      initPlanPopup(nextPage);
+      break;
     // case "blog":
     //   break;
     // case "blog-post":
@@ -175,7 +176,7 @@ function initAfterEnterFunctions(next) {
     //   break;
     // case "tdee-calc":
     //   break;
-  // };
+  };
 
   if (hasLenis) {
     lenis.resize();
@@ -827,15 +828,28 @@ function initPlanPopup(page) {
   const allPopups = Array.from(page.querySelectorAll("[data-plan-popup]"));
   const blurTargets = page.querySelectorAll(".popup-background-blur");
 
-  if (!popupTriggers.length || !popupWrapper || !popupCloseTriggers.length || !allPopups.length) {
-    if (DEBUG) console.warn("Plan popup elements not found", {
-      popupTriggers,
-      popupWrapper,
-      popupCloseTriggers,
-      allPopups
-    });
-    return;
+  if (popupTriggers.length === 0) {
+    if (DEBUG) console.warn("No plan popup triggers found");
   }
+  if (!popupWrapper) {
+    if (DEBUG) console.warn("Plan popup wrapper not found");
+  }
+  if (popupCloseTriggers.length === 0) {
+    if (DEBUG) console.warn("No plan popup close triggers found");
+  }
+  if (allPopups.length === 0) {
+    if (DEBUG) console.warn("No plan popups found");
+  }
+
+  // if (!popupTriggers.length || !popupWrapper || !popupCloseTriggers.length || !allPopups.length) {
+  //   if (DEBUG) console.warn("Plan popup elements not found", {
+  //     popupTriggers,
+  //     popupWrapper,
+  //     popupCloseTriggers,
+  //     allPopups
+  //   });
+  //   return;
+  // }
 
   // Prevent duplicate listeners if this container is initialized again
   if (popupWrapper._planPopupCleanup) popupWrapper._planPopupCleanup();
@@ -1752,13 +1766,11 @@ function initTDEECalculator(page) {
 
   function womenBMR(weight, height, age) {
     let result = (10 * weight) + (6.25 * height) - (5 * age) - 161;
-    result = Math.round((result + Number.EPSILON) * 100) / 100;
     return result;
   }
 
   function menBMR(weight, height, age) {
     let result = (10 * weight) + (6.25 * height) - (5 * age) + 5;
-    result = Math.round((result + Number.EPSILON) * 100) / 100;
     return result;
   }
 
@@ -1784,7 +1796,7 @@ function initTDEECalculator(page) {
       }
     }
 
-    resultBMR.innerHTML = bmr;
+    resultBMR.innerHTML = Math.round(bmr);
 
     for (let i = 0; i < activityIndexArray.length; i++) {
       document.getElementById(String(i + 1)).innerHTML = resultArray[i];
@@ -2110,7 +2122,6 @@ function initTestimonialMarqueeAnimation(page) {
 
 // TODO init nav mobile menu animation
 
-// TODO modify TDEE calculator to calculate automatically if all fields are valid, without needing to click the calculate button
 // TODO check BMI calc input flow
 
-// TODO test phone input on contact
+// TODO check why flower spin animations dont work on mobile
