@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.28";
+const version = "2.0.29";
 
 history.scrollRestoration = "manual";
 
@@ -102,7 +102,6 @@ function initBeforeEnterFunctions(next) {
     // case "home":
     //   break;
     // case "popup-build":
-    //   initPlanPopup(nextPage);
     //   break;
     case "blog":
       initBlogPostDate(nextPage);
@@ -162,10 +161,8 @@ function initAfterEnterFunctions(next) {
   switch (pageName) {
     case "home":
       initPlanPopupV2(nextPage);
-    //   if (has('[data-steps-section]')) initStepsFlowerAnimation(nextPage);
       break;
     // case "popup-build":
-    //   initPlanPopup(nextPage);
     //   break;
     // case "blog":
     //   break;
@@ -822,125 +819,6 @@ function initSkipLink() {
 }
 
 //plan popup
-// function initPlanPopup(page) {
-//   // const popupTriggers = page.querySelectorAll("[data-plan-popup-trigger]");
-//   // const popupCloseTriggers = page.querySelectorAll("[data-popup-close-trigger]");
-//   // const popupWrapper = page.querySelector("[data-plan-popup-wrapper]");
-//   // const allPopups = Array.from(page.querySelectorAll("[data-plan-popup]"));
-//   // const blurTargets = page.querySelectorAll(".popup-background-blur");
-
-//   const popupWrapper = page.querySelector("[data-plan-popup-wrapper]") || document.querySelector("[data-plan-popup-wrapper]");
-//   if (!popupWrapper) {
-//     if (DEBUG) console.warn("Plan popup wrapper not found");
-//     return;
-//   }
-
-//   const popupTriggers = page.querySelectorAll("[data-plan-popup-trigger]") || document.querySelectorAll("[data-plan-popup-trigger]");
-//   if (popupTriggers.length === 0) {
-//     if (DEBUG) console.warn("No plan popup triggers found");
-//     return;
-//   }
-
-//   // const allPopups = Array.from(page.querySelectorAll("[data-plan-popup]")) || Array.from(document.querySelectorAll("[data-plan-popup]"));
-//   const allPopups = Array.from(popupWrapper.querySelectorAll("[data-plan-popup]"));
-//   if (allPopups.length === 0) {
-//     if (DEBUG) console.warn("No plan popups found");
-//     return;
-//   }
-
-//   // const popupCloseTriggers = page.querySelectorAll("[data-popup-close-trigger]") || document.querySelectorAll("[data-popup-close-trigger]");
-//   const popupCloseTriggers = popupWrapper.querySelectorAll("[data-popup-close-trigger]");
-//   if (popupCloseTriggers.length === 0) {
-//     if (DEBUG) console.warn("No plan popup close triggers found");
-//     return;
-//   }
-  
-//   // const blurTargets = page.querySelectorAll(".popup-background-blur") || document.querySelectorAll(".popup-background-blur");
-//   const blurTargets = popupWrapper.querySelectorAll(".popup-background-blur");
-//   if (blurTargets.length === 0) {
-//     if (DEBUG) console.warn("No plan popup blur targets found");
-//     return;
-//   }
-
-
-//   // if (!popupTriggers.length || !popupWrapper || !popupCloseTriggers.length || !allPopups.length) {
-//   //   // if (DEBUG) console.warn("Plan popup elements not found", {
-//   //   //   popupTriggers,
-//   //   //   popupWrapper,
-//   //   //   popupCloseTriggers,
-//   //   //   allPopups
-//   //   // });
-//   //   return;
-//   // }
-
-//   // Prevent duplicate listeners if this container is initialized again
-//   if (popupWrapper._planPopupCleanup) popupWrapper._planPopupCleanup();
-
-//   const controller = new AbortController();
-//   popupWrapper._planPopupCleanup = () => controller.abort();
-
-//   let activePopup = null;
-
-//   gsap.set(popupWrapper, { display: "none" });
-//   gsap.set(allPopups, { autoAlpha: 0, display: "none" });
-//   gsap.set(blurTargets, { "--blur": "0px" });
-
-//   function getPopup(triggerData) {
-//     if (!triggerData) return null;
-
-//     // return page.querySelector(`[data-plan-popup="${triggerData}"]`);
-//     return document.querySelector(`[data-plan-popup="${triggerData}"]`);
-//   }
-
-//   function openPopup(popup) {
-//     if (!popup) return;
-
-//     activePopup = popup;
-
-//     gsap.killTweensOf([popupWrapper, allPopups, blurTargets]);
-
-//     gsap.timeline()
-//       .set(allPopups, { autoAlpha: 0, display: "none" })
-//       .set(popupWrapper, { display: "flex" })
-//       .set(popup, { display: "grid" }, 0.01)
-//       .to(popup, { autoAlpha: 1 }, 0.01)
-//       .to(blurTargets, { "--blur": "10px" }, 0.01);
-
-//     if (DEBUG) console.log("Opened popup", popup);
-//   }
-
-//   function closePopup() {
-//     if (!activePopup) return;
-
-//     const popup = activePopup;
-//     activePopup = null;
-
-//     gsap.killTweensOf([popupWrapper, allPopups, blurTargets]);
-
-//     gsap.timeline()
-//       .to(popup, { autoAlpha: 0 })
-//       .set(popup, { display: "none" })
-//       .to(popupWrapper, { display: "none" }, 0.01)
-//       .to(blurTargets, { "--blur": "0px" }, 0.01);
-
-//     if (DEBUG) console.log("Closed popup", popup);
-//   }
-
-//   popupTriggers.forEach((trigger) => {
-//     trigger.addEventListener("click", () => {
-//       const triggerData = trigger.getAttribute("data-plan-popup-trigger");
-//       const popup = getPopup(triggerData);
-
-//       openPopup(popup);
-//     }, { signal: controller.signal });
-//   });
-
-//   popupCloseTriggers.forEach(trigger => {
-//     trigger.addEventListener("click", closePopup, { signal: controller.signal });
-//   });
-
-//   if (DEBUG) console.log("Plan popup initialized");
-// }
 function initPlanPopupV2(page) {
 
   const popupWrapper = page.querySelector("[data-plan-popup-wrapper]") || document.querySelector("[data-plan-popup-wrapper]");
@@ -984,7 +862,6 @@ function initPlanPopupV2(page) {
   function getPopup(triggerData) {
     if (!triggerData) return null;
 
-    // return page.querySelector(`[data-plan-popup="${triggerData}"]`);
     return document.querySelector(`[data-plan-popup="${triggerData}"]`);
   }
 
@@ -1652,8 +1529,8 @@ function initStepsFlowerAnimation(page) {
     const step = steps[i];
     const flower = flowers[i];
 
-    ScrollTrigger.matchMedia({
-      "(min-width: 992px)": function () {
+    // ScrollTrigger.matchMedia({
+    //   "(min-width: 992px)": function () {
         gsap.fromTo(flower, {
           rotation: 0,
         }, {
@@ -1668,8 +1545,8 @@ function initStepsFlowerAnimation(page) {
           }
         });
       }
-    });
-  }
+  //   });
+  // }
 
   // if (DEBUG) console.log("Steps flower animation initialized");
 
