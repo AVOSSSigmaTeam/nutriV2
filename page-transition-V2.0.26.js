@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.25";
+const version = "2.0.26";
 
 history.scrollRestoration = "manual";
 
@@ -160,9 +160,10 @@ function initAfterEnterFunctions(next) {
   if (DEBUG) console.log(pageName);
 
   switch (pageName) {
-    // case "home":
+    case "home":
+      initPlanPopup(nextPage);
     //   if (has('[data-steps-section]')) initStepsFlowerAnimation(nextPage);
-    //   break;
+      break;
     // case "popup-build":
     //   initPlanPopup(nextPage);
     //   break;
