@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.46";
+const version = "2.0.47";
 
 history.scrollRestoration = "manual";
 
@@ -1756,13 +1756,13 @@ function initBMICalculator(page) {
 
   function showError(inputType) {
     if (inputType === "weight") {
-      gsap.to(weightInput, {
+      gsap.to(weightErrorText, {
         autoAlpha: 1,
         duration: 0.25
       });
     }
     if (inputType === "height") {
-      gsap.to(heightInput, {
+      gsap.to(heightErrorText, {
         autoAlpha: 1,
         duration: 0.25
       });
@@ -1771,13 +1771,13 @@ function initBMICalculator(page) {
 
   function hideError(inputType) {
     if (inputType === "weight") {
-      gsap.to(weightInput, {
+      gsap.to(weightErrorText, {
         autoAlpha: 0,
         duration: 0.25
       });
     }
     if (inputType === "height") {
-      gsap.to(heightInput, {
+      gsap.to(heightErrorText, {
         autoAlpha: 0,
         duration: 0.25
       });
