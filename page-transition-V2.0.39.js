@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.38";
+const version = "2.0.39";
 
 history.scrollRestoration = "manual";
 
@@ -111,9 +111,9 @@ function initBeforeEnterFunctions(next) {
     case "blog-post":
       initBlogPostDate(nextPage);
       break;
-    case "contact":
-      initBasicFormValidation(nextPage);
-      break;
+    // case "contact":
+      // initBasicFormValidation(nextPage);
+      // break;
     case "bmi-calc":
       initBMICalculator(nextPage);
       break;
@@ -123,12 +123,12 @@ function initBeforeEnterFunctions(next) {
 
   };
 
-  const formsWithoutUUID = nextPage.querySelectorAll("[data-add-uuid]");
-  formsWithoutUUID.forEach((form) => {
-    formRandomUUID(form);
-  });
+  // const formsWithoutUUID = nextPage.querySelectorAll("[data-add-uuid]");
+  // formsWithoutUUID.forEach((form) => {
+  //   formRandomUUID(form);
+  // });
 
-  linkFormButtons(nextPage);
+  // linkFormButtons(nextPage);
 
 }
 
@@ -172,13 +172,19 @@ function initAfterEnterFunctions(next) {
     //   break;
     // case "blog-post":
     //   break;
-    // case "contact":
-    //   break;
+    case "contact":
+      initBasicFormValidation(nextPage);
+      break;
     // case "bmi-calc":
     //   break;
     // case "tdee-calc":
     //   break;
   };
+
+  const formsWithoutUUID = nextPage.querySelectorAll("[data-add-uuid]");
+  formsWithoutUUID.forEach((form) => {
+    formRandomUUID(form);
+  });
 
   if (hasLenis) {
     lenis.resize();
@@ -1247,16 +1253,11 @@ function initFooterLogoFlowerSpin(page) {
 function formRandomUUID(form) {
   const uuid = crypto.randomUUID(); // secure unique ID
   const formName = form.getAttribute("data-name") || "Nova Poruka - ";
-  const newFormName = `${formName} ,#${uuid}`;
+  // const newFormName = `${formName} ,#${uuid}`;
+  const newFormName = formName + uuid;
   form.setAttribute("data-name", newFormName);
+  
   if (DEBUG) console.log(`Form "${formName}" assigned UUID: ${uuid}`);
-
-  // if (DEBUG) console.log("Form random UUID assigned", {
-  //   form,
-  //   uuid,
-  //   newFormName
-  // });
-
 }
 function linkFormButtons(page) {
   const visibleButtons = page.querySelectorAll("[data-imitation-button-link]");
