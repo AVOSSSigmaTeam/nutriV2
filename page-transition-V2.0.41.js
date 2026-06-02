@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.40";
+const version = "2.0.41";
 
 history.scrollRestoration = "manual";
 
@@ -1249,7 +1249,7 @@ function initFooterLogoFlowerSpin(page) {
 function formRandomUUID(form) {
   const uuid = crypto.randomUUID(); // secure unique ID
   const formName = form.getAttribute("data-name") || "Nova Poruka - ";
-  const newFormName = `${formName} ,#${uuid}`;
+  const newFormName = `${formName} #${uuid}`;
   form.setAttribute("data-name", newFormName);
   
   if (DEBUG) console.log(`Form "${formName}" assigned UUID: ${uuid}`);
@@ -1691,15 +1691,15 @@ function initBlogPostHoverAnimation(page) {
 // BMI calc
 function initBMICalculator(page) {
 
-  const heightInput = page.querySelector("input#bmi-height");
-  const weightInput = page.querySelector("input#bmi-weight");
+  const heightInput = page.querySelector("[data-bmi-height]");
+  const weightInput = page.querySelector("[data-bmi-weight]");
 
   if (!heightInput || !weightInput) return;
 
-  const rangeIndicator = page.querySelector(".bmi-range-indicator");
-  const rangeIndicatorTextWrap = page.querySelector(".bmi-indicator-text-wrap");
-  const rangeIndicatorText = page.querySelector("#bmi-inidicator-text-main");
-  const rangeIndicatorSecondaryText = page.querySelector("#bmi-inidicator-text-secondary");
+  const rangeIndicator = page.querySelector("[data-bmi-range-indicator]");
+  const rangeIndicatorTextWrap = page.querySelector("[data-bmi-indicator-text-wrap]");
+  const rangeIndicatorText = page.querySelector("[data-bmi-indicator-text-main]");
+  const rangeIndicatorSecondaryText = page.querySelector("[data-bmi-indicator-text-secondary]");
 
   const weightMIN = 30;
   const weightMAX = 300;
@@ -1737,8 +1737,8 @@ function initBMICalculator(page) {
         break;
     }
 
-    rangeIndicatorText.innerHTML = "BMI = " + BMI;
-    rangeIndicatorSecondaryText.innerHTML = inidicatorText;
+    rangeIndicatorText.textContent = "BMI = " + BMI;
+    rangeIndicatorSecondaryText.textContent = inidicatorText;
 
   }
 
@@ -1747,18 +1747,14 @@ function initBMICalculator(page) {
     let weight = weightInput.value;
     let height = heightInput.value;
 
-    if (weight < weightMIN) {
+    if (weight < weightMIN || weight > weightMAX) {
       weight = weightMIN; weightInput.classList.add("error");
-    } else if (weight > weightMAX) {
-      weight = weightMAX; weightInput.classList.add("error");
     } else {
       weightInput.classList.remove("error");
     }
 
-    if (height < heightMIN) {
+    if (height < heightMIN || height > heightMAX) {
       height = heightMIN; heightInput.classList.add("error");
-    } else if (height > heightMAX) {
-      height = heightMAX; heightInput.classList.add("error");
     } else {
       heightInput.classList.remove("error");
     }
@@ -1784,14 +1780,14 @@ function initBMICalculator(page) {
     updateText(BMI, rangeIndicatorMulitplyer);
   }
 
-  calcBMI();
+  // calcBMI();
 
   heightInput.addEventListener("input", calcBMI);
   weightInput.addEventListener("input", calcBMI);
 
   window.addEventListener("resize", calcBMI);
 
-  // if (DEBUG) console.log("BMI calculator initialized");
+  if (DEBUG) console.log("BMI calculator initialized");
 
 }
 
@@ -2157,8 +2153,6 @@ function initTestimonialMarqueeAnimation(page) {
 // TODO handle anchor links
 // TODO close mobile nav menu after naivgating to an anchor or new page.
 
-// TODO fix forms on website, errors on opera browser, formUUID not working, form button link doesnt work.
-// TODO make form validation email check more robust
 
 // TODO init nav mobile menu animation
 // TODO check BMI calc input flow
