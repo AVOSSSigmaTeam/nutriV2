@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.41";
+const version = "2.0.42";
 
 history.scrollRestoration = "manual";
 
@@ -1706,7 +1706,13 @@ function initBMICalculator(page) {
   const heightMIN = 100;
   const heightMAX = 250;
 
-  function updateText(BMI, range) {
+  function updateText(BMI, range, error = false) {
+
+    if (error) {
+      rangeIndicatorText.textContent = "Neispravan unos";
+      rangeIndicatorSecondaryText.textContent = "Unesite validne vrednosti";
+      return;
+    }
 
     let inidicatorText = "";
 
@@ -1746,19 +1752,28 @@ function initBMICalculator(page) {
 
     let weight = weightInput.value;
     let height = heightInput.value;
+    let inputError = false;
 
     if (weight < weightMIN || weight > weightMAX) {
       weight = weightMIN; weightInput.classList.add("error");
+      inputError = true;
     } else {
       weightInput.classList.remove("error");
+      inputError = false;
     }
 
     if (height < heightMIN || height > heightMAX) {
       height = heightMIN; heightInput.classList.add("error");
+      inputError = true;
     } else {
       heightInput.classList.remove("error");
+      inputError = false;
     }
 
+    if (inputError) {
+      updateText(null, null, true);
+      return;
+    }
 
     let BMI = weight / Math.pow((height / 100), 2);
     BMI = Math.round((BMI + Number.EPSILON) * 100) / 100;
