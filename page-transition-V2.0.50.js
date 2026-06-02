@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.49";
+const version = "2.0.50";
 
 history.scrollRestoration = "manual";
 
@@ -1795,34 +1795,46 @@ function initBMICalculator(page) {
     let height = heightInput.value;
     if (height === "") return; // Don't calculate if height is empty
 
-    let inputError = false;
+    // let inputError = false;
 
     if (weight < weightMIN || weight > weightMAX) {
       if (calculated) {
         showError("weight");
-        inputError = true;
-      } else { return; }
+        // inputError = true;
+        updateText(null, null, true);
+        rangeIndicator.style.left = defaultRangeIndicatorPosition;
+        rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
+        if (DEBUG) console.log("Weight input error:", weight);
+        return;
+      }
     } else {
       hideError("weight");
-      inputError = false;
+      if (DEBUG) console.log("Weight input valid:", weight);
+      // inputError = false;
     }
 
     if (height < heightMIN || height > heightMAX) {
       if (calculated) {
         showError("height");
-        inputError = true;
-      } else { return; }
+        // inputError = true;
+        updateText(null, null, true);
+        rangeIndicator.style.left = defaultRangeIndicatorPosition;
+        rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
+        if (DEBUG) console.log("Height input error:", height);
+        return;
+      }
     } else {
       hideError("height");
-      inputError = false;
+      if (DEBUG) console.log("Height input valid:", height);
+      // inputError = false;
     }
 
-    if (inputError) {
-      updateText(null, null, true);
-      rangeIndicator.style.left = defaultRangeIndicatorPosition;
-      rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
-      return;
-    }
+    // if (inputError) {
+    //   updateText(null, null, true);
+    //   rangeIndicator.style.left = defaultRangeIndicatorPosition;
+    //   rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
+    //   return;
+    // }
 
     let BMI = weight / Math.pow((height / 100), 2);
     BMI = Math.round((BMI + Number.EPSILON) * 100) / 100;
