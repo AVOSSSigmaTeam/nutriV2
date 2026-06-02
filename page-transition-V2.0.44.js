@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.43";
+const version = "2.0.44";
 
 history.scrollRestoration = "manual";
 
@@ -1706,6 +1706,7 @@ function initBMICalculator(page) {
   const heightMIN = 100;
   const heightMAX = 250;
   const defaultRangeIndicatorPosition = "43.5%"; // Position for the indicator when no valid BMI is calculated
+  let calculated = false;
 
   function updateText(BMI, range, error = false) {
 
@@ -1740,7 +1741,7 @@ function initBMICalculator(page) {
         inidicatorText = "Gojaznost II stepena";
         break;
       case (BMI > 40):
-        inidicatorText = "Patološka gojaznost (gojaznost III stepena)";
+        inidicatorText = "Gojaznost III stepena";
         break;
     }
 
@@ -1760,7 +1761,7 @@ function initBMICalculator(page) {
     let inputError = false;
 
     if (weight < weightMIN || weight > weightMAX) {
-      weight = weightMIN; weightInput.classList.add("error");
+      if (calculated) weight = weightMIN; weightInput.classList.add("error");
       inputError = true;
     } else {
       weightInput.classList.remove("error");
@@ -1768,7 +1769,7 @@ function initBMICalculator(page) {
     }
 
     if (height < heightMIN || height > heightMAX) {
-      height = heightMIN; heightInput.classList.add("error");
+      if (calculated) height = heightMIN; heightInput.classList.add("error");
       inputError = true;
     } else {
       heightInput.classList.remove("error");
@@ -1796,10 +1797,11 @@ function initBMICalculator(page) {
     if (document.body.clientWidth > 991) {
       rangeIndicatorTextWrap.style.left = rangeInicatorPosition + "%";
     } else {
-      rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
+      rangeIndicatorTextWrap.style.left = "0%";
     }
 
     updateText(BMI, rangeIndicatorMulitplyer);
+    calculated = true;
   }
 
   // calcBMI();
