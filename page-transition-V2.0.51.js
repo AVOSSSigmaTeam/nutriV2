@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.50";
+const version = "2.0.51";
 
 history.scrollRestoration = "manual";
 
@@ -1798,7 +1798,7 @@ function initBMICalculator(page) {
     // let inputError = false;
 
     if (weight < weightMIN || weight > weightMAX) {
-      if (calculated) {
+      // if (calculated) {
         showError("weight");
         // inputError = true;
         updateText(null, null, true);
@@ -1806,7 +1806,7 @@ function initBMICalculator(page) {
         rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
         if (DEBUG) console.log("Weight input error:", weight);
         return;
-      }
+      // }
     } else {
       hideError("weight");
       if (DEBUG) console.log("Weight input valid:", weight);
@@ -1814,7 +1814,7 @@ function initBMICalculator(page) {
     }
 
     if (height < heightMIN || height > heightMAX) {
-      if (calculated) {
+      // if (calculated) {
         showError("height");
         // inputError = true;
         updateText(null, null, true);
@@ -1822,7 +1822,7 @@ function initBMICalculator(page) {
         rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
         if (DEBUG) console.log("Height input error:", height);
         return;
-      }
+      // }
     } else {
       hideError("height");
       if (DEBUG) console.log("Height input valid:", height);
