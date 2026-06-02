@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.33";
+const version = "2.0.34";
 
 history.scrollRestoration = "manual";
 
@@ -1588,15 +1588,15 @@ function initStepsScrollAnimation(page) {
     if (!stepLeft || !stepRight) return;
 
     // gsap.set([stepLeft, stepRight], {
-    gsap.set(stepLeft, {
-      autoAlpha: 25,
-    });
+    // // gsap.set(stepLeft, {
+    //   autoAlpha: 0.25,
+    // });
 
-    // gsap.to([stepLeft, stepRight], {
-    gsap.set(stepLeft, {
-    //   autoAlpha: 25,
-    // }, {
-      autoAlpha: 100,
+    gsap.to([stepLeft, stepRight], {
+    // gsap.to(stepLeft, {
+      autoAlpha: 0.25,
+    }, {
+      autoAlpha: 1,
       scrollTrigger: {
         trigger: step,
         start: "top 27%",
