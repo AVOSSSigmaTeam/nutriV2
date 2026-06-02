@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.42";
+const version = "2.0.43";
 
 history.scrollRestoration = "manual";
 
@@ -1705,6 +1705,7 @@ function initBMICalculator(page) {
   const weightMAX = 300;
   const heightMIN = 100;
   const heightMAX = 250;
+  const defaultRangeIndicatorPosition = "43.5%"; // Position for the indicator when no valid BMI is calculated
 
   function updateText(BMI, range, error = false) {
 
@@ -1751,7 +1752,11 @@ function initBMICalculator(page) {
   function calcBMI() {
 
     let weight = weightInput.value;
+    if (weight === "") return; // Don't calculate if weight is empty
+
     let height = heightInput.value;
+    if (height === "") return; // Don't calculate if height is empty
+
     let inputError = false;
 
     if (weight < weightMIN || weight > weightMAX) {
@@ -1772,6 +1777,8 @@ function initBMICalculator(page) {
 
     if (inputError) {
       updateText(null, null, true);
+      rangeIndicator.style.left = defaultRangeIndicatorPosition;
+      rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
       return;
     }
 
@@ -1789,7 +1796,7 @@ function initBMICalculator(page) {
     if (document.body.clientWidth > 991) {
       rangeIndicatorTextWrap.style.left = rangeInicatorPosition + "%";
     } else {
-      rangeIndicatorTextWrap.style.left = "0%";
+      rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
     }
 
     updateText(BMI, rangeIndicatorMulitplyer);
