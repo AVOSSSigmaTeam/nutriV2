@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.36";
+const version = "2.0.37";
 
 history.scrollRestoration = "manual";
 
@@ -1594,9 +1594,9 @@ function initStepsScrollAnimation(page) {
       autoAlpha: 1,
       scrollTrigger: {
         trigger: step,
-        start: "top 27%",
-        end: "top 32%",
-        scrub: true,
+        start: "top 35%",
+        end: "top 45%",
+        scrub: 1,
         markers: DEBUG,
       }
     });
