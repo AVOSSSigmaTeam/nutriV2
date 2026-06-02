@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.31";
+const version = "2.0.32";
 
 history.scrollRestoration = "manual";
 
@@ -1563,7 +1563,6 @@ function initStepsProgressBarAnimation(page) {
   const progressBar = wrap.querySelector("[data-steps-progress-bar]");
   if (!progressBar) return;
 
-  //animate the height of the bar from 0 to the current center of the viewport as the user scrolls through the steps section
   gsap.fromTo(progressBar, {
     height: "0%",
   }, {
@@ -1578,7 +1577,7 @@ function initStepsProgressBarAnimation(page) {
     }
   });
 
-  if (DEBUG) console.log("Steps progress bar animation initialized");
+  // if (DEBUG) console.log("Steps progress bar animation initialized");
 }
 function initStepsScrollAnimation(page) {
   const steps = page.querySelectorAll("[data-step]");
@@ -1588,15 +1587,19 @@ function initStepsScrollAnimation(page) {
     const stepRight = step.querySelector("[data-step-right]");
     if (!stepLeft || !stepRight) return;
 
-    gsap.fromTo([stepLeft, stepRight], {
+    gsap.set([stepLeft, stepRight], {
       autoAlpha: 25,
-    }, {
+    });
+
+    gsap.to([stepLeft, stepRight], {
+    //   autoAlpha: 25,
+    // }, {
       autoAlpha: 100,
       scrollTrigger: {
         trigger: step,
         start: "top 27%",
         end: "top 32%",
-        scrub: true,
+        // scrub: true,
         markers: DEBUG,
       }
     });
