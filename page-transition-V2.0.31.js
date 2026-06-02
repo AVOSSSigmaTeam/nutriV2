@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.30";
+const version = "2.0.31";
 
 history.scrollRestoration = "manual";
 
@@ -1583,7 +1583,7 @@ function initStepsProgressBarAnimation(page) {
 function initStepsScrollAnimation(page) {
   const steps = page.querySelectorAll("[data-step]");
   if (steps.length === 0) return;
-  forEach(steps, (step) => {
+  steps.forEach((step) => {
     const stepLeft = step.querySelector("[data-step-left]");
     const stepRight = step.querySelector("[data-step-right]");
     if (!stepLeft || !stepRight) return;
