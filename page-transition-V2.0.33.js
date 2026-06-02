@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.32";
+const version = "2.0.33";
 
 history.scrollRestoration = "manual";
 
@@ -1587,11 +1587,13 @@ function initStepsScrollAnimation(page) {
     const stepRight = step.querySelector("[data-step-right]");
     if (!stepLeft || !stepRight) return;
 
-    gsap.set([stepLeft, stepRight], {
+    // gsap.set([stepLeft, stepRight], {
+    gsap.set(stepLeft, {
       autoAlpha: 25,
     });
 
-    gsap.to([stepLeft, stepRight], {
+    // gsap.to([stepLeft, stepRight], {
+    gsap.set(stepLeft, {
     //   autoAlpha: 25,
     // }, {
       autoAlpha: 100,
@@ -2173,18 +2175,14 @@ function initTestimonialMarqueeAnimation(page) {
 }
 
 // TODO handle anchor links
-
-// TODO move popup open and close animation here
-
-// TODO init nav mobile menu animation
-
-// TODO check BMI calc input flow
+// TODO close mobile nav menu after naivgating to an anchor or new page.
 
 // TODO fix forms on website, errors on opera browser, formUUID not working, form button link doesnt work.
 // TODO make form validation email check more robust
 
-// TODO close mobile nav menu after naivgating to an anchor or new page.
-
-// TODO step timeline color not visible, because the color part is position fixed, and now the page is aswell, need to find a new way to do the timeline.
-
 // TODO init steps scroll animation here
+
+// TODO init nav mobile menu animation
+// TODO check BMI calc input flow
+
+
