@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.37";
+const version = "2.0.38";
 
 history.scrollRestoration = "manual";
 
@@ -1249,7 +1249,7 @@ function formRandomUUID(form) {
   const formName = form.getAttribute("data-name") || "Nova Poruka - ";
   const newFormName = `${formName} ,#${uuid}`;
   form.setAttribute("data-name", newFormName);
-  // if (DEBUG) console.log(`Form "${formName}" assigned UUID: ${uuid}`);
+  if (DEBUG) console.log(`Form "${formName}" assigned UUID: ${uuid}`);
 
   // if (DEBUG) console.log("Form random UUID assigned", {
   //   form,
@@ -1314,7 +1314,16 @@ function initBasicFormValidation(page) {
       }
 
       // Validation logic for email input type
-      if (type === 'email' && !/\S+@\S+\.\S+/.test(field.value)) {
+      function isValidEmail(email) {
+        if (typeof email !== "string") return false;
+
+        const trimmedEmail = email.trim();
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        return emailPattern.test(trimmedEmail);
+      }
+      // if (type === 'email' && !/\S+@\S+\.\S+/.test(field.value)) {
+      if (type === 'email' && !isValidEmail(field.value)) {
         isValid = false;
       }
 
@@ -2174,8 +2183,6 @@ function initTestimonialMarqueeAnimation(page) {
 
 // TODO fix forms on website, errors on opera browser, formUUID not working, form button link doesnt work.
 // TODO make form validation email check more robust
-
-// TODO init steps scroll animation here
 
 // TODO init nav mobile menu animation
 // TODO check BMI calc input flow
