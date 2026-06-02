@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.47";
+const version = "2.0.48";
 
 history.scrollRestoration = "manual";
 
@@ -1715,7 +1715,7 @@ function initBMICalculator(page) {
 
     if (error) {
       rangeIndicatorText.textContent = "Neispravan unos";
-      rangeIndicatorSecondaryText.textContent = "Unesite validne vrednosti";
+      rangeIndicatorSecondaryText.textContent = "";
       return;
     }
 
@@ -1756,12 +1756,14 @@ function initBMICalculator(page) {
 
   function showError(inputType) {
     if (inputType === "weight") {
+      weightInput.classList.add("error");
       gsap.to(weightErrorText, {
         autoAlpha: 1,
         duration: 0.25
       });
     }
     if (inputType === "height") {
+      heightInput.classList.add("error");
       gsap.to(heightErrorText, {
         autoAlpha: 1,
         duration: 0.25
@@ -1771,12 +1773,14 @@ function initBMICalculator(page) {
 
   function hideError(inputType) {
     if (inputType === "weight") {
+      weightInput.classList.remove("error");
       gsap.to(weightErrorText, {
         autoAlpha: 0,
         duration: 0.25
       });
     }
     if (inputType === "height") {
+      heightInput.classList.remove("error");
       gsap.to(heightErrorText, {
         autoAlpha: 0,
         duration: 0.25
@@ -1796,24 +1800,20 @@ function initBMICalculator(page) {
 
     if (weight < weightMIN || weight > weightMAX) {
       if (calculated) {
-        weight = weightMIN; weightInput.classList.add("error");
         showError("weight");
         inputError = true;
       }
     } else {
-      weightInput.classList.remove("error");
       hideError("weight");
       inputError = false;
     }
 
     if (height < heightMIN || height > heightMAX) {
       if (calculated) {
-        height = heightMIN; heightInput.classList.add("error");
         showError("height");
         inputError = true;
       }
     } else {
-      heightInput.classList.remove("error");
       hideError("height");
       inputError = false;
     }
