@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.44";
+const version = "2.0.45";
 
 history.scrollRestoration = "manual";
 
@@ -1761,16 +1761,20 @@ function initBMICalculator(page) {
     let inputError = false;
 
     if (weight < weightMIN || weight > weightMAX) {
-      if (calculated) weight = weightMIN; weightInput.classList.add("error");
-      inputError = true;
+      if (calculated) {
+        weight = weightMIN; weightInput.classList.add("error");
+        inputError = true;
+      }
     } else {
       weightInput.classList.remove("error");
       inputError = false;
     }
 
     if (height < heightMIN || height > heightMAX) {
-      if (calculated) height = heightMIN; heightInput.classList.add("error");
-      inputError = true;
+      if (calculated) {
+        height = heightMIN; heightInput.classList.add("error");
+        inputError = true;
+      }
     } else {
       heightInput.classList.remove("error");
       inputError = false;
