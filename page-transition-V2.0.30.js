@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.29";
+const version = "2.0.30";
 
 history.scrollRestoration = "manual";
 
@@ -151,7 +151,11 @@ function initAfterEnterFunctions(next) {
 
   if (has('[data-marquee-track]')) initClientMarqueeAnimation(nextPage);
 
-  if (has('[data-steps-section]')) initStepsFlowerAnimation(nextPage);
+  if (has('[data-steps-section]')) {
+    initStepsFlowerAnimation(nextPage);
+    initStepsProgressBarAnimation(nextPage);
+    initStepsScrollAnimation(nextPage);
+  }
 
   if (has('[data-testimonial-marquee-section]')) initTestimonialMarqueeAnimation(nextPage);
 
@@ -1551,6 +1555,55 @@ function initStepsFlowerAnimation(page) {
   // if (DEBUG) console.log("Steps flower animation initialized");
 
 }
+function initStepsProgressBarAnimation(page) {
+  const container = page.querySelector("[data-steps-container]");
+  if (!container) return;
+  const wrap = page.querySelector("[data-steps-progress-wrap]");
+  if (!wrap) return;
+  const progressBar = wrap.querySelector("[data-steps-progress-bar]");
+  if (!progressBar) return;
+
+  //animate the height of the bar from 0 to the current center of the viewport as the user scrolls through the steps section
+  gsap.fromTo(progressBar, {
+    height: "0%",
+  }, {
+    height: "100%",
+    ease: "none",
+    scrollTrigger: {
+      trigger: container,
+      start: "top center",
+      end: "bottom center",
+      scrub: true,
+      markers: DEBUG,
+    }
+  });
+
+  if (DEBUG) console.log("Steps progress bar animation initialized");
+}
+function initStepsScrollAnimation(page) {
+  const steps = page.querySelectorAll("[data-step]");
+  if (steps.length === 0) return;
+  forEach(steps, (step) => {
+    const stepLeft = step.querySelector("[data-step-left]");
+    const stepRight = step.querySelector("[data-step-right]");
+    if (!stepLeft || !stepRight) return;
+
+    gsap.fromTo([stepLeft, stepRight], {
+      autoAlpha: 25,
+    }, {
+      autoAlpha: 100,
+      scrollTrigger: {
+        trigger: step,
+        start: "top 27%",
+        end: "top 32%",
+        scrub: true,
+        markers: DEBUG,
+      }
+    });
+  });
+
+  if (DEBUG) console.log("Steps scroll animation initialized");
+}
 
 
 // blog
@@ -2124,4 +2177,11 @@ function initTestimonialMarqueeAnimation(page) {
 
 // TODO check BMI calc input flow
 
-// TODO check why flower spin animations dont work on mobile
+// TODO fix forms on website, errors on opera browser, formUUID not working, form button link doesnt work.
+// TODO make form validation email check more robust
+
+// TODO close mobile nav menu after naivgating to an anchor or new page.
+
+// TODO step timeline color not visible, because the color part is position fixed, and now the page is aswell, need to find a new way to do the timeline.
+
+// TODO init steps scroll animation here
