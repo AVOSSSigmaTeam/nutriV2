@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.39";
+const version = "2.0.40";
 
 history.scrollRestoration = "manual";
 
@@ -123,12 +123,6 @@ function initBeforeEnterFunctions(next) {
 
   };
 
-  // const formsWithoutUUID = nextPage.querySelectorAll("[data-add-uuid]");
-  // formsWithoutUUID.forEach((form) => {
-  //   formRandomUUID(form);
-  // });
-
-  // linkFormButtons(nextPage);
 
 }
 
@@ -159,6 +153,13 @@ function initAfterEnterFunctions(next) {
 
   if (has('[data-testimonial-marquee-section]')) initTestimonialMarqueeAnimation(nextPage);
 
+  if (has('[data-form-validate]')) initBasicFormValidation(nextPage);
+
+  const formsWithoutUUID = nextPage.querySelectorAll("[data-add-uuid]");
+  formsWithoutUUID.forEach((form) => {
+    formRandomUUID(form);
+  });
+
   const pageName = nextPage.getAttribute("data-page-name") || '';
   if (DEBUG) console.log(pageName);
 
@@ -172,19 +173,14 @@ function initAfterEnterFunctions(next) {
     //   break;
     // case "blog-post":
     //   break;
-    case "contact":
-      initBasicFormValidation(nextPage);
-      break;
+    // case "contact":
+    //   break;
     // case "bmi-calc":
     //   break;
     // case "tdee-calc":
     //   break;
   };
 
-  const formsWithoutUUID = nextPage.querySelectorAll("[data-add-uuid]");
-  formsWithoutUUID.forEach((form) => {
-    formRandomUUID(form);
-  });
 
   if (hasLenis) {
     lenis.resize();
@@ -1253,31 +1249,10 @@ function initFooterLogoFlowerSpin(page) {
 function formRandomUUID(form) {
   const uuid = crypto.randomUUID(); // secure unique ID
   const formName = form.getAttribute("data-name") || "Nova Poruka - ";
-  // const newFormName = `${formName} ,#${uuid}`;
-  const newFormName = formName + uuid;
+  const newFormName = `${formName} ,#${uuid}`;
   form.setAttribute("data-name", newFormName);
   
   if (DEBUG) console.log(`Form "${formName}" assigned UUID: ${uuid}`);
-}
-function linkFormButtons(page) {
-  const visibleButtons = page.querySelectorAll("[data-imitation-button-link]");
-
-  visibleButtons.forEach((button) => {
-    const buttonLink = button.getAttribute("data-imitation-button-link");
-
-    if (buttonLink === '') return;
-
-    const hiddentButton = page.querySelector(`[data-form-button-submit="${buttonLink}"]`);
-
-    if (!hiddentButton) return;
-
-    button.addEventListener("click", () => {
-      hiddentButton.click();
-    });
-  });
-
-  // if (DEBUG) console.log("Form buttons linked");
-
 }
 function initBasicFormValidation(page) {
   const forms = page.querySelectorAll('[data-form-validate]');
