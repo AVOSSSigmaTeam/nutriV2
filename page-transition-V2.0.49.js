@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.48";
+const version = "2.0.49";
 
 history.scrollRestoration = "manual";
 
@@ -1770,7 +1770,6 @@ function initBMICalculator(page) {
       });
     }
   } 
-
   function hideError(inputType) {
     if (inputType === "weight") {
       weightInput.classList.remove("error");
@@ -1802,7 +1801,7 @@ function initBMICalculator(page) {
       if (calculated) {
         showError("weight");
         inputError = true;
-      }
+      } else { return; }
     } else {
       hideError("weight");
       inputError = false;
@@ -1812,7 +1811,7 @@ function initBMICalculator(page) {
       if (calculated) {
         showError("height");
         inputError = true;
-      }
+      } else { return; }
     } else {
       hideError("height");
       inputError = false;
