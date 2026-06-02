@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.45";
+const version = "2.0.46";
 
 history.scrollRestoration = "manual";
 
@@ -1701,11 +1701,14 @@ function initBMICalculator(page) {
   const rangeIndicatorText = page.querySelector("[data-bmi-indicator-text-main]");
   const rangeIndicatorSecondaryText = page.querySelector("[data-bmi-indicator-text-secondary]");
 
+  const heightErrorText = page.querySelector("[data-bmi-height-error-text]");
+  const weightErrorText = page.querySelector("[data-bmi-weight-error-text]");
+
   const weightMIN = 30;
   const weightMAX = 300;
   const heightMIN = 100;
   const heightMAX = 250;
-  const defaultRangeIndicatorPosition = "43.5%"; // Position for the indicator when no valid BMI is calculated
+  const defaultRangeIndicatorPosition = "42.44%"; // Position for the indicator when no valid BMI is calculated
   let calculated = false;
 
   function updateText(BMI, range, error = false) {
@@ -1745,9 +1748,40 @@ function initBMICalculator(page) {
         break;
     }
 
-    rangeIndicatorText.textContent = "BMI = " + BMI;
+    // rangeIndicatorText.textContent = "BMI = " + BMI;
+    rangeIndicatorText.textContent = "BMI = " + Math.round((BMI + Number.EPSILON) * 100) / 100;
     rangeIndicatorSecondaryText.textContent = inidicatorText;
 
+  }
+
+  function showError(inputType) {
+    if (inputType === "weight") {
+      gsap.to(weightInput, {
+        autoAlpha: 1,
+        duration: 0.25
+      });
+    }
+    if (inputType === "height") {
+      gsap.to(heightInput, {
+        autoAlpha: 1,
+        duration: 0.25
+      });
+    }
+  } 
+
+  function hideError(inputType) {
+    if (inputType === "weight") {
+      gsap.to(weightInput, {
+        autoAlpha: 0,
+        duration: 0.25
+      });
+    }
+    if (inputType === "height") {
+      gsap.to(heightInput, {
+        autoAlpha: 0,
+        duration: 0.25
+      });
+    }
   }
 
   function calcBMI() {
@@ -1763,20 +1797,24 @@ function initBMICalculator(page) {
     if (weight < weightMIN || weight > weightMAX) {
       if (calculated) {
         weight = weightMIN; weightInput.classList.add("error");
+        showError("weight");
         inputError = true;
       }
     } else {
       weightInput.classList.remove("error");
+      hideError("weight");
       inputError = false;
     }
 
     if (height < heightMIN || height > heightMAX) {
       if (calculated) {
         height = heightMIN; heightInput.classList.add("error");
+        showError("height");
         inputError = true;
       }
     } else {
       heightInput.classList.remove("error");
+      hideError("height");
       inputError = false;
     }
 
