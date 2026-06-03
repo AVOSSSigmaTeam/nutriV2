@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.62";
+const version = "2.0.63";
 
 history.scrollRestoration = "manual";
 
@@ -1914,7 +1914,7 @@ function initTDEECalculator(page) {
       }
     }
 
-    resultBMR.innerHTML = Math.round(bmr);
+    // resultBMR.innerHTML = Math.round(bmr);
 
     for (let i = 0; i < activityIndexArray.length; i++) {
       document.getElementById(String(i + 1)).innerHTML = resultArray[i];
@@ -1995,15 +1995,15 @@ function initTDEECalculator(page) {
   let weightError = true;
   let selectError = true;
 
-  ageInput.addEventListener("change", () => {
+  ageInput.addEventListener("input", () => {
     ageError = singleInputCheck(ageInput, ageMIN, ageMAX);
     if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); } 
   });
-  heightInput.addEventListener("change", () => {
+  heightInput.addEventListener("input", () => {
     heightError = singleInputCheck(heightInput, heightMIN, heightMAX);
     if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
   }); 
-  weightInput.addEventListener("change", () => {
+  weightInput.addEventListener("input", () => {
     weightError = singleInputCheck(weightInput, weightMIN, weightMAX);
     if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
   });
@@ -2026,7 +2026,7 @@ function initTDEECalculator(page) {
     });
   });
 
-  const resultBMR = document.querySelector("[data-tdee-bmr]");
+  // const resultBMR = document.querySelector("[data-tdee-bmr]");
   
   const weightMIN = 30;
   const weightMAX = 300;
