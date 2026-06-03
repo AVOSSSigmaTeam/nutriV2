@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.56";
+const version = "2.0.57";
 
 history.scrollRestoration = "manual";
 
@@ -1813,25 +1813,24 @@ function initBMICalculator(page) {
 
   function calcBMI() {
 
-    let weight = weightInput.value;
-    if (weight === "") return; // Don't calculate if weight is empty
-
     let height = heightInput.value;
     if (height === "") return; // Don't calculate if height is empty
 
-    let inputError = false;
+    let weight = weightInput.value;
+    if (weight === "") return; // Don't calculate if weight is empty
 
+    let inputError = false;
 
     if (height < heightMIN || height > heightMAX) {
       if (calculated) {
         showError("height");
-        inputError = true;
         // updateText(null, null, true);
         // rangeIndicator.style.left = defaultRangeIndicatorPosition;
         // rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
         if (DEBUG) console.log("Height input error:", height);
         // return;
       }
+      inputError = true;
     } else {
       hideError("height");
       if (DEBUG) console.log("Height input valid:", height);
@@ -1841,13 +1840,13 @@ function initBMICalculator(page) {
     if (weight < weightMIN || weight > weightMAX) {
       if (calculated) {
         showError("weight");
-        inputError = true;
         // updateText(null, null, true);
         // rangeIndicator.style.left = defaultRangeIndicatorPosition;
         // rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
         if (DEBUG) console.log("Weight input error:", weight);
         // return;
       }
+      inputError = true;
     } else {
       hideError("weight");
       if (DEBUG) console.log("Weight input valid:", weight);
