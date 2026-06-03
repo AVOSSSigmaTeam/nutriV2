@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.53";
+const version = "2.0.54";
 
 history.scrollRestoration = "manual";
 
@@ -161,7 +161,7 @@ function initAfterEnterFunctions(next) {
   });
 
   const pageName = nextPage.getAttribute("data-page-name") || '';
-  if (DEBUG) console.log(pageName);
+  // if (DEBUG) console.log(pageName);
 
   switch (pageName) {
     case "home":
@@ -1249,10 +1249,12 @@ function initFooterLogoFlowerSpin(page) {
 function formRandomUUID(form) {
   const uuid = crypto.randomUUID(); // secure unique ID
   const formName = form.getAttribute("data-name") || "Nova Poruka - ";
-  const newFormName = `${formName} #${uuid}`;
+  // const newFormName = `${formName} #${uuid}`;
+  const newFormName = formName + " #" + uuid; // avoid potential issues with special characters in form name
   form.setAttribute("data-name", newFormName);
   
-  if (DEBUG) console.log(`Form "${formName}" assigned UUID: ${uuid}`);
+  // if (DEBUG) console.log(`Form "${formName}" assigned UUID: ${uuid}`);
+  if (DEBUG) console.log("Form name changed to: " + form.getAttribute("data-name"));
 }
 function initBasicFormValidation(page) {
   const forms = page.querySelectorAll('[data-form-validate]');
