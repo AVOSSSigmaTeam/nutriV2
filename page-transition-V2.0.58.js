@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.58";
+const version = "2.0.59";
 
 history.scrollRestoration = "manual";
 
@@ -1700,6 +1700,7 @@ function initBMICalculator(page) {
   const rangeIndicatorTextWrap = page.querySelector("[data-bmi-indicator-text-wrap]");
   const rangeIndicatorText = page.querySelector("[data-bmi-indicator-text-main]");
   const rangeIndicatorSecondaryText = page.querySelector("[data-bmi-indicator-text-secondary]");
+  const rangeIndicatorErrorText = page.querySelector("[data-bmi-indicator-text-error]");
 
   const heightErrorText = page.querySelector("[data-bmi-height-error-text]");
   const weightErrorText = page.querySelector("[data-bmi-weight-error-text]");
@@ -1711,11 +1712,12 @@ function initBMICalculator(page) {
   const defaultRangeIndicatorPosition = "42.44%"; // Position for the indicator when no valid BMI is calculated
   let calculated = false;
 
-  function updateText(BMI, range, error = false) {
+  function updateText(BMI, range, error = false, errorText = "Neispravan unos") {
 
     if (error) {
-      rangeIndicatorText.textContent = "Neispravan unos";
+      rangeIndicatorText.textContent = "";
       rangeIndicatorSecondaryText.textContent = "";
+      rangeIndicatorErrorText.textContent = errorText;
       return;
     }
 
@@ -1750,6 +1752,7 @@ function initBMICalculator(page) {
 
     rangeIndicatorText.textContent = (Math.round((BMI + Number.EPSILON) * 100) / 100).toFixed(2); // Show BMI with 2 decimal places
     rangeIndicatorSecondaryText.textContent = inidicatorText;
+    rangeIndicatorErrorText.textContent = "";
 
   }
 
@@ -1795,18 +1798,19 @@ function initBMICalculator(page) {
     let weight = weightInput.value;
     if (weight === "") return; // Don't calculate if weight is empty
 
-    let inputError = false;
+    let heightError = false;
+    let weightError = false;
 
     if (height < heightMIN || height > heightMAX) {
       if (calculated) {
         showError("height");
         if (DEBUG) console.log("Height input error:", height);
       }
-      inputError = true;
+      heightError = true;
     } else {
       hideError("height");
       if (DEBUG) console.log("Height input valid:", height);
-      inputError = false;
+      heightError = false;
     }
 
     if (weight < weightMIN || weight > weightMAX) {
@@ -1814,17 +1818,17 @@ function initBMICalculator(page) {
         showError("weight");
         if (DEBUG) console.log("Weight input error:", weight);
       }
-      inputError = true;
+      weightError = true;
     } else {
       hideError("weight");
       if (DEBUG) console.log("Weight input valid:", weight);
-      inputError = false;
+      weightError = false;
     }
 
 
-    if (inputError) {
+    if (heightError || weightError) {
       if (calculated) {
-        updateText(null, null, true);
+        updateText(null, null, true, heightError && weightError ? "Visina i težina su van opsega" : heightError ? "Visina je van opsega" : "Težina je van opsega");
         if (document.body.clientWidth > 991) {
           rangeIndicator.style.left = defaultRangeIndicatorPosition;
           rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
