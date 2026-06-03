@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.63";
+const version = "2.0.64";
 
 history.scrollRestoration = "manual";
 
@@ -1881,6 +1881,7 @@ function initTDEECalculator(page) {
   // Webflow.push(function () { $('form').submit(function () { return false; }); });
 
   var counter = { var: 0 };
+  let calculated = false;
 
   function womenBMR(weight, height, age) {
     let result = (10 * weight) + (6.25 * height) - (5 * age) - 161;
@@ -1946,6 +1947,7 @@ function initTDEECalculator(page) {
     }
 
     animateResult(resultArray[selectedActivityLevel - 1]);
+    calculated = true;
 
   }
 
@@ -1955,7 +1957,9 @@ function initTDEECalculator(page) {
       element.classList.remove("error");
       return false;
     } else {
-      element.classList.add("error");
+      if (calculated) {
+        element.classList.add("error");
+      }
       return true;
     }
   }
