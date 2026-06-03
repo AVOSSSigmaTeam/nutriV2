@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.60";
+const version = "2.0.61";
 
 history.scrollRestoration = "manual";
 
@@ -1701,6 +1701,7 @@ function initBMICalculator(page) {
   const rangeIndicatorText = page.querySelector("[data-bmi-indicator-text-main]");
   const rangeIndicatorSecondaryText = page.querySelector("[data-bmi-indicator-text-secondary]");
   const rangeIndicatorErrorText = page.querySelector("[data-bmi-indicator-text-error]");
+  const mainTextWrap = page.querySelector("[data-main-text-wrap]");
 
   const heightErrorText = page.querySelector("[data-bmi-height-error-text]");
   const weightErrorText = page.querySelector("[data-bmi-weight-error-text]");
@@ -1715,7 +1716,7 @@ function initBMICalculator(page) {
   function updateText(BMI, range, error = false, errorText = "Neispravan unos") {
 
     if (error) {
-      rangeIndicatorTextWrap.style.display = "none";
+      mainTextWrap.style.display = "none";
       rangeIndicatorText.textContent = "";
       rangeIndicatorSecondaryText.textContent = "";
       rangeIndicatorErrorText.textContent = errorText;
@@ -1751,7 +1752,7 @@ function initBMICalculator(page) {
         break;
     }
 
-    rangeIndicatorTextWrap.style.display = "block";
+    mainTextWrap.style.display = "block";
     rangeIndicatorText.textContent = (Math.round((BMI + Number.EPSILON) * 100) / 100).toFixed(2); // Show BMI with 2 decimal places
     rangeIndicatorSecondaryText.textContent = inidicatorText;
     rangeIndicatorErrorText.textContent = "";
