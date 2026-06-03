@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.52";
+const version = "2.0.53";
 
 history.scrollRestoration = "manual";
 
@@ -1384,7 +1384,7 @@ function initBasicFormValidation(page) {
     });
   });
 
-  // if (DEBUG) console.log("Basic form validation initialized");
+  if (DEBUG) console.log("Basic form validation initialized");
 
 }
 
@@ -1755,21 +1755,46 @@ function initBMICalculator(page) {
   }
 
   function showError(inputType) {
+
     if (inputType === "weight") {
+
       weightInput.classList.add("error");
       gsap.to(weightErrorText, {
         autoAlpha: 1,
         duration: 0.25
       });
+      
+      updateText(null, null, true);
+      if (document.body.clientWidth > 991) {
+        rangeIndicator.style.left = defaultRangeIndicatorPosition;
+        rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
+      } else {
+        rangeIndicator.style.left = "0%";
+        rangeIndicatorTextWrap.style.left = "0%";
+      }
+
     }
+
     if (inputType === "height") {
+
       heightInput.classList.add("error");
       gsap.to(heightErrorText, {
         autoAlpha: 1,
         duration: 0.25
       });
+      updateText(null, null, true);
+      if (document.body.clientWidth > 991) {
+        rangeIndicator.style.left = defaultRangeIndicatorPosition;
+        rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
+      } else {
+        rangeIndicator.style.left = "0%";
+        rangeIndicatorTextWrap.style.left = "0%";
+      }
+
     }
+
   } 
+
   function hideError(inputType) {
     if (inputType === "weight") {
       weightInput.classList.remove("error");
@@ -1802,9 +1827,9 @@ function initBMICalculator(page) {
       if (calculated) {
         showError("height");
         // inputError = true;
-        updateText(null, null, true);
-        rangeIndicator.style.left = defaultRangeIndicatorPosition;
-        rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
+        // updateText(null, null, true);
+        // rangeIndicator.style.left = defaultRangeIndicatorPosition;
+        // rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
         if (DEBUG) console.log("Height input error:", height);
         return;
       }
@@ -1818,9 +1843,9 @@ function initBMICalculator(page) {
       if (calculated) {
         showError("weight");
         // inputError = true;
-        updateText(null, null, true);
-        rangeIndicator.style.left = defaultRangeIndicatorPosition;
-        rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
+        // updateText(null, null, true);
+        // rangeIndicator.style.left = defaultRangeIndicatorPosition;
+        // rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
         if (DEBUG) console.log("Weight input error:", weight);
         return;
       }
