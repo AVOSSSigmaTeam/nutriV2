@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.71";
+const version = "2.0.72";
 
 history.scrollRestoration = "manual";
 
@@ -2050,7 +2050,7 @@ function initTDEECalculator(page) {
     select: "Odaberite nivo aktivnosti",
   }
 
-  // if (errorTextWrap) errorTextWrap.style.display = "none";
+  if (errorTextWrap) errorTextWrap.style.display = "none";
 
   let ageError = true;
   let heightError = true;
