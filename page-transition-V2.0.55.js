@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.54";
+const version = "2.0.55";
 
 history.scrollRestoration = "manual";
 
@@ -1246,14 +1246,12 @@ function initFooterLogoFlowerSpin(page) {
 }
 
 //form specific
-function formRandomUUID(form) {
-  const uuid = crypto.randomUUID(); // secure unique ID
+function formRandomUUID(form) { 
+  const uuid = crypto.randomUUID();
   const formName = form.getAttribute("data-name") || "Nova Poruka - ";
-  // const newFormName = `${formName} #${uuid}`;
-  const newFormName = formName + " #" + uuid; // avoid potential issues with special characters in form name
+  const newFormName = formName + " #" + uuid;
   form.setAttribute("data-name", newFormName);
   
-  // if (DEBUG) console.log(`Form "${formName}" assigned UUID: ${uuid}`);
   if (DEBUG) console.log("Form name changed to: " + form.getAttribute("data-name"));
 }
 function initBasicFormValidation(page) {
@@ -1751,7 +1749,7 @@ function initBMICalculator(page) {
     }
 
     // rangeIndicatorText.textContent = "BMI = " + BMI;
-    rangeIndicatorText.textContent = "BMI = " + Math.round((BMI + Number.EPSILON) * 100) / 100;
+    rangeIndicatorText.textContent = "BMI = " + (Math.round((BMI + Number.EPSILON) * 100) / 100).toFixed(2);
     rangeIndicatorSecondaryText.textContent = inidicatorText;
 
   }
@@ -1766,14 +1764,14 @@ function initBMICalculator(page) {
         duration: 0.25
       });
       
-      updateText(null, null, true);
-      if (document.body.clientWidth > 991) {
-        rangeIndicator.style.left = defaultRangeIndicatorPosition;
-        rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
-      } else {
-        rangeIndicator.style.left = "0%";
-        rangeIndicatorTextWrap.style.left = "0%";
-      }
+      // updateText(null, null, true);
+      // if (document.body.clientWidth > 991) {
+      //   rangeIndicator.style.left = defaultRangeIndicatorPosition;
+      //   rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
+      // } else {
+      //   rangeIndicator.style.left = "0%";
+      //   rangeIndicatorTextWrap.style.left = "0%";
+      // }
 
     }
 
@@ -1784,14 +1782,14 @@ function initBMICalculator(page) {
         autoAlpha: 1,
         duration: 0.25
       });
-      updateText(null, null, true);
-      if (document.body.clientWidth > 991) {
-        rangeIndicator.style.left = defaultRangeIndicatorPosition;
-        rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
-      } else {
-        rangeIndicator.style.left = "0%";
-        rangeIndicatorTextWrap.style.left = "0%";
-      }
+      // updateText(null, null, true);
+      // if (document.body.clientWidth > 991) {
+      //   rangeIndicator.style.left = defaultRangeIndicatorPosition;
+      //   rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
+      // } else {
+      //   rangeIndicator.style.left = "0%";
+      //   rangeIndicatorTextWrap.style.left = "0%";
+      // }
 
     }
 
@@ -1822,13 +1820,13 @@ function initBMICalculator(page) {
     let height = heightInput.value;
     if (height === "") return; // Don't calculate if height is empty
 
-    // let inputError = false;
+    let inputError = false;
 
 
     if (height < heightMIN || height > heightMAX) {
       if (calculated) {
         showError("height");
-        // inputError = true;
+        inputError = true;
         // updateText(null, null, true);
         // rangeIndicator.style.left = defaultRangeIndicatorPosition;
         // rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
@@ -1838,13 +1836,13 @@ function initBMICalculator(page) {
     } else {
       hideError("height");
       if (DEBUG) console.log("Height input valid:", height);
-      // inputError = false;
+      inputError = false;
     }
 
     if (weight < weightMIN || weight > weightMAX) {
       if (calculated) {
         showError("weight");
-        // inputError = true;
+        inputError = true;
         // updateText(null, null, true);
         // rangeIndicator.style.left = defaultRangeIndicatorPosition;
         // rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
@@ -1854,7 +1852,16 @@ function initBMICalculator(page) {
     } else {
       hideError("weight");
       if (DEBUG) console.log("Weight input valid:", weight);
-      // inputError = false;
+      inputError = false;
+    }
+
+    updateText(null, null, true);
+    if (document.body.clientWidth > 991) {
+      rangeIndicator.style.left = defaultRangeIndicatorPosition;
+      rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
+    } else {
+      rangeIndicator.style.left = "0%";
+      rangeIndicatorTextWrap.style.left = "0%";
     }
 
     // if (inputError) {
@@ -2256,10 +2263,12 @@ function initTestimonialMarqueeAnimation(page) {
 }
 
 // TODO handle anchor links
-// TODO close mobile nav menu after naivgating to an anchor or new page.
 
 
 // TODO init nav mobile menu animation
+// TODO close mobile nav menu after naivgating to an anchor or new page.
+
+
 // TODO check BMI calc input flow
 
-
+// TODO cehck TDEE calc input flow
