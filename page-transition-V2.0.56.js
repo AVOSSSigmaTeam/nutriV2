@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.55";
+const version = "2.0.56";
 
 history.scrollRestoration = "manual";
 
@@ -1748,8 +1748,7 @@ function initBMICalculator(page) {
         break;
     }
 
-    // rangeIndicatorText.textContent = "BMI = " + BMI;
-    rangeIndicatorText.textContent = "BMI = " + (Math.round((BMI + Number.EPSILON) * 100) / 100).toFixed(2);
+    rangeIndicatorText.textContent = (Math.round((BMI + Number.EPSILON) * 100) / 100).toFixed(2); // Show BMI with 2 decimal places
     rangeIndicatorSecondaryText.textContent = inidicatorText;
 
   }
@@ -1831,7 +1830,7 @@ function initBMICalculator(page) {
         // rangeIndicator.style.left = defaultRangeIndicatorPosition;
         // rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
         if (DEBUG) console.log("Height input error:", height);
-        return;
+        // return;
       }
     } else {
       hideError("height");
@@ -1847,7 +1846,7 @@ function initBMICalculator(page) {
         // rangeIndicator.style.left = defaultRangeIndicatorPosition;
         // rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
         if (DEBUG) console.log("Weight input error:", weight);
-        return;
+        // return;
       }
     } else {
       hideError("weight");
@@ -1855,21 +1854,18 @@ function initBMICalculator(page) {
       inputError = false;
     }
 
-    updateText(null, null, true);
-    if (document.body.clientWidth > 991) {
-      rangeIndicator.style.left = defaultRangeIndicatorPosition;
-      rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
-    } else {
-      rangeIndicator.style.left = "0%";
-      rangeIndicatorTextWrap.style.left = "0%";
-    }
 
-    // if (inputError) {
-    //   updateText(null, null, true);
-    //   rangeIndicator.style.left = defaultRangeIndicatorPosition;
-    //   rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
-    //   return;
-    // }
+    if (inputError) {
+      updateText(null, null, true);
+      if (document.body.clientWidth > 991) {
+        rangeIndicator.style.left = defaultRangeIndicatorPosition;
+        rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
+      } else {
+        rangeIndicator.style.left = "0%";
+        rangeIndicatorTextWrap.style.left = "0%";
+      }
+      return;
+    }
 
     let BMI = weight / Math.pow((height / 100), 2);
     BMI = Math.round((BMI + Number.EPSILON) * 100) / 100;
