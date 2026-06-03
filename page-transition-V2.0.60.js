@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.59";
+const version = "2.0.60";
 
 history.scrollRestoration = "manual";
 
@@ -1715,6 +1715,7 @@ function initBMICalculator(page) {
   function updateText(BMI, range, error = false, errorText = "Neispravan unos") {
 
     if (error) {
+      rangeIndicatorTextWrap.style.display = "none";
       rangeIndicatorText.textContent = "";
       rangeIndicatorSecondaryText.textContent = "";
       rangeIndicatorErrorText.textContent = errorText;
@@ -1750,6 +1751,7 @@ function initBMICalculator(page) {
         break;
     }
 
+    rangeIndicatorTextWrap.style.display = "block";
     rangeIndicatorText.textContent = (Math.round((BMI + Number.EPSILON) * 100) / 100).toFixed(2); // Show BMI with 2 decimal places
     rangeIndicatorSecondaryText.textContent = inidicatorText;
     rangeIndicatorErrorText.textContent = "";
