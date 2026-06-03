@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.68";
+const version = "2.0.69";
 
 history.scrollRestoration = "manual";
 
@@ -1962,7 +1962,7 @@ function initTDEECalculator(page) {
     if (value != "" && parseInt(value) >= parseInt(min) && parseInt(value) <= parseInt(max)) {
       element.classList.remove("error");
       errorTextWrap.style.display = "none";
-      errorText.textContent = "";
+      errorText.innerText = "";
       resultTextWrap.style.display = "flex";
       return false;
     } else {
@@ -1971,13 +1971,13 @@ function initTDEECalculator(page) {
         errorTextWrap.style.display = "flex";
         switch (element) {
           case ageInput:
-            errorText.textContent = errorText.age;
+            errorText.innerText = errorText.age;
             break;
           case heightInput:
-            errorText.textContent = errorText.height;
+            errorText.innerText = errorText.height;
             break;
           case weightInput:
-            errorText.textContent = errorText.weight;
+            errorText.innerText = errorText.weight;
             break;
         }
         resultTextWrap.style.display = "none";
@@ -1991,13 +1991,13 @@ function initTDEECalculator(page) {
     if (selectedActivityLevel != 0) {
       activitySelect.classList.remove("error");
       errorTextWrap.style.display = "none";
-      errorText.textContent = "";
+      errorText.innerText = "";
       resultTextWrap.style.display = "flex";
       return false;
     } else {
       activitySelect.classList.add("error");
         errorTextWrap.style.display = "flex";
-        errorText.textContent = errorText.select;
+        errorText.innerText = errorText.select;
         resultTextWrap.style.display = "none";
       return true;
     }
