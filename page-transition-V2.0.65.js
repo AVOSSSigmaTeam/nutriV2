@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.64";
+const version = "2.0.65";
 
 history.scrollRestoration = "manual";
 
@@ -2039,7 +2039,7 @@ function initTDEECalculator(page) {
   const ageMIN = 18;
   const ageMAX = 100;
 
-  calcButton.addEventListener('click', inputCheck);
+  calcButton?.addEventListener('click', inputCheck);
 
   if (DEBUG) console.log("TDEE calculator initialized");
 
