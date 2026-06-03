@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.70";
+const version = "2.0.71";
 
 history.scrollRestoration = "manual";
 
@@ -2032,7 +2032,7 @@ function initTDEECalculator(page) {
 
   }
 
-  const calcButton = document.querySelector("[data-tdee-calc]");
+  // const calcButton = document.querySelector("[data-tdee-calc]");
   const ageInput = document.querySelector("[data-tdee-age]");
   const heightInput = document.querySelector("[data-tdee-height]");
   const weightInput = document.querySelector("[data-tdee-weight]");
@@ -2050,7 +2050,7 @@ function initTDEECalculator(page) {
     select: "Odaberite nivo aktivnosti",
   }
 
-  if (errorTextWrap) errorTextWrap.style.display = "none";
+  // if (errorTextWrap) errorTextWrap.style.display = "none";
 
   let ageError = true;
   let heightError = true;
@@ -2098,7 +2098,7 @@ function initTDEECalculator(page) {
   const ageMIN = 18;
   const ageMAX = 100;
 
-  calcButton?.addEventListener('click', inputCheck);
+  // calcButton?.addEventListener('click', inputCheck);
 
   if (DEBUG) console.log("TDEE calculator initialized");
 
