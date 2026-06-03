@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.66";
+const version = "2.0.67";
 
 history.scrollRestoration = "manual";
 
@@ -1963,12 +1963,12 @@ function initTDEECalculator(page) {
       element.classList.remove("error");
       errorTextWrap.style.display = "none";
       errorText.textContent = "";
-      resultTextWrap.style.display = "block";
+      resultTextWrap.style.display = "flex";
       return false;
     } else {
       if (calculated) {
         element.classList.add("error");
-        errorTextWrap.style.display = "block";
+        errorTextWrap.style.display = "flex";
         switch (element) {
           case ageInput:
             errorText.textContent = errorText.age;
@@ -2000,11 +2000,11 @@ function initTDEECalculator(page) {
       activitySelect.classList.remove("error");
       errorTextWrap.style.display = "none";
       errorText.textContent = "";
-      resultTextWrap.style.display = "block";
+      resultTextWrap.style.display = "flex";
       selectError = false;
     } else {
       activitySelect.classList.add("error");
-        errorTextWrap.style.display = "block";
+        errorTextWrap.style.display = "flex";
         errorText.textContent = errorText.select;
         resultTextWrap.style.display = "none";
       selectError = true;
