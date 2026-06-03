@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.57";
+const version = "2.0.58";
 
 history.scrollRestoration = "manual";
 
@@ -1754,44 +1754,20 @@ function initBMICalculator(page) {
   }
 
   function showError(inputType) {
-
     if (inputType === "weight") {
-
       weightInput.classList.add("error");
       gsap.to(weightErrorText, {
         autoAlpha: 1,
         duration: 0.25
       });
-      
-      // updateText(null, null, true);
-      // if (document.body.clientWidth > 991) {
-      //   rangeIndicator.style.left = defaultRangeIndicatorPosition;
-      //   rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
-      // } else {
-      //   rangeIndicator.style.left = "0%";
-      //   rangeIndicatorTextWrap.style.left = "0%";
-      // }
-
     }
-
     if (inputType === "height") {
-
       heightInput.classList.add("error");
       gsap.to(heightErrorText, {
         autoAlpha: 1,
         duration: 0.25
       });
-      // updateText(null, null, true);
-      // if (document.body.clientWidth > 991) {
-      //   rangeIndicator.style.left = defaultRangeIndicatorPosition;
-      //   rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
-      // } else {
-      //   rangeIndicator.style.left = "0%";
-      //   rangeIndicatorTextWrap.style.left = "0%";
-      // }
-
     }
-
   } 
 
   function hideError(inputType) {
@@ -1824,11 +1800,7 @@ function initBMICalculator(page) {
     if (height < heightMIN || height > heightMAX) {
       if (calculated) {
         showError("height");
-        // updateText(null, null, true);
-        // rangeIndicator.style.left = defaultRangeIndicatorPosition;
-        // rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
         if (DEBUG) console.log("Height input error:", height);
-        // return;
       }
       inputError = true;
     } else {
@@ -1840,11 +1812,7 @@ function initBMICalculator(page) {
     if (weight < weightMIN || weight > weightMAX) {
       if (calculated) {
         showError("weight");
-        // updateText(null, null, true);
-        // rangeIndicator.style.left = defaultRangeIndicatorPosition;
-        // rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
         if (DEBUG) console.log("Weight input error:", weight);
-        // return;
       }
       inputError = true;
     } else {
@@ -1855,13 +1823,15 @@ function initBMICalculator(page) {
 
 
     if (inputError) {
-      updateText(null, null, true);
-      if (document.body.clientWidth > 991) {
-        rangeIndicator.style.left = defaultRangeIndicatorPosition;
-        rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
-      } else {
-        rangeIndicator.style.left = "0%";
-        rangeIndicatorTextWrap.style.left = "0%";
+      if (calculated) {
+        updateText(null, null, true);
+        if (document.body.clientWidth > 991) {
+          rangeIndicator.style.left = defaultRangeIndicatorPosition;
+          rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
+        } else {
+          rangeIndicator.style.left = "0%";
+          rangeIndicatorTextWrap.style.left = "0%";
+        }
       }
       return;
     }
