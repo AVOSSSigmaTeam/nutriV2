@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.65";
+const version = "2.0.66";
 
 history.scrollRestoration = "manual";
 
@@ -1899,26 +1899,30 @@ function initTDEECalculator(page) {
     let height = heightInput.value;
     let age = ageInput.value;
     let gender = String(document.querySelector('input[name="gender"]:checked').value);
-    let bmr = 0;
-    let resultArray = [];
+    let BMR = 0;
+    // let resultArray = [];
+    let TDEEResult = 0;
     const activityIndexArray = [1.2, 1.375, 1.55, 1.725, 1.9];
 
     if (gender == "women") {
-      bmr = womenBMR(weight, height, age);
-      for (let i = 0; i < activityIndexArray.length; i++) {
-        resultArray[i] = Math.round(bmr * activityIndexArray[i]);
-      }
+      BMR = womenBMR(weight, height, age);
+      // for (let i = 0; i < activityIndexArray.length; i++) {
+      //   resultArray[i] = Math.round(BMR * activityIndexArray[i]);
+      // }
+      TDEEResult = Math.round(BMR * activityIndexArray[parseInt(activitySelect.value) - 1]);
     } else { // men
-      bmr = menBMR(weight, height, age);
-      for (let i = 0; i < activityIndexArray.length; i++) {
-        resultArray[i] = Math.round(bmr * activityIndexArray[i]);
-      }
+      BMR = menBMR(weight, height, age);
+      // for (let i = 0; i < activityIndexArray.length; i++) {
+      //   resultArray[i] = Math.round(BMR * activityIndexArray[i]);
+      // }
+      TDEEResult = Math.round(BMR * activityIndexArray[parseInt(activitySelect.value) - 1]);
     }
 
-    // resultBMR.innerHTML = Math.round(bmr);
+    // resultBMR.innerHTML = Math.round(BMR);
 
     for (let i = 0; i < activityIndexArray.length; i++) {
-      document.getElementById(String(i + 1)).innerHTML = resultArray[i];
+      // document.getElementById(String(i + 1)).innerHTML = resultArray[i];
+      document.getElementById(String(i + 1)).textContent = TDEEResult;
     }
 
     let selectedActivityLevel = activitySelect.value;
@@ -1940,13 +1944,15 @@ function initTDEECalculator(page) {
         var: parseInt(result),
         onUpdate: function () {
           let nwc = parseInt(counter.var);
-          conuterElement.innerHTML = nwc;
+          // conuterElement.innerHTML = nwc;
+          conuterElement.textContent = nwc;
         },
       });
 
     }
 
-    animateResult(resultArray[selectedActivityLevel - 1]);
+    // animateResult(resultArray[selectedActivityLevel - 1]);
+    animateResult(TDEEResult);
     calculated = true;
 
   }
@@ -1955,10 +1961,26 @@ function initTDEECalculator(page) {
     let value = element.value;
     if (value != "" && parseInt(value) >= parseInt(min) && parseInt(value) <= parseInt(max)) {
       element.classList.remove("error");
+      errorTextWrap.style.display = "none";
+      errorText.textContent = "";
+      resultTextWrap.style.display = "block";
       return false;
     } else {
       if (calculated) {
         element.classList.add("error");
+        errorTextWrap.style.display = "block";
+        switch (element) {
+          case ageInput:
+            errorText.textContent = errorText.age;
+            break;
+          case heightInput:
+            errorText.textContent = errorText.height;
+            break;
+          case weightInput:
+            errorText.textContent = errorText.weight;
+            break;
+        }
+        resultTextWrap.style.display = "none";
       }
       return true;
     }
@@ -1976,9 +1998,15 @@ function initTDEECalculator(page) {
     let selectedActivityLevel = parseInt(activitySelect.value);
     if (selectedActivityLevel != 0) {
       activitySelect.classList.remove("error");
+      errorTextWrap.style.display = "none";
+      errorText.textContent = "";
+      resultTextWrap.style.display = "block";
       selectError = false;
     } else {
       activitySelect.classList.add("error");
+        errorTextWrap.style.display = "block";
+        errorText.textContent = errorText.select;
+        resultTextWrap.style.display = "none";
       selectError = true;
     }
 
@@ -1993,6 +2021,18 @@ function initTDEECalculator(page) {
   const activitySelect = document.querySelector("[data-activity-select]");
   const activityLevelResultRows = document.querySelectorAll("[data-tdee-result-row]");
   const genderInputs = document.querySelectorAll('input[name="gender"]');
+
+  const resultTextWrap = document.querySelector("[data-tdee-result-text-wrap]");
+  const errorTextWrap = document.querySelector("[data-tdee-error-text-wrap]");
+  const errorTextElement = document.querySelector("[data-tdee-error-text]");
+  const errorText = {
+    age: "Neispravan unos za godine",
+    height: "Neispravan unos za visinu",
+    weight: "Neispravan unos za težinu",
+    select: "Odaberite nivo aktivnosti",
+  }
+
+  if (errorTextWrap) errorTextWrap.style.display = "none";
 
   let ageError = true;
   let heightError = true;
