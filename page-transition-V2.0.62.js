@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.61";
+const version = "2.0.62";
 
 history.scrollRestoration = "manual";
 
@@ -1878,7 +1878,7 @@ function initBMICalculator(page) {
 //TDEE calc
 function initTDEECalculator(page) {
 
-  Webflow.push(function () { $('form').submit(function () { return false; }); });
+  // Webflow.push(function () { $('form').submit(function () { return false; }); });
 
   var counter = { var: 0 };
 
@@ -1931,7 +1931,7 @@ function initTDEECalculator(page) {
       }
     }
 
-    let conuterElement = document.getElementById("result-main");
+    let conuterElement = document.querySelector("[data-tdee-result-main]");
 
     function animateResult(result) {
 
@@ -1982,12 +1982,12 @@ function initTDEECalculator(page) {
 
   }
 
-  const calcButton = document.querySelector("#tdee-calc");
-  const weightInput = document.querySelector("#tdee-weight");
-  const heightInput = document.querySelector("#tdee-height");
-  const ageInput = document.querySelector("#tdee-age");
-  const activitySelect = document.querySelector("#activity-select");
-  const activityLevelResultRows = document.querySelectorAll(".tdee-result-row");
+  const calcButton = document.querySelector("[data-tdee-calc]");
+  const ageInput = document.querySelector("[data-tdee-age]");
+  const heightInput = document.querySelector("[data-tdee-height]");
+  const weightInput = document.querySelector("[data-tdee-weight]");
+  const activitySelect = document.querySelector("[data-activity-select]");
+  const activityLevelResultRows = document.querySelectorAll("[data-tdee-result-row]");
   const genderInputs = document.querySelectorAll('input[name="gender"]');
 
   let ageError = true;
@@ -1995,17 +1995,17 @@ function initTDEECalculator(page) {
   let weightError = true;
   let selectError = true;
 
-  weightInput.addEventListener("change", () => {
-    weightError = singleInputCheck(weightInput, weightMIN, weightMAX);
-    if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
+  ageInput.addEventListener("change", () => {
+    ageError = singleInputCheck(ageInput, ageMIN, ageMAX);
+    if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); } 
   });
   heightInput.addEventListener("change", () => {
     heightError = singleInputCheck(heightInput, heightMIN, heightMAX);
     if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
   }); 
-  ageInput.addEventListener("change", () => {
-    ageError = singleInputCheck(ageInput, ageMIN, ageMAX);
-    if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); } 
+  weightInput.addEventListener("change", () => {
+    weightError = singleInputCheck(weightInput, weightMIN, weightMAX);
+    if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
   });
   activitySelect.addEventListener("change", () => {
     selectError = false;
@@ -2020,14 +2020,13 @@ function initTDEECalculator(page) {
     if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
   });
 
-
   genderInputs.forEach(input => {
     input.addEventListener("change", () => {
       if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
     });
   });
 
-  const resultBMR = document.getElementById("0");
+  const resultBMR = document.querySelector("[data-tdee-bmr]");
   
   const weightMIN = 30;
   const weightMAX = 300;
@@ -2240,7 +2239,5 @@ function initTestimonialMarqueeAnimation(page) {
 // TODO init nav mobile menu animation
 // TODO close mobile nav menu after naivgating to an anchor or new page.
 
-
-// TODO check BMI calc input flow
 
 // TODO cehck TDEE calc input flow
