@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.67";
+const version = "2.0.68";
 
 history.scrollRestoration = "manual";
 
@@ -1986,6 +1986,23 @@ function initTDEECalculator(page) {
     }
   }
 
+  function selectCheck() {
+    let selectedActivityLevel = parseInt(activitySelect.value);
+    if (selectedActivityLevel != 0) {
+      activitySelect.classList.remove("error");
+      errorTextWrap.style.display = "none";
+      errorText.textContent = "";
+      resultTextWrap.style.display = "flex";
+      return false;
+    } else {
+      activitySelect.classList.add("error");
+        errorTextWrap.style.display = "flex";
+        errorText.textContent = errorText.select;
+        resultTextWrap.style.display = "none";
+      return true;
+    }
+  }
+
   function inputCheck() {
 
     ageError = singleInputCheck(ageInput, ageMIN, ageMAX);
@@ -1994,21 +2011,22 @@ function initTDEECalculator(page) {
 
     weightError = singleInputCheck(weightInput, weightMIN, weightMAX);
 
-    selectError = false;
-    let selectedActivityLevel = parseInt(activitySelect.value);
-    if (selectedActivityLevel != 0) {
-      activitySelect.classList.remove("error");
-      errorTextWrap.style.display = "none";
-      errorText.textContent = "";
-      resultTextWrap.style.display = "flex";
-      selectError = false;
-    } else {
-      activitySelect.classList.add("error");
-        errorTextWrap.style.display = "flex";
-        errorText.textContent = errorText.select;
-        resultTextWrap.style.display = "none";
-      selectError = true;
-    }
+    // selectError = false;
+    selectError = selectCheck();
+    // let selectedActivityLevel = parseInt(activitySelect.value);
+    // if (selectedActivityLevel != 0) {
+    //   activitySelect.classList.remove("error");
+    //   errorTextWrap.style.display = "none";
+    //   errorText.textContent = "";
+    //   resultTextWrap.style.display = "flex";
+    //   selectError = false;
+    // } else {
+    //   activitySelect.classList.add("error");
+    //     errorTextWrap.style.display = "flex";
+    //     errorText.textContent = errorText.select;
+    //     resultTextWrap.style.display = "none";
+    //   selectError = true;
+    // }
 
     if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
 
@@ -2052,15 +2070,16 @@ function initTDEECalculator(page) {
     if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
   });
   activitySelect.addEventListener("change", () => {
-    selectError = false;
-    let selectedActivityLevel = parseInt(activitySelect.value);
-    if (selectedActivityLevel != 0) {
-      activitySelect.classList.remove("error");
-      selectError = false;
-    } else {
-      activitySelect.classList.add("error");
-      selectError = true;
-    }
+    selectError = selectCheck();
+    // selectError = false;
+    // let selectedActivityLevel = parseInt(activitySelect.value);
+    // if (selectedActivityLevel != 0) {
+    //   activitySelect.classList.remove("error");
+    //   selectError = false;
+    // } else {
+    //   activitySelect.classList.add("error");
+    //   selectError = true;
+    // }
     if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
   });
 
