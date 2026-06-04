@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.76";
+const version = "2.0.77";
 
 history.scrollRestoration = "manual";
 
@@ -2103,45 +2103,48 @@ function initNavLinkHoverAnimation() {
   const navLinks = Array.from(navMenu.querySelectorAll("[data-nav-link]"));
   if (navLinks.length === 0) return;
 
+  const canHover = () =>
+    window.matchMedia("(hover: hover) and (pointer: fine)").matches &&
+    window.innerWidth > 991;
+
   navLinks.forEach((link) => {
-    link.addEventListener("mouseenter", () => {
-      if (window.innerWidth <= 991) {
-        gsap.to(navLinks, {
-          autoAlpha: 0.5,
-          duration: 0.3,
-          ease: "smooth",
-          overwrite: true,
-          onComplete: () => {
-            if (DEBUG) console.log("Nav links dimmed for hover effect");
-          }
-        });
+    link.addEventListener("pointerenter", () => {
+      if (!canHover()) return;
 
-        gsap.to(link, {
-          autoAlpha: 1,
-          duration: 0.3,
-          ease: "smooth",
-          overwrite: true,
-        });
-      }
-    });
-  });
-
-  navMenu.addEventListener("mouseleave", () => {
-    if (window.innerWidth <= 991) {
       gsap.to(navLinks, {
-        autoAlpha: 1,
+        autoAlpha: 0.5,
         duration: 0.3,
         ease: "smooth",
         overwrite: true,
         onComplete: () => {
-          if (DEBUG) console.log("Nav links opacity reset after hover");
-        }
+          if (DEBUG) console.log("Nav links dimmed for hover effect");
+        },
       });
-    }
+
+      gsap.to(link, {
+        autoAlpha: 1,
+        duration: 0.3,
+        ease: "smooth",
+        overwrite: true,
+      });
+    });
+  });
+
+  navMenu.addEventListener("pointerleave", () => {
+    if (!canHover()) return;
+
+    gsap.to(navLinks, {
+      autoAlpha: 1,
+      duration: 0.3,
+      ease: "smooth",
+      overwrite: true,
+      onComplete: () => {
+        if (DEBUG) console.log("Nav links opacity reset after hover");
+      },
+    });
   });
 
   if (DEBUG) console.log("Nav link hover animation initialized");
-
 }
 function handleMobileNavLinkClick() {
   const navMenu = document.querySelector("[data-nav-menu]");
