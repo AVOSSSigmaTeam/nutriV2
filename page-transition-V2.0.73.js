@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.72";
+const version = "2.0.73";
 
 history.scrollRestoration = "manual";
 
@@ -131,6 +131,8 @@ function initAfterEnterFunctions(next) {
 
   // Runs after enter animation completes
   // if (has('[data-something]')) initSomething();
+
+  handleMobileNavLinkClicks(nextPage);
 
   if (has('[data-faq-section]')) {
     initFAQSectionAnimation(nextPage);
@@ -1878,8 +1880,6 @@ function initBMICalculator(page) {
 //TDEE calc
 function initTDEECalculator(page) {
 
-  // Webflow.push(function () { $('form').submit(function () { return false; }); });
-
   var counter = { var: 0 };
   let calculated = false;
 
@@ -1921,7 +1921,6 @@ function initTDEECalculator(page) {
     // resultBMR.innerHTML = Math.round(BMR);
 
     for (let i = 0; i < activityIndexArray.length; i++) {
-      // document.getElementById(String(i + 1)).innerHTML = resultArray[i];
       document.getElementById(String(i + 1)).textContent = TDEEResult;
     }
 
@@ -1944,7 +1943,6 @@ function initTDEECalculator(page) {
         var: parseInt(result),
         onUpdate: function () {
           let nwc = parseInt(counter.var);
-          // conuterElement.innerHTML = nwc;
           conuterElement.textContent = nwc;
         },
       });
@@ -2011,22 +2009,7 @@ function initTDEECalculator(page) {
 
     weightError = singleInputCheck(weightInput, weightMIN, weightMAX);
 
-    // selectError = false;
     selectError = selectCheck();
-    // let selectedActivityLevel = parseInt(activitySelect.value);
-    // if (selectedActivityLevel != 0) {
-    //   activitySelect.classList.remove("error");
-    //   errorTextWrap.style.display = "none";
-    //   errorText.textContent = "";
-    //   resultTextWrap.style.display = "flex";
-    //   selectError = false;
-    // } else {
-    //   activitySelect.classList.add("error");
-    //     errorTextWrap.style.display = "flex";
-    //     errorText.textContent = errorText.select;
-    //     resultTextWrap.style.display = "none";
-    //   selectError = true;
-    // }
 
     if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
 
@@ -2071,15 +2054,6 @@ function initTDEECalculator(page) {
   });
   activitySelect.addEventListener("change", () => {
     selectError = selectCheck();
-    // selectError = false;
-    // let selectedActivityLevel = parseInt(activitySelect.value);
-    // if (selectedActivityLevel != 0) {
-    //   activitySelect.classList.remove("error");
-    //   selectError = false;
-    // } else {
-    //   activitySelect.classList.add("error");
-    //   selectError = true;
-    // }
     if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
   });
 
@@ -2159,6 +2133,23 @@ function initNavLinkHoverAnimation() {
 
   // if (DEBUG) console.log("Nav link hover animation initialized");
 
+}
+function handleMobileNavLinkClick(page) {
+  const navMenu = page.querySelector("[data-nav-menu]");
+  if (!navMenu) return;
+  const navMenuButton = page.querySelector("[data-nav-mobile-menu-button]");
+  if (!navMenuButton) return;
+  const navLinks = navMenu.querySelectorAll("[data-nav-link]");
+  navLinks.forEach(link => {
+    link.addEventListener("click", () => {
+      if (window.innerWidth <= 991) {
+        navMenuButton.click(); // Simulate a click on the mobile nav menu button to close the menu
+        if (DEBUG) console.log("Mobile nav link clicked, closing mobile menu");
+      }
+    });
+  });
+
+  if (DEBUG) console.log("Mobile nav link click handling initialized");
 }
 
 //element animations
