@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.77";
+const version = "2.0.78";
 
 history.scrollRestoration = "manual";
 
@@ -828,6 +828,8 @@ function initSkipLink() {
 //plan popup
 function initPlanPopupV2(page) {
 
+  const pageContainer = document.querySelector('[data-barba="container"]');
+
   const popupWrapper = page.querySelector("[data-plan-popup-wrapper]") || document.querySelector("[data-plan-popup-wrapper]");
   if (!popupWrapper) {
     if (DEBUG) console.warn("Plan popup wrapper not found");
@@ -880,6 +882,7 @@ function initPlanPopupV2(page) {
     gsap.killTweensOf([popupWrapper, allPopups, blurTargets]);
 
     gsap.timeline()
+      .set(pageContainer, { zIndex: 201 }, 0)
       .set(allPopups, { autoAlpha: 0, display: "none" })
       .set(popupWrapper, { display: "flex" })
       .set(popup, { display: "grid" }, 0.01)
@@ -899,6 +902,7 @@ function initPlanPopupV2(page) {
 
     gsap.timeline()
       .to(popup, { autoAlpha: 0 })
+      .set(pageContainer, { zIndex: 0 }, 0)
       .set(popup, { display: "none" })
       .to(popupWrapper, { display: "none" }, 0.01)
       .to(blurTargets, { "--blur": "0px" }, 0.01);
@@ -2117,7 +2121,7 @@ function initNavLinkHoverAnimation() {
         ease: "smooth",
         overwrite: true,
         onComplete: () => {
-          if (DEBUG) console.log("Nav links dimmed for hover effect");
+          // if (DEBUG) console.log("Nav links dimmed for hover effect");
         },
       });
 
@@ -2139,12 +2143,12 @@ function initNavLinkHoverAnimation() {
       ease: "smooth",
       overwrite: true,
       onComplete: () => {
-        if (DEBUG) console.log("Nav links opacity reset after hover");
+        // if (DEBUG) console.log("Nav links opacity reset after hover");
       },
     });
   });
 
-  if (DEBUG) console.log("Nav link hover animation initialized");
+  // if (DEBUG) console.log("Nav link hover animation initialized");
 }
 function handleMobileNavLinkClick() {
   const navMenu = document.querySelector("[data-nav-menu]");
@@ -2156,12 +2160,12 @@ function handleMobileNavLinkClick() {
     link.addEventListener("click", () => {
       if (window.innerWidth <= 991) {
         navMenuButton.click(); // Simulate a click on the mobile nav menu button to close the menu
-        if (DEBUG) console.log("Mobile nav link clicked, closing mobile menu");
+        // if (DEBUG) console.log("Mobile nav link clicked, closing mobile menu");
       }
     });
   });
 
-  if (DEBUG) console.log("Mobile nav link click handling initialized");
+  // if (DEBUG) console.log("Mobile nav link click handling initialized");
 }
 
 //element animations
@@ -2302,10 +2306,11 @@ function initTestimonialMarqueeAnimation(page) {
 // TODO handle anchor links
 
 
-// TODO init nav mobile menu animation
+// TODO popup plan doesnt show up anymore
+// TODO equalize buttons in popup plans
 
-// TODO close mobile nav menu after naivgating to an anchor or new page.
-// TODO handle mobile link clicks, the hover animation still plays on click...
+
+// TODO init nav mobile menu animation
 
 
 // TODO send calc check requesto to the team, ask for comment on calc links in mobile nav yay/nay, aks for comment on button in mobile nav yay/nay
