@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.73";
+const version = "2.0.74";
 
 history.scrollRestoration = "manual";
 
@@ -69,6 +69,7 @@ function initOnceFunctions() {
   // Runs once on first load
   // if (has('[data-something]')) initSomething();
 
+  handleMobileNavLinkClick();
   initNavLinkHoverAnimation();
   initNavButtonAnimation();
   initSkipLink();
@@ -131,8 +132,6 @@ function initAfterEnterFunctions(next) {
 
   // Runs after enter animation completes
   // if (has('[data-something]')) initSomething();
-
-  handleMobileNavLinkClicks(nextPage);
 
   if (has('[data-faq-section]')) {
     initFAQSectionAnimation(nextPage);
@@ -2134,10 +2133,10 @@ function initNavLinkHoverAnimation() {
   // if (DEBUG) console.log("Nav link hover animation initialized");
 
 }
-function handleMobileNavLinkClick(page) {
-  const navMenu = page.querySelector("[data-nav-menu]");
+function handleMobileNavLinkClick() {
+  const navMenu = document.querySelector("[data-nav-menu]");
   if (!navMenu) return;
-  const navMenuButton = page.querySelector("[data-nav-mobile-menu-button]");
+  const navMenuButton = document.querySelector("[data-nav-mobile-menu-button]");
   if (!navMenuButton) return;
   const navLinks = navMenu.querySelectorAll("[data-nav-link]");
   navLinks.forEach(link => {
