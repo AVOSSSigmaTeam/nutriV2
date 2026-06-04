@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.75";
+const version = "2.0.76";
 
 history.scrollRestoration = "manual";
 
@@ -2111,6 +2111,9 @@ function initNavLinkHoverAnimation() {
           duration: 0.3,
           ease: "smooth",
           overwrite: true,
+          onComplete: () => {
+            if (DEBUG) console.log("Nav links dimmed for hover effect");
+          }
         });
 
         gsap.to(link, {
@@ -2130,11 +2133,14 @@ function initNavLinkHoverAnimation() {
         duration: 0.3,
         ease: "smooth",
         overwrite: true,
+        onComplete: () => {
+          if (DEBUG) console.log("Nav links opacity reset after hover");
+        }
       });
     }
   });
 
-  // if (DEBUG) console.log("Nav link hover animation initialized");
+  if (DEBUG) console.log("Nav link hover animation initialized");
 
 }
 function handleMobileNavLinkClick() {
@@ -2142,7 +2148,7 @@ function handleMobileNavLinkClick() {
   if (!navMenu) return;
   const navMenuButton = document.querySelector("[data-nav-mobile-menu-button]");
   if (!navMenuButton) return;
-  const navLinks = navMenu.querySelectorAll("[data-nav-link]");
+  const navLinks = navMenu.querySelectorAll("a");
   navLinks.forEach(link => {
     link.addEventListener("click", () => {
       if (window.innerWidth <= 991) {
@@ -2294,7 +2300,14 @@ function initTestimonialMarqueeAnimation(page) {
 
 
 // TODO init nav mobile menu animation
+
 // TODO close mobile nav menu after naivgating to an anchor or new page.
+// TODO handle mobile link clicks, the hover animation still plays on click...
 
 
-// TODO cehck TDEE calc input flow
+// TODO send calc check requesto to the team, ask for comment on calc links in mobile nav yay/nay, aks for comment on button in mobile nav yay/nay
+
+
+// TODO check and fix the backgorund inconsistency on WF pages.
+
+// TODO find more robust email validation, move away from regex
