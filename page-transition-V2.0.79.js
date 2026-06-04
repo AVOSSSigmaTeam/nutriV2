@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.78";
+const version = "2.0.79";
 
 history.scrollRestoration = "manual";
 
@@ -882,7 +882,7 @@ function initPlanPopupV2(page) {
     gsap.killTweensOf([popupWrapper, allPopups, blurTargets]);
 
     gsap.timeline()
-      .set(pageContainer, { zIndex: 201 }, 0)
+      // .set(pageContainer, { zIndex: 201 }, 0)
       .set(allPopups, { autoAlpha: 0, display: "none" })
       .set(popupWrapper, { display: "flex" })
       .set(popup, { display: "grid" }, 0.01)
@@ -901,8 +901,8 @@ function initPlanPopupV2(page) {
     gsap.killTweensOf([popupWrapper, allPopups, blurTargets]);
 
     gsap.timeline()
+    // .set(pageContainer, { zIndex: 0 }, 0)
       .to(popup, { autoAlpha: 0 })
-      .set(pageContainer, { zIndex: 0 }, 0)
       .set(popup, { display: "none" })
       .to(popupWrapper, { display: "none" }, 0.01)
       .to(blurTargets, { "--blur": "0px" }, 0.01);
@@ -2309,6 +2309,7 @@ function initTestimonialMarqueeAnimation(page) {
 // TODO popup plan doesnt show up anymore
 // TODO equalize buttons in popup plans
 
+// TODO fix mobile hamburger menu icon, not showing up after page tranisiton, probbalby something to do with it now being inside the barba container
 
 // TODO init nav mobile menu animation
 
