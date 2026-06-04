@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.74";
+const version = "2.0.75";
 
 history.scrollRestoration = "manual";
 
@@ -2105,29 +2105,33 @@ function initNavLinkHoverAnimation() {
 
   navLinks.forEach((link) => {
     link.addEventListener("mouseenter", () => {
-      gsap.to(navLinks, {
-        autoAlpha: 0.5,
-        duration: 0.3,
-        ease: "smooth",
-        overwrite: true,
-      });
+      if (window.innerWidth <= 991) {
+        gsap.to(navLinks, {
+          autoAlpha: 0.5,
+          duration: 0.3,
+          ease: "smooth",
+          overwrite: true,
+        });
 
-      gsap.to(link, {
+        gsap.to(link, {
+          autoAlpha: 1,
+          duration: 0.3,
+          ease: "smooth",
+          overwrite: true,
+        });
+      }
+    });
+  });
+
+  navMenu.addEventListener("mouseleave", () => {
+    if (window.innerWidth <= 991) {
+      gsap.to(navLinks, {
         autoAlpha: 1,
         duration: 0.3,
         ease: "smooth",
         overwrite: true,
       });
-    });
-  });
-
-  navMenu.addEventListener("mouseleave", () => {
-    gsap.to(navLinks, {
-      autoAlpha: 1,
-      duration: 0.3,
-      ease: "smooth",
-      overwrite: true,
-    });
+    }
   });
 
   // if (DEBUG) console.log("Nav link hover animation initialized");
