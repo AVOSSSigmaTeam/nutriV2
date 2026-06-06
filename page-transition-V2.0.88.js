@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.87";
+const version = "2.0.88";
 
 history.scrollRestoration = "manual";
 
@@ -1119,12 +1119,18 @@ function setCopyrightYear(page) {
 }
 function initFooterLinkHoverAnimation(page) { // TODO mofify to not be triggered on mobile, like the nav link hover animation
   const linkWraps = page.querySelectorAll("[data-footer-link-wrap]");
+  
+  const canHover = () =>
+    window.matchMedia("(hover: hover) and (pointer: fine)").matches &&
+    window.innerWidth > 991;
 
   linkWraps.forEach((wrap) => {
     const links = Array.from(wrap.querySelectorAll("[data-footer-link]"));
 
     links.forEach((link) => {
-      link.addEventListener("mouseenter", () => {
+      link.addEventListener("pointerenter", () => {
+        if (!canHover()) return;
+
         gsap.to(links, {
           autoAlpha: 0.5,
           duration: 0.3,
@@ -1141,7 +1147,8 @@ function initFooterLinkHoverAnimation(page) { // TODO mofify to not be triggered
       });
     });
 
-    wrap.addEventListener("mouseleave", () => {
+    wrap.addEventListener("pointerleave", () => {
+      if (!canHover()) return;
       gsap.to(links, {
         autoAlpha: 1,
         duration: 0.3,
