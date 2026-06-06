@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.82";
+const version = "2.0.83";
 
 history.scrollRestoration = "manual";
 
@@ -119,7 +119,7 @@ function initBeforeEnterFunctions(next) {
       initBMICalculator(nextPage);
       break;
     case "tdee-calc":
-      initTDEECalculator(nextPage);
+      initTDEECalculatorV2(nextPage);
       break;
 
   };
@@ -1882,20 +1882,265 @@ function initBMICalculator(page) {
 }
 
 //TDEE calc
-function initTDEECalculator(page) {
+// function initTDEECalculator(page) {
+
+//   var counter = { var: 0 };
+//   let calculated = false;
+
+//   function womenBMR(weight, height, age) {
+//     let result = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+//     return result;
+//   }
+
+//   function menBMR(weight, height, age) {
+//     let result = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+//     return result;
+//   }
+
+//   function calcTDEE() {
+
+//     let weight = weightInput.value;
+//     let height = heightInput.value;
+//     let age = ageInput.value;
+//     let gender = String(document.querySelector('input[name="gender"]:checked').value);
+//     let BMR = 0;
+//     // let resultArray = [];
+//     let TDEEResult = 0;
+//     const activityIndexArray = [1.2, 1.375, 1.55, 1.725, 1.9];
+
+//     if (gender == "women") {
+//       BMR = womenBMR(weight, height, age);
+//       // for (let i = 0; i < activityIndexArray.length; i++) {
+//       //   resultArray[i] = Math.round(BMR * activityIndexArray[i]);
+//       // }
+//       TDEEResult = Math.round(BMR * activityIndexArray[parseInt(activitySelect.value) - 1]);
+//     } else { // men
+//       BMR = menBMR(weight, height, age);
+//       // for (let i = 0; i < activityIndexArray.length; i++) {
+//       //   resultArray[i] = Math.round(BMR * activityIndexArray[i]);
+//       // }
+//       TDEEResult = Math.round(BMR * activityIndexArray[parseInt(activitySelect.value) - 1]);
+//     }
+
+//     // resultBMR.innerHTML = Math.round(BMR);
+
+//     for (let i = 0; i < activityIndexArray.length; i++) {
+//       document.getElementById(String(i + 1)).textContent = TDEEResult;
+//     }
+
+//     let selectedActivityLevel = activitySelect.value;
+
+//     for (let i = 0; i < activityLevelResultRows.length; i++) {
+//       let row = activityLevelResultRows[i];
+//       if (i == selectedActivityLevel) {
+//         row.classList.add("selected");
+//       } else {
+//         row.classList.remove("selected");
+//       }
+//     }
+
+//     let conuterElement = document.querySelector("[data-tdee-result-main]");
+
+//     function animateResult(result) {
+
+//       gsap.to(counter, 0.5, {
+//         var: parseInt(result),
+//         onUpdate: function () {
+//           let nwc = parseInt(counter.var);
+//           conuterElement.textContent = nwc;
+//         },
+//       });
+
+//     }
+
+//     // animateResult(resultArray[selectedActivityLevel - 1]);
+//     animateResult(TDEEResult);
+//     calculated = true;
+
+//   }
+
+//   function singleInputCheck(element, min, max) {
+//     let value = element.value;
+//     if (value != "" && parseInt(value) >= parseInt(min) && parseInt(value) <= parseInt(max)) {
+//       // element.classList.remove("error");
+//       // errorTextWrap.style.display = "none";
+//       // errorTextElement.innerText = "";
+//       // resultTextWrap.style.display = "flex";
+//       return false;
+//     } else {
+//       // if (calculated) {
+//       //   element.classList.add("error");
+//       //   errorTextWrap.style.display = "flex";
+//       //   switch (element) {
+//       //     case ageInput:
+//       //       errorTextElement.innerText = errorText.age;
+//       //       break;
+//       //     case heightInput:
+//       //       errorTextElement.innerText = errorText.height;
+//       //       break;
+//       //     case weightInput:
+//       //       errorTextElement.innerText = errorText.weight;
+//       //       break;
+//       //   }
+//       //   resultTextWrap.style.display = "none";
+//       // }
+//       return true;
+//     }
+//   }
+
+//   function selectCheck() {
+//     let selectedActivityLevel = parseInt(activitySelect.value);
+//     if (selectedActivityLevel != 0) {
+//       activitySelect.classList.remove("error");
+//       errorTextWrap.style.display = "none";
+//       errorTextElement.innerText = "";
+//       resultTextWrap.style.display = "flex";
+//       return false;
+//     } else {
+//       activitySelect.classList.add("error");
+//         errorTextWrap.style.display = "flex";
+//         errorTextElement.innerText = errorText.select;
+//         resultTextWrap.style.display = "none";
+//       return true;
+//     }
+//   }
+
+//   function showInputError(errorElement, inputElement) {
+//     if (calculated) {
+//       inputElement.classList.add("error");
+//       errorTextWrap.style.display = "flex";
+//       // TODO remove switch and check if only one element has an error, and show only that error in that case, otherwise show a general error text.
+
+//       switch (inputElement) {
+//         case ageInput:
+//           errorTextElement.innerText = errorText.age;
+//           break;
+//         case heightInput:
+//           errorTextElement.innerText = errorText.height;
+//           break;
+//         case weightInput:
+//           errorTextElement.innerText = errorText.weight;
+//           break;
+//       }
+//       resultTextWrap.style.display = "none";
+//     }
+
+//     gsap.to(errorElement, {
+//       autoAlpha: 1,
+//       duration: 0.25,
+//     });
+//   }
+
+//   function hideInputError(errorElement, inputElement) {
+//     inputElement.classList.remove("error");
+//     errorTextWrap.style.display = "none";
+//     errorTextElement.innerText = "";
+//     resultTextWrap.style.display = "flex";
+
+//     gsap.to(errorElement, {
+//       autoAlpha: 0,
+//       duration: 0.25,
+//     });
+//   }
+
+//   // const calcButton = document.querySelector("[data-tdee-calc]");
+//   const ageInput = document.querySelector("[data-tdee-age]");
+//   const heightInput = document.querySelector("[data-tdee-height]");
+//   const weightInput = document.querySelector("[data-tdee-weight]");
+//   const activitySelect = document.querySelector("[data-activity-select]");
+//   const activityLevelResultRows = document.querySelectorAll("[data-tdee-result-row]");
+//   const genderInputs = document.querySelectorAll('input[name="gender"]');
+
+//   const resultTextWrap = document.querySelector("[data-tdee-result-text-wrap]");
+//   const errorTextWrap = document.querySelector("[data-tdee-error-text-wrap]");
+//   const errorTextElement = document.querySelector("[data-tdee-error-text]");
+//   const errorText = {
+//     age: "Neispravan unos za godine",
+//     height: "Neispravan unos za visinu",
+//     weight: "Neispravan unos za težinu",
+//     select: "Odaberite nivo aktivnosti",
+//   }
+//   const ageErrorElement = document.querySelector("[data-tdee-age-error-text]");
+//   const heightErrorElement = document.querySelector("[data-tdee-height-error-text]");
+//   const weightErrorElement = document.querySelector("[data-tdee-weight-error-text]");
+//   const selectErrorElement = document.querySelector("[data-tdee-activity-error-text]");
+
+//   if (errorTextWrap) errorTextWrap.style.display = "none";
+
+//   let ageError = true;
+//   let heightError = true;
+//   let weightError = true;
+//   let selectError = true;
+
+//   ageInput.addEventListener("input", () => {
+//     ageError = singleInputCheck(ageInput, ageMIN, ageMAX);
+//     if (!ageError && !heightError && !weightError && !selectError) { 
+//       hideInputError(ageErrorElement, ageInput);
+//       calcTDEE();
+//      } else {
+//       if (calculated) {
+//         showInputError(ageErrorElement, ageInput);
+//       }
+//     }
+//   });
+//   heightInput.addEventListener("input", () => {
+//     heightError = singleInputCheck(heightInput, heightMIN, heightMAX);
+//     if (!ageError && !heightError && !weightError && !selectError) { 
+//       hideInputError(heightErrorElement, heightInput);
+//       calcTDEE();
+//      } else {
+//       if (calculated) {
+//         showInputError(heightErrorElement, heightInput);
+//       }
+//     }
+//   }); 
+//   weightInput.addEventListener("input", () => {
+//     weightError = singleInputCheck(weightInput, weightMIN, weightMAX);
+//     if (!ageError && !heightError && !weightError && !selectError) { 
+//       hideInputError(weightErrorElement, weightInput);
+//       calcTDEE();
+//      } else {
+//       if (calculated) {
+//         showInputError(weightErrorElement, weightInput);
+//       }
+//     }
+//   });
+//   activitySelect.addEventListener("change", () => {
+//     selectError = selectCheck();
+//     if (!ageError && !heightError && !weightError && !selectError) { 
+//       hideInputError(selectErrorElement, activitySelect);
+//       calcTDEE();
+//      } else {
+//       if (calculated) {
+//         showInputError(selectErrorElement, activitySelect);
+//       }
+//     }
+//   });
+
+//   genderInputs.forEach(input => {
+//     input.addEventListener("change", () => {
+//       if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
+//     });
+//   });
+
+//   // const resultBMR = document.querySelector("[data-tdee-bmr]");
+  
+//   const weightMIN = 30;
+//   const weightMAX = 300;
+//   const heightMIN = 100;
+//   const heightMAX = 250;
+//   const ageMIN = 18;
+//   const ageMAX = 100;
+
+//   // calcButton?.addEventListener('click', inputCheck);
+
+//   if (DEBUG) console.log("TDEE calculator initialized");
+
+// }
+function initTDEECalculatorV2(page) {
 
   var counter = { var: 0 };
   let calculated = false;
-
-  function womenBMR(weight, height, age) {
-    let result = (10 * weight) + (6.25 * height) - (5 * age) - 161;
-    return result;
-  }
-
-  function menBMR(weight, height, age) {
-    let result = (10 * weight) + (6.25 * height) - (5 * age) + 5;
-    return result;
-  }
 
   function calcTDEE() {
 
@@ -1909,13 +2154,13 @@ function initTDEECalculator(page) {
     const activityIndexArray = [1.2, 1.375, 1.55, 1.725, 1.9];
 
     if (gender == "women") {
-      BMR = womenBMR(weight, height, age);
+      BMR = ((10 * weight) + (6.25 * height) - (5 * age) - 161);
       // for (let i = 0; i < activityIndexArray.length; i++) {
       //   resultArray[i] = Math.round(BMR * activityIndexArray[i]);
       // }
       TDEEResult = Math.round(BMR * activityIndexArray[parseInt(activitySelect.value) - 1]);
     } else { // men
-      BMR = menBMR(weight, height, age);
+      BMR = ((10 * weight) + (6.25 * height) - (5 * age) + 5);
       // for (let i = 0; i < activityIndexArray.length; i++) {
       //   resultArray[i] = Math.round(BMR * activityIndexArray[i]);
       // }
@@ -1960,88 +2205,105 @@ function initTDEECalculator(page) {
   }
 
   function singleInputCheck(element, min, max) {
-    let value = element.value;
-    if (value != "" && parseInt(value) >= parseInt(min) && parseInt(value) <= parseInt(max)) {
-      // element.classList.remove("error");
-      // errorTextWrap.style.display = "none";
-      // errorTextElement.innerText = "";
-      // resultTextWrap.style.display = "flex";
-      return false;
-    } else {
-      // if (calculated) {
-      //   element.classList.add("error");
-      //   errorTextWrap.style.display = "flex";
-      //   switch (element) {
-      //     case ageInput:
-      //       errorTextElement.innerText = errorText.age;
-      //       break;
-      //     case heightInput:
-      //       errorTextElement.innerText = errorText.height;
-      //       break;
-      //     case weightInput:
-      //       errorTextElement.innerText = errorText.weight;
-      //       break;
-      //   }
-      //   resultTextWrap.style.display = "none";
-      // }
-      return true;
-    }
+    const value = Number(element.value);
+
+    return !(
+      element.value.trim() !== "" &&
+      Number.isFinite(value) &&
+      value >= min &&
+      value <= max
+    );
   }
 
   function selectCheck() {
-    let selectedActivityLevel = parseInt(activitySelect.value);
-    if (selectedActivityLevel != 0) {
-      activitySelect.classList.remove("error");
-      errorTextWrap.style.display = "none";
-      errorTextElement.innerText = "";
-      resultTextWrap.style.display = "flex";
-      return false;
-    } else {
-      activitySelect.classList.add("error");
-        errorTextWrap.style.display = "flex";
-        errorTextElement.innerText = errorText.select;
-        resultTextWrap.style.display = "none";
-      return true;
-    }
+    return Number(activitySelect.value) === 0;
   }
 
-  function showInputError(errorElement, inputElement) {
-    if (calculated) {
-      inputElement.classList.add("error");
-      errorTextWrap.style.display = "flex";
-      // TODO remove switch and check if only one element has an error, and show only that error in that case, otherwise show a general error text.
+  function hasAnyError() {
+    return ageError || heightError || weightError || selectError;
+  }
 
-      switch (inputElement) {
-        case ageInput:
-          errorTextElement.innerText = errorText.age;
-          break;
-        case heightInput:
-          errorTextElement.innerText = errorText.height;
-          break;
-        case weightInput:
-          errorTextElement.innerText = errorText.weight;
-          break;
-      }
-      resultTextWrap.style.display = "none";
-    }
+  function getGlobalErrorMessage() {
+    const errors = [];
+
+    if (ageError) errors.push(errorText.age);
+    if (heightError) errors.push(errorText.height);
+    if (weightError) errors.push(errorText.weight);
+    if (selectError) errors.push(errorText.select);
+
+    return errors.length === 1 ? errors[0] : "Proverite označena polja";
+  }
+
+  function setFieldError(errorElement, inputElement, hasError) {
+    const shouldShow = calculated && hasError;
+
+    inputElement.classList.toggle("error", shouldShow);
 
     gsap.to(errorElement, {
-      autoAlpha: 1,
+      autoAlpha: shouldShow ? 1 : 0,
       duration: 0.25,
     });
   }
 
-  function hideInputError(errorElement, inputElement) {
-    inputElement.classList.remove("error");
+  function updateErrorState() {
+    setFieldError(ageErrorElement, ageInput, ageError);
+    setFieldError(heightErrorElement, heightInput, heightError);
+    setFieldError(weightErrorElement, weightInput, weightError);
+    setFieldError(selectErrorElement, activitySelect, selectError);
+
+    if (calculated && hasAnyError()) {
+      errorTextWrap.style.display = "flex";
+      errorTextElement.innerText = getGlobalErrorMessage();
+      resultTextWrap.style.display = "none";
+      return;
+    }
+
     errorTextWrap.style.display = "none";
     errorTextElement.innerText = "";
     resultTextWrap.style.display = "flex";
 
-    gsap.to(errorElement, {
-      autoAlpha: 0,
-      duration: 0.25,
-    });
+    if (!hasAnyError()) {
+      calcTDEE();
+    }
   }
+
+  // function showInputError(errorElement, inputElement) {
+  //   if (calculated) {
+  //     inputElement.classList.add("error");
+  //     errorTextWrap.style.display = "flex";
+  //     // TODO remove switch and check if only one element has an error, and show only that error in that case, otherwise show a general error text.
+
+  //     switch (inputElement) {
+  //       case ageInput:
+  //         errorTextElement.innerText = errorText.age;
+  //         break;
+  //       case heightInput:
+  //         errorTextElement.innerText = errorText.height;
+  //         break;
+  //       case weightInput:
+  //         errorTextElement.innerText = errorText.weight;
+  //         break;
+  //     }
+  //     resultTextWrap.style.display = "none";
+  //   }
+
+  //   gsap.to(errorElement, {
+  //     autoAlpha: 1,
+  //     duration: 0.25,
+  //   });
+  // }
+
+  // function hideInputError(errorElement, inputElement) {
+  //   inputElement.classList.remove("error");
+  //   errorTextWrap.style.display = "none";
+  //   errorTextElement.innerText = "";
+  //   resultTextWrap.style.display = "flex";
+
+  //   gsap.to(errorElement, {
+  //     autoAlpha: 0,
+  //     duration: 0.25,
+  //   });
+  // }
 
   // const calcButton = document.querySelector("[data-tdee-calc]");
   const ageInput = document.querySelector("[data-tdee-age]");
@@ -2074,47 +2336,22 @@ function initTDEECalculator(page) {
 
   ageInput.addEventListener("input", () => {
     ageError = singleInputCheck(ageInput, ageMIN, ageMAX);
-    if (!ageError && !heightError && !weightError && !selectError) { 
-      hideInputError(ageErrorElement, ageInput);
-      calcTDEE();
-     } else {
-      if (calculated) {
-        showInputError(ageErrorElement, ageInput);
-      }
-    }
+    updateErrorState();
   });
+
   heightInput.addEventListener("input", () => {
     heightError = singleInputCheck(heightInput, heightMIN, heightMAX);
-    if (!ageError && !heightError && !weightError && !selectError) { 
-      hideInputError(heightErrorElement, heightInput);
-      calcTDEE();
-     } else {
-      if (calculated) {
-        showInputError(heightErrorElement, heightInput);
-      }
-    }
-  }); 
+    updateErrorState();
+  });
+
   weightInput.addEventListener("input", () => {
     weightError = singleInputCheck(weightInput, weightMIN, weightMAX);
-    if (!ageError && !heightError && !weightError && !selectError) { 
-      hideInputError(weightErrorElement, weightInput);
-      calcTDEE();
-     } else {
-      if (calculated) {
-        showInputError(weightErrorElement, weightInput);
-      }
-    }
+    updateErrorState();
   });
+
   activitySelect.addEventListener("change", () => {
     selectError = selectCheck();
-    if (!ageError && !heightError && !weightError && !selectError) { 
-      hideInputError(selectErrorElement, activitySelect);
-      calcTDEE();
-     } else {
-      if (calculated) {
-        showInputError(selectErrorElement, activitySelect);
-      }
-    }
+    updateErrorState();
   });
 
   genderInputs.forEach(input => {
