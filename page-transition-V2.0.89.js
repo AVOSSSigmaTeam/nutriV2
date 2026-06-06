@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.88";
+const version = "2.0.89";
 
 history.scrollRestoration = "manual";
 
@@ -1117,7 +1117,7 @@ function setCopyrightYear(page) {
   // if (DEBUG) console.log("Copyright year set to", currentYear);
 
 }
-function initFooterLinkHoverAnimation(page) { // TODO mofify to not be triggered on mobile, like the nav link hover animation
+function initFooterLinkHoverAnimation(page) { 
   const linkWraps = page.querySelectorAll("[data-footer-link-wrap]");
   
   const canHover = () =>
@@ -1661,32 +1661,78 @@ function initStepsProgressBarAnimation(page) {
 
   // if (DEBUG) console.log("Steps progress bar animation initialized");
 }
-function initStepsScrollAnimation(page) { // TODO modify for mobile devices, as currently the animation is a bit late to trigger.
+// function initStepsScrollAnimation(page) { // TODO modify for mobile devices, as currently the animation is a bit late to trigger.
+//   const steps = page.querySelectorAll("[data-step]");
+//   if (steps.length === 0) return;
+  
+//   const startTriggerDesktop = "top 35%";
+//   const endTriggerDesktop = "top 45%";
+
+//   const startTriggerMobile = "top 15%";
+//   const endTriggerMobile = "top 25%";
+
+
+
+//   steps.forEach((step) => {
+//     const stepLeft = step.querySelector("[data-step-left]");
+//     const stepRight = step.querySelector("[data-step-right]");
+//     if (!stepLeft || !stepRight) return;
+
+    
+//     gsap.fromTo([stepLeft, stepRight], {
+//       autoAlpha: 0.25,
+//     }, {
+//       autoAlpha: 1,
+//       scrollTrigger: {
+//         trigger: step,
+//         start: "top 35%",
+//         end: "top 45%",
+//         scrub: 1,
+//         markers: DEBUG,
+//       }
+//     });
+//   });
+
+//   if (DEBUG) console.log("Steps scroll animation initialized");
+// }
+function initStepsScrollAnimation(page) {
   const steps = page.querySelectorAll("[data-step]");
   if (steps.length === 0) return;
+
+  const isMobile = () => window.matchMedia("(max-width: 767px)").matches;
+
+  const startTriggerDesktop = "top 35%";
+  const endTriggerDesktop = "top 45%";
+
+  const startTriggerMobile = "top 15%";
+  const endTriggerMobile = "top 25%";
+
   steps.forEach((step) => {
     const stepLeft = step.querySelector("[data-step-left]");
     const stepRight = step.querySelector("[data-step-right]");
     if (!stepLeft || !stepRight) return;
 
-    
-    gsap.fromTo([stepLeft, stepRight], {
-      autoAlpha: 0.25,
-    }, {
-      autoAlpha: 1,
-      scrollTrigger: {
-        trigger: step,
-        start: "top 35%",
-        end: "top 45%",
-        scrub: 1,
-        markers: DEBUG,
+    gsap.fromTo(
+      [stepLeft, stepRight],
+      {
+        autoAlpha: 0.25,
+      },
+      {
+        autoAlpha: 1,
+        scrollTrigger: {
+          trigger: step,
+          start: () => isMobile() ? startTriggerMobile : startTriggerDesktop,
+          end: () => isMobile() ? endTriggerMobile : endTriggerDesktop,
+          scrub: 1,
+          invalidateOnRefresh: true,
+          markers: DEBUG,
+        },
       }
-    });
+    );
   });
 
   if (DEBUG) console.log("Steps scroll animation initialized");
 }
-
 
 
 // blog
