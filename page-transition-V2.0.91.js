@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.90";
+const version = "2.0.91";
 
 history.scrollRestoration = "manual";
 
@@ -1670,8 +1670,8 @@ function initStepsScrollAnimation(page) {
   const startTriggerDesktop = "top 45%";
   const endTriggerDesktop = "top 35%";
 
-  const startTriggerMobile = "top 75%";
-  const endTriggerMobile = "top 65%";
+  const startTriggerMobile = "top 55%";
+  const endTriggerMobile = "top 45%";
 
   steps.forEach((step) => {
     const stepLeft = step.querySelector("[data-step-left]");
