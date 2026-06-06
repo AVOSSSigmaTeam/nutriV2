@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.85";
+const version = "2.0.86";
 
 history.scrollRestoration = "manual";
 
@@ -2014,6 +2014,9 @@ function initBMICalculatorV2(page) {
     }
   }
 
+  let heightTouched = false;
+  let weightTouched = false;
+
   function calcBMI() {
     const height = getInputNumber(heightInput);
     const weight = getInputNumber(weightInput);
@@ -2021,23 +2024,36 @@ function initBMICalculatorV2(page) {
     const heightState = validateRange(height, heightMIN, heightMAX);
     const weightState = validateRange(weight, weightMIN, weightMAX);
 
-    if (heightState.invalid) {
+    const heightEmptyError = heightState.empty && heightTouched;
+    const weightEmptyError = weightState.empty && weightTouched;
+
+    if (heightState.invalid || heightEmptyError) {
       showError("height");
-      if (DEBUG) console.log("Height input error:", height);
     } else {
       hideError("height");
-      if (!heightState.empty && DEBUG) console.log("Height input valid:", height);
     }
 
-    if (weightState.invalid) {
+    if (weightState.invalid || weightEmptyError) {
       showError("weight");
-      if (DEBUG) console.log("Weight input error:", weight);
     } else {
       hideError("weight");
-      if (!weightState.empty && DEBUG) console.log("Weight input valid:", weight);
     }
 
     if (heightState.empty || weightState.empty) {
+      const errorText =
+        heightEmptyError && weightEmptyError
+          ? "Unesite visinu i težinu"
+          : heightEmptyError
+            ? "Unesite visinu"
+            : weightEmptyError
+              ? "Unesite težinu"
+              : "";
+
+      if (errorText) {
+        updateText(null, true, errorText);
+        resetIndicatorPosition();
+      }
+
       return;
     }
 
@@ -2074,8 +2090,15 @@ function initBMICalculatorV2(page) {
     updateText(BMI);
   }
 
-  heightInput.addEventListener("input", calcBMI);
-  weightInput.addEventListener("input", calcBMI);
+  heightInput.addEventListener("input", () => {
+    heightTouched = true;
+    calcBMI();
+  });
+
+  weightInput.addEventListener("input", () => {
+    weightTouched = true;
+    calcBMI();
+  });
 
   window.addEventListener("resize", calcBMI);
 
