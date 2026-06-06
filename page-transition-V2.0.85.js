@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.84";
+const version = "2.0.85";
 
 history.scrollRestoration = "manual";
 
@@ -116,7 +116,7 @@ function initBeforeEnterFunctions(next) {
       // initBasicFormValidation(nextPage);
       // break;
     case "bmi-calc":
-      initBMICalculator(nextPage);
+      initBMICalculatorV2(nextPage);
       break;
     case "tdee-calc":
       initTDEECalculatorV2(nextPage);
@@ -1695,8 +1695,192 @@ function initBlogPostHoverAnimation(page) {
 
 
 // BMI calc
-function initBMICalculator(page) {
+// function initBMICalculator(page) {
 
+//   const heightInput = page.querySelector("[data-bmi-height]");
+//   const weightInput = page.querySelector("[data-bmi-weight]");
+
+//   if (!heightInput || !weightInput) return;
+
+//   const rangeIndicator = page.querySelector("[data-bmi-range-indicator]");
+//   const rangeIndicatorTextWrap = page.querySelector("[data-bmi-indicator-text-wrap]");
+//   const rangeIndicatorText = page.querySelector("[data-bmi-indicator-text-main]");
+//   const rangeIndicatorSecondaryText = page.querySelector("[data-bmi-indicator-text-secondary]");
+//   const rangeIndicatorErrorText = page.querySelector("[data-bmi-indicator-text-error]");
+//   const mainTextWrap = page.querySelector("[data-main-text-wrap]");
+
+//   const heightErrorText = page.querySelector("[data-bmi-height-error-text]");
+//   const weightErrorText = page.querySelector("[data-bmi-weight-error-text]");
+
+//   const weightMIN = 30;
+//   const weightMAX = 300;
+//   const heightMIN = 100;
+//   const heightMAX = 250;
+//   const defaultRangeIndicatorPosition = "42.44%"; // Position for the indicator when no valid BMI is calculated
+//   let calculated = false;
+
+//   function updateText(BMI, range, error = false, errorText = "Neispravan unos") {
+
+//     if (error) {
+//       mainTextWrap.style.display = "none";
+//       rangeIndicatorText.textContent = "";
+//       rangeIndicatorSecondaryText.textContent = "";
+//       rangeIndicatorErrorText.textContent = errorText;
+//       return;
+//     }
+
+//     let inidicatorText = "";
+
+//     switch (true) {
+//       // case (BMI < 16):
+//       //   inidicatorText = "Patološka pothranjenost";
+//       //   break;
+//       // case (BMI < 18):
+//       //   inidicatorText = "Ozbiljna pothranjenost";
+//       //   break;
+//       case (BMI < 18.5):
+//         inidicatorText = "Pothranjenost";
+//         break;
+//       case (BMI < 25):
+//         inidicatorText = "Normalna težina";
+//         break;
+//       case (BMI < 30):
+//         inidicatorText = "Prekomerna težina";
+//         break;
+//       case (BMI < 35):
+//         inidicatorText = "Gojaznost I stepena";
+//         break;
+//       case (BMI < 40):
+//         inidicatorText = "Gojaznost II stepena";
+//         break;
+//       case (BMI > 40):
+//         inidicatorText = "Gojaznost III stepena";
+//         break;
+//     }
+
+//     mainTextWrap.style.display = "block";
+//     rangeIndicatorText.textContent = (Math.round((BMI + Number.EPSILON) * 100) / 100).toFixed(2); // Show BMI with 2 decimal places
+//     rangeIndicatorSecondaryText.textContent = inidicatorText;
+//     rangeIndicatorErrorText.textContent = "";
+
+//   }
+
+//   function showError(inputType) {
+//     if (inputType === "weight") {
+//       weightInput.classList.add("error");
+//       gsap.to(weightErrorText, {
+//         autoAlpha: 1,
+//         duration: 0.25
+//       });
+//     }
+//     if (inputType === "height") {
+//       heightInput.classList.add("error");
+//       gsap.to(heightErrorText, {
+//         autoAlpha: 1,
+//         duration: 0.25
+//       });
+//     }
+//   } 
+
+//   function hideError(inputType) {
+//     if (inputType === "weight") {
+//       weightInput.classList.remove("error");
+//       gsap.to(weightErrorText, {
+//         autoAlpha: 0,
+//         duration: 0.25
+//       });
+//     }
+//     if (inputType === "height") {
+//       heightInput.classList.remove("error");
+//       gsap.to(heightErrorText, {
+//         autoAlpha: 0,
+//         duration: 0.25
+//       });
+//     }
+//   }
+
+//   function calcBMI() {
+
+//     let height = heightInput.value;
+//     if (height === "") return; // Don't calculate if height is empty
+
+//     let weight = weightInput.value;
+//     if (weight === "") return; // Don't calculate if weight is empty
+
+//     let heightError = false;
+//     let weightError = false;
+
+//     if (height < heightMIN || height > heightMAX) {
+//       if (calculated) {
+//         showError("height");
+//         if (DEBUG) console.log("Height input error:", height);
+//       }
+//       heightError = true;
+//     } else {
+//       hideError("height");
+//       if (DEBUG) console.log("Height input valid:", height);
+//       heightError = false;
+//     }
+
+//     if (weight < weightMIN || weight > weightMAX) {
+//       if (calculated) {
+//         showError("weight");
+//         if (DEBUG) console.log("Weight input error:", weight);
+//       }
+//       weightError = true;
+//     } else {
+//       hideError("weight");
+//       if (DEBUG) console.log("Weight input valid:", weight);
+//       weightError = false;
+//     }
+
+
+//     if (heightError || weightError) {
+//       if (calculated) {
+//         updateText(null, null, true, heightError && weightError ? "Visina i težina su van opsega" : heightError ? "Visina je van opsega" : "Težina je van opsega");
+//         if (document.body.clientWidth > 991) {
+//           rangeIndicator.style.left = defaultRangeIndicatorPosition;
+//           rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
+//         } else {
+//           rangeIndicator.style.left = "0%";
+//           rangeIndicatorTextWrap.style.left = "0%";
+//         }
+//       }
+//       return;
+//     }
+
+//     let BMI = weight / Math.pow((height / 100), 2);
+//     BMI = Math.round((BMI + Number.EPSILON) * 100) / 100;
+
+//     let rangeIndicatorMulitplyer = 2;
+//     let rangeInicatorPosition = Math.round(((BMI * rangeIndicatorMulitplyer) + Number.EPSILON) * 100) / 100;
+
+//     if (rangeInicatorPosition < 0) rangeInicatorPosition = 0;
+//     if (rangeInicatorPosition > 100) rangeInicatorPosition = 100;
+
+//     rangeIndicator.style.left = rangeInicatorPosition + "%";
+
+//     if (document.body.clientWidth > 991) {
+//       rangeIndicatorTextWrap.style.left = rangeInicatorPosition + "%";
+//     } else {
+//       rangeIndicatorTextWrap.style.left = "0%";
+//     }
+
+//     updateText(BMI, rangeIndicatorMulitplyer);
+//     calculated = true;
+//   }
+
+//   // calcBMI();
+
+//   heightInput.addEventListener("input", calcBMI);
+//   weightInput.addEventListener("input", calcBMI);
+
+//   window.addEventListener("resize", calcBMI);
+
+//   if (DEBUG) console.log("BMI calculator initialized");
+
+// }
+function initBMICalculatorV2(page) {
   const heightInput = page.querySelector("[data-bmi-height]");
   const weightInput = page.querySelector("[data-bmi-weight]");
 
@@ -1716,11 +1900,9 @@ function initBMICalculator(page) {
   const weightMAX = 300;
   const heightMIN = 100;
   const heightMAX = 250;
-  const defaultRangeIndicatorPosition = "42.44%"; // Position for the indicator when no valid BMI is calculated
-  let calculated = false;
+  const defaultRangeIndicatorPosition = "42.44%";
 
-  function updateText(BMI, range, error = false, errorText = "Neispravan unos") {
-
+  function updateText(BMI, error = false, errorText = "Neispravan unos") {
     if (error) {
       mainTextWrap.style.display = "none";
       rangeIndicatorText.textContent = "";
@@ -1729,69 +1911,68 @@ function initBMICalculator(page) {
       return;
     }
 
-    let inidicatorText = "";
+    let indicatorText = "";
 
     switch (true) {
-      // case (BMI < 16):
-      //   inidicatorText = "Patološka pothranjenost";
-      //   break;
-      // case (BMI < 18):
-      //   inidicatorText = "Ozbiljna pothranjenost";
-      //   break;
-      case (BMI < 18.5):
-        inidicatorText = "Pothranjenost";
+      case BMI < 18.5:
+        indicatorText = "Pothranjenost";
         break;
-      case (BMI < 25):
-        inidicatorText = "Normalna težina";
+      case BMI < 25:
+        indicatorText = "Normalna težina";
         break;
-      case (BMI < 30):
-        inidicatorText = "Prekomerna težina";
+      case BMI < 30:
+        indicatorText = "Prekomerna težina";
         break;
-      case (BMI < 35):
-        inidicatorText = "Gojaznost I stepena";
+      case BMI < 35:
+        indicatorText = "Gojaznost I stepena";
         break;
-      case (BMI < 40):
-        inidicatorText = "Gojaznost II stepena";
+      case BMI < 40:
+        indicatorText = "Gojaznost II stepena";
         break;
-      case (BMI > 40):
-        inidicatorText = "Gojaznost III stepena";
+      case BMI >= 40:
+        indicatorText = "Gojaznost III stepena";
         break;
     }
 
     mainTextWrap.style.display = "block";
-    rangeIndicatorText.textContent = (Math.round((BMI + Number.EPSILON) * 100) / 100).toFixed(2); // Show BMI with 2 decimal places
-    rangeIndicatorSecondaryText.textContent = inidicatorText;
+    rangeIndicatorText.textContent = BMI.toFixed(2);
+    rangeIndicatorSecondaryText.textContent = indicatorText;
     rangeIndicatorErrorText.textContent = "";
-
   }
 
   function showError(inputType) {
     if (inputType === "weight") {
       weightInput.classList.add("error");
+
       gsap.to(weightErrorText, {
         autoAlpha: 1,
         duration: 0.25
       });
     }
+
     if (inputType === "height") {
       heightInput.classList.add("error");
+
       gsap.to(heightErrorText, {
         autoAlpha: 1,
         duration: 0.25
       });
     }
-  } 
+  }
 
   function hideError(inputType) {
     if (inputType === "weight") {
       weightInput.classList.remove("error");
+
       gsap.to(weightErrorText, {
         autoAlpha: 0,
         duration: 0.25
       });
     }
+
     if (inputType === "height") {
       heightInput.classList.remove("error");
+
       gsap.to(heightErrorText, {
         autoAlpha: 0,
         duration: 0.25
@@ -1799,78 +1980,99 @@ function initBMICalculator(page) {
     }
   }
 
+  function getInputNumber(input) {
+    const value = input.value.trim();
+
+    if (value === "") return null;
+
+    const number = Number(value);
+
+    return Number.isFinite(number) ? number : NaN;
+  }
+
+  function validateRange(value, min, max) {
+    if (value === null) {
+      return {
+        empty: true,
+        invalid: false
+      };
+    }
+
+    return {
+      empty: false,
+      invalid: !Number.isFinite(value) || value < min || value > max
+    };
+  }
+
+  function resetIndicatorPosition() {
+    if (document.body.clientWidth > 991) {
+      rangeIndicator.style.left = defaultRangeIndicatorPosition;
+      rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
+    } else {
+      rangeIndicator.style.left = "0%";
+      rangeIndicatorTextWrap.style.left = "0%";
+    }
+  }
+
   function calcBMI() {
+    const height = getInputNumber(heightInput);
+    const weight = getInputNumber(weightInput);
 
-    let height = heightInput.value;
-    if (height === "") return; // Don't calculate if height is empty
+    const heightState = validateRange(height, heightMIN, heightMAX);
+    const weightState = validateRange(weight, weightMIN, weightMAX);
 
-    let weight = weightInput.value;
-    if (weight === "") return; // Don't calculate if weight is empty
-
-    let heightError = false;
-    let weightError = false;
-
-    if (height < heightMIN || height > heightMAX) {
-      if (calculated) {
-        showError("height");
-        if (DEBUG) console.log("Height input error:", height);
-      }
-      heightError = true;
+    if (heightState.invalid) {
+      showError("height");
+      if (DEBUG) console.log("Height input error:", height);
     } else {
       hideError("height");
-      if (DEBUG) console.log("Height input valid:", height);
-      heightError = false;
+      if (!heightState.empty && DEBUG) console.log("Height input valid:", height);
     }
 
-    if (weight < weightMIN || weight > weightMAX) {
-      if (calculated) {
-        showError("weight");
-        if (DEBUG) console.log("Weight input error:", weight);
-      }
-      weightError = true;
+    if (weightState.invalid) {
+      showError("weight");
+      if (DEBUG) console.log("Weight input error:", weight);
     } else {
       hideError("weight");
-      if (DEBUG) console.log("Weight input valid:", weight);
-      weightError = false;
+      if (!weightState.empty && DEBUG) console.log("Weight input valid:", weight);
     }
 
-
-    if (heightError || weightError) {
-      if (calculated) {
-        updateText(null, null, true, heightError && weightError ? "Visina i težina su van opsega" : heightError ? "Visina je van opsega" : "Težina je van opsega");
-        if (document.body.clientWidth > 991) {
-          rangeIndicator.style.left = defaultRangeIndicatorPosition;
-          rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
-        } else {
-          rangeIndicator.style.left = "0%";
-          rangeIndicatorTextWrap.style.left = "0%";
-        }
-      }
+    if (heightState.empty || weightState.empty) {
       return;
     }
 
-    let BMI = weight / Math.pow((height / 100), 2);
+    if (heightState.invalid || weightState.invalid) {
+      const errorText =
+        heightState.invalid && weightState.invalid
+          ? "Visina i težina su van opsega"
+          : heightState.invalid
+            ? "Visina je van opsega"
+            : "Težina je van opsega";
+
+      updateText(null, true, errorText);
+      resetIndicatorPosition();
+      return;
+    }
+
+    let BMI = weight / Math.pow(height / 100, 2);
     BMI = Math.round((BMI + Number.EPSILON) * 100) / 100;
 
-    let rangeIndicatorMulitplyer = 2;
-    let rangeInicatorPosition = Math.round(((BMI * rangeIndicatorMulitplyer) + Number.EPSILON) * 100) / 100;
+    const rangeIndicatorMultiplier = 2;
+    let rangeIndicatorPosition = Math.round(((BMI * rangeIndicatorMultiplier) + Number.EPSILON) * 100) / 100;
 
-    if (rangeInicatorPosition < 0) rangeInicatorPosition = 0;
-    if (rangeInicatorPosition > 100) rangeInicatorPosition = 100;
+    if (rangeIndicatorPosition < 0) rangeIndicatorPosition = 0;
+    if (rangeIndicatorPosition > 100) rangeIndicatorPosition = 100;
 
-    rangeIndicator.style.left = rangeInicatorPosition + "%";
+    rangeIndicator.style.left = rangeIndicatorPosition + "%";
 
     if (document.body.clientWidth > 991) {
-      rangeIndicatorTextWrap.style.left = rangeInicatorPosition + "%";
+      rangeIndicatorTextWrap.style.left = rangeIndicatorPosition + "%";
     } else {
       rangeIndicatorTextWrap.style.left = "0%";
     }
 
-    updateText(BMI, rangeIndicatorMulitplyer);
-    calculated = true;
+    updateText(BMI);
   }
-
-  // calcBMI();
 
   heightInput.addEventListener("input", calcBMI);
   weightInput.addEventListener("input", calcBMI);
@@ -1878,7 +2080,6 @@ function initBMICalculator(page) {
   window.addEventListener("resize", calcBMI);
 
   if (DEBUG) console.log("BMI calculator initialized");
-
 }
 
 //TDEE calc
