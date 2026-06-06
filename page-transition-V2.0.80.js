@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.79";
+const version = "2.0.80";
 
 history.scrollRestoration = "manual";
 
@@ -1117,7 +1117,7 @@ function setCopyrightYear(page) {
   // if (DEBUG) console.log("Copyright year set to", currentYear);
 
 }
-function initFooterLinkHoverAnimation(page) {
+function initFooterLinkHoverAnimation(page) { // TODO mofify to not be triggered on mobile, like the nav link hover animation
   const linkWraps = page.querySelectorAll("[data-footer-link-wrap]");
 
   linkWraps.forEach((wrap) => {
@@ -1510,7 +1510,7 @@ function initFAQSectionAnimation(page) {
   // if (DEBUG) console.log("FAQ section animation initialized");
 }
 
-// steps flower animation
+// steps section animation
 function initStepsFlowerAnimation(page) {
 
   const steps = page.querySelectorAll("[data-step]");
@@ -1569,7 +1569,7 @@ function initStepsProgressBarAnimation(page) {
 
   // if (DEBUG) console.log("Steps progress bar animation initialized");
 }
-function initStepsScrollAnimation(page) {
+function initStepsScrollAnimation(page) { // TODO modify for mobile devices, as currently the animation is a bit late to trigger.
   const steps = page.querySelectorAll("[data-step]");
   if (steps.length === 0) return;
   steps.forEach((step) => {
@@ -1594,6 +1594,7 @@ function initStepsScrollAnimation(page) {
 
   if (DEBUG) console.log("Steps scroll animation initialized");
 }
+
 
 
 // blog
@@ -2018,6 +2019,19 @@ function initTDEECalculator(page) {
 
   }
 
+  function showInputError(element) {
+    gsap.to(element, {
+      autoAlpha: 1,
+      duration: 0.25,
+    });
+  }
+  function hideInputError(element) {
+    gsap.to(element, {
+      autoAlpha: 0,
+      duration: 0.25,
+    });
+  }
+
   // const calcButton = document.querySelector("[data-tdee-calc]");
   const ageInput = document.querySelector("[data-tdee-age]");
   const heightInput = document.querySelector("[data-tdee-height]");
@@ -2035,6 +2049,10 @@ function initTDEECalculator(page) {
     weight: "Neispravan unos za težinu",
     select: "Odaberite nivo aktivnosti",
   }
+  const ageErrorElement = document.querySelector("[data-tdee-age-error-text]");
+  const heightErrorElement = document.querySelector("[data-tdee-height-error-text]");
+  const weightErrorElement = document.querySelector("[data-tdee-weight-error-text]");
+  const selectErrorElement = document.querySelector("[data-tdee-activity-error-text]");
 
   if (errorTextWrap) errorTextWrap.style.display = "none";
 
@@ -2045,19 +2063,48 @@ function initTDEECalculator(page) {
 
   ageInput.addEventListener("input", () => {
     ageError = singleInputCheck(ageInput, ageMIN, ageMAX);
-    if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); } 
+    if (!ageError && !heightError && !weightError && !selectError) { 
+      hideInputError(ageErrorElement);
+      calcTDEE();
+     } else {
+      if (calculated) {
+        showInputError(ageErrorElement);
+      }
+    }
   });
   heightInput.addEventListener("input", () => {
     heightError = singleInputCheck(heightInput, heightMIN, heightMAX);
-    if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
+    if (!ageError && !heightError && !weightError && !selectError) { 
+      hideInputError(heightErrorElement);
+      calcTDEE();
+     } else {
+      if (calculated) {
+        showInputError(heightErrorElement);
+      }
+    }
   }); 
   weightInput.addEventListener("input", () => {
     weightError = singleInputCheck(weightInput, weightMIN, weightMAX);
-    if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
+    if (!ageError && !heightError && !weightError && !selectError) { 
+      hideInputError(weightErrorElement);
+      calcTDEE();
+      calcTDEE();
+     } else {
+      if (calculated) {
+        showInputError(weightErrorElement);
+      }
+    }
   });
   activitySelect.addEventListener("change", () => {
     selectError = selectCheck();
-    if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
+    if (!ageError && !heightError && !weightError && !selectError) { 
+      hideInputError(selectErrorElement);
+      calcTDEE();
+     } else {
+      if (calculated) {
+        showInputError(selectErrorElement);
+      }
+    }
   });
 
   genderInputs.forEach(input => {
