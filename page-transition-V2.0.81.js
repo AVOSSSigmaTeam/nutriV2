@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.80";
+const version = "2.0.81";
 
 history.scrollRestoration = "manual";
 
@@ -1962,28 +1962,28 @@ function initTDEECalculator(page) {
   function singleInputCheck(element, min, max) {
     let value = element.value;
     if (value != "" && parseInt(value) >= parseInt(min) && parseInt(value) <= parseInt(max)) {
-      element.classList.remove("error");
-      errorTextWrap.style.display = "none";
-      errorTextElement.innerText = "";
-      resultTextWrap.style.display = "flex";
+      // element.classList.remove("error");
+      // errorTextWrap.style.display = "none";
+      // errorTextElement.innerText = "";
+      // resultTextWrap.style.display = "flex";
       return false;
     } else {
-      if (calculated) {
-        element.classList.add("error");
-        errorTextWrap.style.display = "flex";
-        switch (element) {
-          case ageInput:
-            errorTextElement.innerText = errorText.age;
-            break;
-          case heightInput:
-            errorTextElement.innerText = errorText.height;
-            break;
-          case weightInput:
-            errorTextElement.innerText = errorText.weight;
-            break;
-        }
-        resultTextWrap.style.display = "none";
-      }
+      // if (calculated) {
+      //   element.classList.add("error");
+      //   errorTextWrap.style.display = "flex";
+      //   switch (element) {
+      //     case ageInput:
+      //       errorTextElement.innerText = errorText.age;
+      //       break;
+      //     case heightInput:
+      //       errorTextElement.innerText = errorText.height;
+      //       break;
+      //     case weightInput:
+      //       errorTextElement.innerText = errorText.weight;
+      //       break;
+      //   }
+      //   resultTextWrap.style.display = "none";
+      // }
       return true;
     }
   }
@@ -2005,27 +2005,51 @@ function initTDEECalculator(page) {
     }
   }
 
-  function inputCheck() {
+  // function inputCheck() {
 
-    ageError = singleInputCheck(ageInput, ageMIN, ageMAX);
+  //   ageError = singleInputCheck(ageInput, ageMIN, ageMAX);
 
-    heightError = singleInputCheck(heightInput, heightMIN, heightMAX);
+  //   heightError = singleInputCheck(heightInput, heightMIN, heightMAX);
 
-    weightError = singleInputCheck(weightInput, weightMIN, weightMAX);
+  //   weightError = singleInputCheck(weightInput, weightMIN, weightMAX);
 
-    selectError = selectCheck();
+  //   selectError = selectCheck();
 
-    if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
+  //   if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
 
-  }
+  // }
 
   function showInputError(element) {
+    if (calculated) {
+      element.classList.add("error");
+      errorTextWrap.style.display = "flex";
+      // TODO remove switch and check if only one element has an error, and show only that error in that case, otherwise show a general error text.
+
+      switch (element) {
+        case ageInput:
+          errorTextElement.innerText = errorText.age;
+          break;
+        case heightInput:
+          errorTextElement.innerText = errorText.height;
+          break;
+        case weightInput:
+          errorTextElement.innerText = errorText.weight;
+          break;
+      }
+      resultTextWrap.style.display = "none";
+    }
+
     gsap.to(element, {
       autoAlpha: 1,
       duration: 0.25,
     });
   }
   function hideInputError(element) {
+    element.classList.remove("error");
+    errorTextWrap.style.display = "none";
+    errorTextElement.innerText = "";
+    resultTextWrap.style.display = "flex";
+
     gsap.to(element, {
       autoAlpha: 0,
       duration: 0.25,
@@ -2087,7 +2111,6 @@ function initTDEECalculator(page) {
     weightError = singleInputCheck(weightInput, weightMIN, weightMAX);
     if (!ageError && !heightError && !weightError && !selectError) { 
       hideInputError(weightErrorElement);
-      calcTDEE();
       calcTDEE();
      } else {
       if (calculated) {
