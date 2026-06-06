@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.83";
+const version = "2.0.84";
 
 history.scrollRestoration = "manual";
 
@@ -2149,40 +2149,22 @@ function initTDEECalculatorV2(page) {
     let age = ageInput.value;
     let gender = String(document.querySelector('input[name="gender"]:checked').value);
     let BMR = 0;
-    // let resultArray = [];
     let TDEEResult = 0;
     const activityIndexArray = [1.2, 1.375, 1.55, 1.725, 1.9];
 
     if (gender == "women") {
       BMR = ((10 * weight) + (6.25 * height) - (5 * age) - 161);
-      // for (let i = 0; i < activityIndexArray.length; i++) {
-      //   resultArray[i] = Math.round(BMR * activityIndexArray[i]);
-      // }
       TDEEResult = Math.round(BMR * activityIndexArray[parseInt(activitySelect.value) - 1]);
     } else { // men
       BMR = ((10 * weight) + (6.25 * height) - (5 * age) + 5);
-      // for (let i = 0; i < activityIndexArray.length; i++) {
-      //   resultArray[i] = Math.round(BMR * activityIndexArray[i]);
-      // }
       TDEEResult = Math.round(BMR * activityIndexArray[parseInt(activitySelect.value) - 1]);
     }
-
-    // resultBMR.innerHTML = Math.round(BMR);
 
     for (let i = 0; i < activityIndexArray.length; i++) {
       document.getElementById(String(i + 1)).textContent = TDEEResult;
     }
 
     let selectedActivityLevel = activitySelect.value;
-
-    for (let i = 0; i < activityLevelResultRows.length; i++) {
-      let row = activityLevelResultRows[i];
-      if (i == selectedActivityLevel) {
-        row.classList.add("selected");
-      } else {
-        row.classList.remove("selected");
-      }
-    }
 
     let conuterElement = document.querySelector("[data-tdee-result-main]");
 
@@ -2198,7 +2180,6 @@ function initTDEECalculatorV2(page) {
 
     }
 
-    // animateResult(resultArray[selectedActivityLevel - 1]);
     animateResult(TDEEResult);
     calculated = true;
 
@@ -2267,45 +2248,6 @@ function initTDEECalculatorV2(page) {
     }
   }
 
-  // function showInputError(errorElement, inputElement) {
-  //   if (calculated) {
-  //     inputElement.classList.add("error");
-  //     errorTextWrap.style.display = "flex";
-  //     // TODO remove switch and check if only one element has an error, and show only that error in that case, otherwise show a general error text.
-
-  //     switch (inputElement) {
-  //       case ageInput:
-  //         errorTextElement.innerText = errorText.age;
-  //         break;
-  //       case heightInput:
-  //         errorTextElement.innerText = errorText.height;
-  //         break;
-  //       case weightInput:
-  //         errorTextElement.innerText = errorText.weight;
-  //         break;
-  //     }
-  //     resultTextWrap.style.display = "none";
-  //   }
-
-  //   gsap.to(errorElement, {
-  //     autoAlpha: 1,
-  //     duration: 0.25,
-  //   });
-  // }
-
-  // function hideInputError(errorElement, inputElement) {
-  //   inputElement.classList.remove("error");
-  //   errorTextWrap.style.display = "none";
-  //   errorTextElement.innerText = "";
-  //   resultTextWrap.style.display = "flex";
-
-  //   gsap.to(errorElement, {
-  //     autoAlpha: 0,
-  //     duration: 0.25,
-  //   });
-  // }
-
-  // const calcButton = document.querySelector("[data-tdee-calc]");
   const ageInput = document.querySelector("[data-tdee-age]");
   const heightInput = document.querySelector("[data-tdee-height]");
   const weightInput = document.querySelector("[data-tdee-weight]");
@@ -2360,16 +2302,12 @@ function initTDEECalculatorV2(page) {
     });
   });
 
-  // const resultBMR = document.querySelector("[data-tdee-bmr]");
-  
   const weightMIN = 30;
   const weightMAX = 300;
   const heightMIN = 100;
   const heightMAX = 250;
   const ageMIN = 18;
   const ageMAX = 100;
-
-  // calcButton?.addEventListener('click', inputCheck);
 
   if (DEBUG) console.log("TDEE calculator initialized");
 
