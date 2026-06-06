@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.81";
+const version = "2.0.82";
 
 history.scrollRestoration = "manual";
 
@@ -2005,27 +2005,13 @@ function initTDEECalculator(page) {
     }
   }
 
-  // function inputCheck() {
-
-  //   ageError = singleInputCheck(ageInput, ageMIN, ageMAX);
-
-  //   heightError = singleInputCheck(heightInput, heightMIN, heightMAX);
-
-  //   weightError = singleInputCheck(weightInput, weightMIN, weightMAX);
-
-  //   selectError = selectCheck();
-
-  //   if (!ageError && !heightError && !weightError && !selectError) { calcTDEE(); }
-
-  // }
-
-  function showInputError(element) {
+  function showInputError(errorElement, inputElement) {
     if (calculated) {
-      element.classList.add("error");
+      inputElement.classList.add("error");
       errorTextWrap.style.display = "flex";
       // TODO remove switch and check if only one element has an error, and show only that error in that case, otherwise show a general error text.
 
-      switch (element) {
+      switch (inputElement) {
         case ageInput:
           errorTextElement.innerText = errorText.age;
           break;
@@ -2039,18 +2025,19 @@ function initTDEECalculator(page) {
       resultTextWrap.style.display = "none";
     }
 
-    gsap.to(element, {
+    gsap.to(errorElement, {
       autoAlpha: 1,
       duration: 0.25,
     });
   }
-  function hideInputError(element) {
-    element.classList.remove("error");
+
+  function hideInputError(errorElement, inputElement) {
+    inputElement.classList.remove("error");
     errorTextWrap.style.display = "none";
     errorTextElement.innerText = "";
     resultTextWrap.style.display = "flex";
 
-    gsap.to(element, {
+    gsap.to(errorElement, {
       autoAlpha: 0,
       duration: 0.25,
     });
@@ -2088,44 +2075,44 @@ function initTDEECalculator(page) {
   ageInput.addEventListener("input", () => {
     ageError = singleInputCheck(ageInput, ageMIN, ageMAX);
     if (!ageError && !heightError && !weightError && !selectError) { 
-      hideInputError(ageErrorElement);
+      hideInputError(ageErrorElement, ageInput);
       calcTDEE();
      } else {
       if (calculated) {
-        showInputError(ageErrorElement);
+        showInputError(ageErrorElement, ageInput);
       }
     }
   });
   heightInput.addEventListener("input", () => {
     heightError = singleInputCheck(heightInput, heightMIN, heightMAX);
     if (!ageError && !heightError && !weightError && !selectError) { 
-      hideInputError(heightErrorElement);
+      hideInputError(heightErrorElement, heightInput);
       calcTDEE();
      } else {
       if (calculated) {
-        showInputError(heightErrorElement);
+        showInputError(heightErrorElement, heightInput);
       }
     }
   }); 
   weightInput.addEventListener("input", () => {
     weightError = singleInputCheck(weightInput, weightMIN, weightMAX);
     if (!ageError && !heightError && !weightError && !selectError) { 
-      hideInputError(weightErrorElement);
+      hideInputError(weightErrorElement, weightInput);
       calcTDEE();
      } else {
       if (calculated) {
-        showInputError(weightErrorElement);
+        showInputError(weightErrorElement, weightInput);
       }
     }
   });
   activitySelect.addEventListener("change", () => {
     selectError = selectCheck();
     if (!ageError && !heightError && !weightError && !selectError) { 
-      hideInputError(selectErrorElement);
+      hideInputError(selectErrorElement, activitySelect);
       calcTDEE();
      } else {
       if (calculated) {
-        showInputError(selectErrorElement);
+        showInputError(selectErrorElement, activitySelect);
       }
     }
   });
