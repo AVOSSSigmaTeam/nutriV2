@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.99";
+const version = "2.0.99.1";
 
 history.scrollRestoration = "manual";
 
@@ -64,7 +64,7 @@ function initOnceFunctions() {
   if (onceFunctionsInitialized) return;
   onceFunctionsInitialized = true;
 
-  initCrossPageAnchorLinks();
+  // initCrossPageAnchorLinks();
 
   // Runs once on first load
   // if (has('[data-something]')) initSomething();
