@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.95";
+const version = "2.0.97";
 
 history.scrollRestoration = "manual";
 
@@ -216,7 +216,7 @@ async function runPageEnterAnimation(next) {
 
   const getY = normalizePaths(transitionLogoPath);
 
-  await resetPage(next);
+  // await resetPage(next);
 
   const tl = gsap.timeline();
 
@@ -284,8 +284,13 @@ async function runPageEnterAnimation(next) {
   tl.add("pageReady");
   // tl.call(resetPage, [next], "pageReady");
 
+  // return new Promise(resolve => {
+  //   tl.call(resolve, [], "pageReady");
+  // });
   return new Promise(resolve => {
-    tl.call(resolve, [], "pageReady");
+    tl.call(() => {
+      resetPage(next).then(resolve);
+    }, [], "pageReady");
   });
 }
 
@@ -644,7 +649,15 @@ function initLenis() {
 function resetPage(container, { scrollAnchor = true } = {}) {
 // function resetPage(container) {
   
-  window.scrollTo(0, 0);
+  // window.scrollTo(0, 0);
+  if (hasLenis && lenis && typeof lenis.scrollTo === "function") {
+    lenis.scrollTo(0, {
+      immediate: true,
+      force: true
+    });
+  } else {
+    window.scrollTo(0, 0);
+  }
   if (DEBUG) console.log("Page scroll reset to top");
 
   gsap.set(container, {
