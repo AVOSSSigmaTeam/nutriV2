@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.94";
+const version = "2.0.95";
 
 history.scrollRestoration = "manual";
 
@@ -55,9 +55,6 @@ const colors = {
 }
 
 let pendingAnchorHash = window.location.hash || null;
-
-let leaveAnimationDone = Promise.resolve();
-let resolveLeaveAnimationDone = null;
 
 
 // FUNCTION REGISTRY
@@ -234,8 +231,7 @@ async function runPageEnterAnimation(next) {
   //   tl.set(next, { backgroundColor: "blue" }, 0);
   // }
 
-  // tl.add("startEnter", 1.35);
-  tl.add("startEnter", 0.15);
+  tl.add("startEnter", 1.35);
 
   tl.set(next, {
     autoAlpha: 1,
@@ -500,38 +496,6 @@ barba.hooks.afterEnter(data => {
 
 });
 
-// barba.init({
-//   debug: DEBUG,
-//   timeout: 7000,
-//   preventRunning: true,
-//   transitions: [
-//     {
-//       name: "default",
-//       sync: true,
-
-//       async once(data) {
-//         if (DEBUG) console.log("Barba init once", version);
-//         initOnceFunctions();
-//         applyThemeFrom(data.next.container);
-
-//         await runFirstLoadAnimation(data.next.container);
-//       },
-
-//       // Current page leaves
-//       async leave(data) {
-//         if (DEBUG) console.log("Barba leave");
-//         return runPageLeaveAnimation(data.current.container, data.next.container);
-//       },
-
-//       // New page enters
-//       async enter(data) {
-//         if (DEBUG) console.log("Barba enter");
-//         return runPageEnterAnimation(data.next.container);
-//       },
-
-//     }
-//   ],
-// });
 barba.init({
   debug: DEBUG,
   timeout: 7000,
@@ -539,29 +503,28 @@ barba.init({
   transitions: [
     {
       name: "default",
-      sync: false,
-
-      before() {
-        leaveAnimationDone = new Promise(resolve => {
-          resolveLeaveAnimationDone = resolve;
-        });
-      },
+      sync: true,
 
       async once(data) {
+        if (DEBUG) console.log("Barba init once", version);
         initOnceFunctions();
         applyThemeFrom(data.next.container);
+
         await runFirstLoadAnimation(data.next.container);
       },
 
+      // Current page leaves
       async leave(data) {
         if (DEBUG) console.log("Barba leave");
         return runPageLeaveAnimation(data.current.container, data.next.container);
       },
 
+      // New page enters
       async enter(data) {
         if (DEBUG) console.log("Barba enter");
         return runPageEnterAnimation(data.next.container);
       },
+
     }
   ],
 });
@@ -681,12 +644,7 @@ function initLenis() {
 function resetPage(container, { scrollAnchor = true } = {}) {
 // function resetPage(container) {
   
-  // window.scrollTo(0, 0);
-  if (lenis && typeof lenis.scrollTo === "function") {
-    lenis.scrollTo(0, { immediate: true, force: true });
-  } else {
-    window.scrollTo(0, 0);
-  }
+  window.scrollTo(0, 0);
   if (DEBUG) console.log("Page scroll reset to top");
 
   gsap.set(container, {
@@ -2466,6 +2424,3 @@ function initTestimonialMarqueeAnimation(page) {
 }
 
 // TODO handle anchor links
-
-
-// TODO init nav mobile menu animation
