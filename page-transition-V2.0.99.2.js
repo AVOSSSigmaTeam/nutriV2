@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.99.1";
+const version = "2.0.99.2";
 
 history.scrollRestoration = "manual";
 
@@ -196,17 +196,19 @@ function initAfterEnterFunctions(next) {
 
 // PAGE TRANSITIONS
 
-function normalizePaths(paths) {
-  const heights = Array.from(paths).map(p => p.getBBox().height);
-  const maxHeight = Math.max(...heights);
+function runPageOnceAnimation(next) {
+  const tl = gsap.timeline();
 
-  return (index) => {
-    const h = heights[index];
-    return (maxHeight / h) * 100;
-  };
+  tl.call(() => {
+    resetPage(next);
+    scrollToInitialHash(next);
+  }, null, 0);
+
+  return tl;
 }
 
-async function runPageEnterAnimation(next) {
+// async function runPageEnterAnimation(next) {
+function runPageEnterAnimation(next) {
   const transitionWrap = document.querySelector("[data-transition-wrap]");
   const transitionPanel = transitionWrap.querySelector("[data-transition-panel]");
   const transitionPanelTop = transitionWrap.querySelector("[data-transition-panel-top]");
@@ -216,7 +218,7 @@ async function runPageEnterAnimation(next) {
 
   const getY = normalizePaths(transitionLogoPath);
 
-  await resetPage(next);
+  // await resetPage(next);
 
   const tl = gsap.timeline();
 
@@ -282,95 +284,95 @@ async function runPageEnterAnimation(next) {
   }, ">");
 
   tl.add("pageReady");
-  // tl.call(resetPage, [next], "pageReady");
-
-  // return new Promise(resolve => {
-  //   tl.call(resolve, [], "pageReady");
-  // });
-  return new Promise(resolve => {
-    tl.call(() => {
-      resetPage(next).then(resolve);
-    }, [], "pageReady");
-  });
-}
-
-async function runFirstLoadAnimation(next) {
-// function runFirstLoadAnimation(next) {
-  const transitionWrap = document.querySelector("[data-transition-init-wrap]");
-  const transitionPanel = transitionWrap.querySelector("[data-transition-init-panel]");
-  const transitionPanelTop = transitionWrap.querySelector("[data-transition-init-panel-top]");
-  const transitionPanelBottom = transitionWrap.querySelector("[data-transition-init-panel-bottom]");
-  const transitionLogo = transitionWrap.querySelector("[data-transition-init-logo]");
-  const transitionLogoPath = transitionWrap.querySelectorAll("path");
-
-  const getY = normalizePaths(transitionLogoPath);
-
-  // await resetPage(next);
-
-  const tl = gsap.timeline();
-
-  tl.call(() => {
-    resetPage(next);
-    scrollToInitialHash(next);
-  }, null, 0);
-
-  if (reducedMotion) {
-    tl.set(next, { autoAlpha: 1 });
-    tl.add("pageReady");
-    tl.call(resetPage, [next], "pageReady");
-    return new Promise(resolve => tl.call(resolve, [], "pageReady"));
-  }
-
-  tl.add("startEnter", 1.35);
-
-  tl.to(transitionPanel, {
-    yPercent: -200,
-    duration: 1,
-    overwrite: "auto",
-    immediateRender: false
-  }, "startEnter");
-
-  tl.to(transitionPanelBottom, {
-    scaleY: 0,
-    duration: 1,
-  }, "<");
-
-  tl.to(transitionLogoPath, {
-    yPercent: (i) => -getY(i) * 1.3,
-    duration: 1.2,
-    ease: "expo.inOut",
-    stagger: {
-      each: -0.02
-    }
-  }, "startEnter-=0.4");
-
-  tl.fromTo(next, {
-    y: "25vh"
-  }, {
-    y: "0vh",
-    duration: 0.9,
-  }, "startEnter");
-
-  tl.set(transitionPanel, {
-    autoAlpha: 0
-  }, ">");
-
-  tl.set(transitionLogo, {
-    autoAlpha: 0
-  }, ">");
-
-  tl.set(transitionLogoPath, {
-    yPercent: 0
-  }, ">");
-
-  tl.add("pageReady");
-  // tl.call(resetPage, [next], "pageReady");
-  // await resetPage(next);
+  tl.call(resetPage, [next], "pageReady");
 
   return new Promise(resolve => {
     tl.call(resolve, [], "pageReady");
   });
+  // return new Promise(resolve => {
+  //   tl.call(() => {
+  //     resetPage(next).then(resolve);
+  //   }, [], "pageReady");
+  // });
 }
+
+// async function runFirstLoadAnimation(next) {
+// // function runFirstLoadAnimation(next) {
+//   const transitionWrap = document.querySelector("[data-transition-init-wrap]");
+//   const transitionPanel = transitionWrap.querySelector("[data-transition-init-panel]");
+//   const transitionPanelTop = transitionWrap.querySelector("[data-transition-init-panel-top]");
+//   const transitionPanelBottom = transitionWrap.querySelector("[data-transition-init-panel-bottom]");
+//   const transitionLogo = transitionWrap.querySelector("[data-transition-init-logo]");
+//   const transitionLogoPath = transitionWrap.querySelectorAll("path");
+
+//   const getY = normalizePaths(transitionLogoPath);
+
+//   // await resetPage(next);
+
+//   const tl = gsap.timeline();
+
+//   tl.call(() => {
+//     resetPage(next);
+//     scrollToInitialHash(next);
+//   }, null, 0);
+
+//   if (reducedMotion) {
+//     tl.set(next, { autoAlpha: 1 });
+//     tl.add("pageReady");
+//     tl.call(resetPage, [next], "pageReady");
+//     return new Promise(resolve => tl.call(resolve, [], "pageReady"));
+//   }
+
+//   tl.add("startEnter", 1.35);
+
+//   tl.to(transitionPanel, {
+//     yPercent: -200,
+//     duration: 1,
+//     overwrite: "auto",
+//     immediateRender: false
+//   }, "startEnter");
+
+//   tl.to(transitionPanelBottom, {
+//     scaleY: 0,
+//     duration: 1,
+//   }, "<");
+
+//   tl.to(transitionLogoPath, {
+//     yPercent: (i) => -getY(i) * 1.3,
+//     duration: 1.2,
+//     ease: "expo.inOut",
+//     stagger: {
+//       each: -0.02
+//     }
+//   }, "startEnter-=0.4");
+
+//   tl.fromTo(next, {
+//     y: "25vh"
+//   }, {
+//     y: "0vh",
+//     duration: 0.9,
+//   }, "startEnter");
+
+//   tl.set(transitionPanel, {
+//     autoAlpha: 0
+//   }, ">");
+
+//   tl.set(transitionLogo, {
+//     autoAlpha: 0
+//   }, ">");
+
+//   tl.set(transitionLogoPath, {
+//     yPercent: 0
+//   }, ">");
+
+//   tl.add("pageReady");
+//   // tl.call(resetPage, [next], "pageReady");
+//   // await resetPage(next);
+
+//   return new Promise(resolve => {
+//     tl.call(resolve, [], "pageReady");
+//   });
+// }
 
 function runPageLeaveAnimation(current, next) {
   const transitionWrap = document.querySelector("[data-transition-wrap]");
@@ -453,7 +455,7 @@ function runPageLeaveAnimation(current, next) {
   }, 0);
   
 
-  return tl;
+  // return tl;
 }
 
 
@@ -507,35 +509,63 @@ barba.hooks.afterEnter(data => {
 
 });
 
+// barba.init({
+//   debug: DEBUG,
+//   timeout: 7000,
+//   preventRunning: true,
+//   transitions: [
+//     {
+//       name: "default",
+//       sync: true,
+
+//       async once(data) {
+//         if (DEBUG) console.log("Barba init once", version);
+//         initOnceFunctions();
+//         applyThemeFrom(data.next.container);
+
+//         await runFirstLoadAnimation(data.next.container);
+//       },
+
+//       // Current page leaves
+//       async leave(data) {
+//         if (DEBUG) console.log("Barba leave");
+//         return runPageLeaveAnimation(data.current.container, data.next.container);
+//       },
+
+//       // New page enters
+//       async enter(data) {
+//         if (DEBUG) console.log("Barba enter");
+//         return runPageEnterAnimation(data.next.container);
+//       },
+
+//     }
+//   ],
+// });
 barba.init({
-  debug: DEBUG,
+  debug: true, // Set to 'false' in production
   timeout: 7000,
   preventRunning: true,
   transitions: [
     {
       name: "default",
       sync: true,
-
+      
+      // First load
       async once(data) {
-        if (DEBUG) console.log("Barba init once", version);
         initOnceFunctions();
-        applyThemeFrom(data.next.container);
 
-        await runFirstLoadAnimation(data.next.container);
+        return runPageOnceAnimation(data.next.container);
       },
 
       // Current page leaves
       async leave(data) {
-        if (DEBUG) console.log("Barba leave");
         return runPageLeaveAnimation(data.current.container, data.next.container);
       },
 
       // New page enters
       async enter(data) {
-        if (DEBUG) console.log("Barba enter");
         return runPageEnterAnimation(data.next.container);
-      },
-
+      }
     }
   ],
 });
@@ -666,6 +696,17 @@ function initBarbaNavUpdate(data) {
     var newClassList = next.getAttribute('class') || '';
     curr.setAttribute('class', newClassList);
   });
+}
+
+
+function normalizePaths(paths) {
+  const heights = Array.from(paths).map(p => p.getBBox().height);
+  const maxHeight = Math.max(...heights);
+
+  return (index) => {
+    const h = heights[index];
+    return (maxHeight / h) * 100;
+  };
 }
 
 
