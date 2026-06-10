@@ -55,6 +55,7 @@ const colors = {
 }
 
 let pendingAnchorHash = window.location.hash || null;
+const homePathAliases = new Set(["/", "/index", "/index.html"]);
 
 
 // FUNCTION REGISTRY
@@ -65,6 +66,7 @@ function initOnceFunctions() {
   onceFunctionsInitialized = true;
 
   // initCrossPageAnchorLinks();
+  initAnchorLinkHandling();
 
   // Runs once on first load
   // if (has('[data-something]')) initSomething();
@@ -486,6 +488,11 @@ barba.hooks.afterLeave(() => {
   if (DEBUG) console.log("Barba afterLeave");
 });
 
+barba.hooks.before(data => {
+  pendingAnchorHash = getNavigationHash(data?.trigger) || window.location.hash || null;
+  if (DEBUG) console.log("Barba before", pendingAnchorHash || "no hash");
+});
+
 barba.hooks.enter(data => {
   initBarbaNavUpdate(data);
   if (DEBUG) console.log("Barba enter hook");
@@ -545,6 +552,7 @@ barba.init({
   debug: true, // Set to 'false' in production
   timeout: 7000,
   preventRunning: true,
+  prevent: ({ el }) => shouldPreventBarbaNavigation(el),
   transitions: [
     {
       name: "default",
@@ -645,13 +653,22 @@ function initLenis() {
 }
 
 function resetPage(container) {
-  window.scrollTo(0, 0);
-    
-  scrollToInitialHash(container);
-
   gsap.set(container, {
     clearProps: "position,left,right,transform"
   });
+
+  if (hasLenis && lenis) {
+    lenis.resize();
+  }
+
+  if (hasScrollTrigger) {
+    ScrollTrigger.refresh();
+  }
+
+  const didScrollToHash = scrollToInitialHash(container, { immediate: true });
+  if (!didScrollToHash) {
+    scrollToPageTop();
+  }
 
   if (hasLenis) {
     lenis.resize();
@@ -712,29 +729,200 @@ function normalizePaths(paths) {
 }
 
 
-function scrollToInitialHash(container = document) {
-  const hash = window.location.hash;
-  if (!hash || hash === "#") return;
-  const target = container.querySelector(hash) || document.querySelector(hash);
-  if (!target) return;
-  // Reduced motion: jump
-  if (reducedMotion) {
-    target.scrollIntoView();
-    return;
+function getLinkUrl(link) {
+  if (!link) return null;
+
+  const href = link.getAttribute("href");
+  if (!href) return null;
+
+  try {
+    return new URL(href, window.location.href);
+  } catch {
+    return null;
   }
-  // Smooth: Lenis if available, else native smooth
+}
+
+function normalizePagePath(pathname) {
+  let path = pathname || "/";
+  path = path.replace(/\/+$/, "") || "/";
+
+  if (homePathAliases.has(path)) return "/";
+  if (path.endsWith(".html")) return path.slice(0, -5) || "/";
+
+  return path;
+}
+
+function normalizeAnchorUrl(url) {
+  const normalizedUrl = new URL(url.href);
+
+  if (homePathAliases.has(normalizedUrl.pathname)) {
+    normalizedUrl.pathname = "/";
+  }
+
+  return normalizedUrl;
+}
+
+function isPlainLeftClick(event) {
+  return event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
+}
+
+function shouldHandleAnchorLink(link, event) {
+  if (!link || !event || event.defaultPrevented || !isPlainLeftClick(event)) return false;
+  if (link.hasAttribute("download")) return false;
+  if (link.target && link.target !== "_self") return false;
+  if (link.hasAttribute("data-transition-prevent")) return false;
+
+  const url = getLinkUrl(link);
+  if (!url || url.origin !== window.location.origin) return false;
+
+  return !!url.hash || link.getAttribute("href") === "#";
+}
+
+function shouldPreventBarbaNavigation(el) {
+  const link = el?.closest?.("a[href]") || el;
+  if (!link) return false;
+  if (link.hasAttribute("data-transition-prevent")) return true;
+
+  const url = getLinkUrl(link);
+  if (!url || url.origin !== window.location.origin) return false;
+
+  const currentPath = normalizePagePath(window.location.pathname);
+  const targetPath = normalizePagePath(normalizeAnchorUrl(url).pathname);
+
+  return !!url.hash && currentPath === targetPath;
+}
+
+function getNavigationHash(trigger) {
+  const link = trigger?.closest?.("a[href]") || trigger;
+  const url = getLinkUrl(link);
+
+  return url?.hash || null;
+}
+
+function getHashTarget(hash, container = document) {
+  if (!hash || hash === "#") return;
+  let id = hash.slice(1);
+
+  try {
+    id = decodeURIComponent(id);
+  } catch {
+    // Keep the original id when the hash contains an incomplete escape sequence.
+  }
+
+  const roots = [container, document].filter(Boolean);
+  for (const root of roots) {
+    if (root.getElementById) {
+      const directTarget = root.getElementById(id);
+      if (directTarget) return directTarget;
+    }
+
+    if (!root.querySelectorAll) continue;
+    const target = Array.from(root.querySelectorAll("[id]")).find(el => el.id === id);
+    if (target) return target;
+  }
+}
+
+function scrollToPageTop() {
+  if (hasLenis && lenis) {
+    lenis.scrollTo(0, {
+      immediate: true,
+      force: true,
+      lock: true,
+    });
+  } else {
+    window.scrollTo(0, 0);
+  }
+}
+
+function scrollToHash(hash, container = document, { immediate = false } = {}) {
+  const target = getHashTarget(hash, container);
+  if (!target) return;
+
+  if (reducedMotion || immediate) {
+    if (hasLenis && lenis) {
+      lenis.scrollTo(target, {
+        offset: 0,
+        immediate: true,
+        force: true,
+        lock: true,
+      });
+    } else {
+      const targetTop = target.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo(0, targetTop);
+    }
+
+    return true;
+  }
+
   if (hasLenis && lenis) {
     lenis.scrollTo(target, {
       offset: 0,
       duration: 1,
       immediate: false,
+      force: true,
       lock: true,
     });
   } else {
     target.scrollIntoView({ behavior: "smooth", block: "start" });
   }
+
+  return true;
 }
 
+function scrollToInitialHash(container = document, { immediate = true } = {}) {
+  const hash = pendingAnchorHash || window.location.hash;
+  if (!hash || hash === "#") {
+    pendingAnchorHash = null;
+    return false;
+  }
+
+  const didScroll = scrollToHash(hash, container, { immediate });
+  if (didScroll && window.location.hash !== hash) {
+    const url = new URL(window.location.href);
+    url.hash = hash;
+    history.replaceState(history.state, "", url.href);
+  }
+
+  pendingAnchorHash = null;
+
+  return !!didScroll;
+}
+
+function initAnchorLinkHandling() {
+  document.addEventListener("click", (event) => {
+    const link = event.target.closest?.("a[href]");
+    if (!shouldHandleAnchorLink(link, event)) return;
+
+    const originalUrl = getLinkUrl(link);
+    if (!originalUrl) return;
+
+    const normalizedUrl = normalizeAnchorUrl(originalUrl);
+    const currentPath = normalizePagePath(window.location.pathname);
+    const targetPath = normalizePagePath(normalizedUrl.pathname);
+    const isSamePageAnchor = currentPath === targetPath;
+
+    if (normalizedUrl.href !== originalUrl.href) {
+      link.href = normalizedUrl.href;
+    }
+
+    if (!normalizedUrl.hash || normalizedUrl.hash === "#") {
+      event.preventDefault();
+      pendingAnchorHash = null;
+      return;
+    }
+
+    pendingAnchorHash = normalizedUrl.hash;
+
+    if (!isSamePageAnchor) return;
+
+    event.preventDefault();
+
+    history.pushState(null, "", normalizedUrl.href);
+    scrollToHash(normalizedUrl.hash, document, { immediate: false });
+  }, true);
+
+  // if (DEBUG) console.log("Anchor link handling initialized");
+}
 
 // YOUR FUNCTIONS GO BELOW HERE
 
