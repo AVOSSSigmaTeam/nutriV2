@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.93";
+const version = "2.0.94";
 
 history.scrollRestoration = "manual";
 
@@ -375,10 +375,7 @@ function runPageLeaveAnimation(current, next) {
   const transitionLogoPath = transitionWrap.querySelectorAll("path");
 
   const tl = gsap.timeline({
-    onComplete: () => { 
-      current.remove();
-      // onDone();
-    }
+    onComplete: () => { current.remove(); }
   });
 
   if (reducedMotion) {
@@ -542,7 +539,7 @@ barba.init({
   transitions: [
     {
       name: "default",
-      sync: true,
+      sync: false,
 
       before() {
         leaveAnimationDone = new Promise(resolve => {
@@ -556,16 +553,13 @@ barba.init({
         await runFirstLoadAnimation(data.next.container);
       },
 
-      leave(data) {
-        return runPageLeaveAnimation(
-          data.current.container,
-          data.next.container,
-          () => resolveLeaveAnimationDone?.()
-        );
+      async leave(data) {
+        if (DEBUG) console.log("Barba leave");
+        return runPageLeaveAnimation(data.current.container, data.next.container);
       },
 
       async enter(data) {
-        await leaveAnimationDone;
+        if (DEBUG) console.log("Barba enter");
         return runPageEnterAnimation(data.next.container);
       },
     }
@@ -684,19 +678,15 @@ function initLenis() {
 //   if (DEBUG) console.log("Page reset");
 // }
 
-function scrollToTopImmediate() {
+function resetPage(container, { scrollAnchor = true } = {}) {
+// function resetPage(container) {
+  
+  // window.scrollTo(0, 0);
   if (lenis && typeof lenis.scrollTo === "function") {
     lenis.scrollTo(0, { immediate: true, force: true });
   } else {
     window.scrollTo(0, 0);
   }
-}
-
-function resetPage(container, { scrollAnchor = true } = {}) {
-// function resetPage(container) {
-  
-  // window.scrollTo(0, 0);
-  scrollToTopImmediate();
   if (DEBUG) console.log("Page scroll reset to top");
 
   gsap.set(container, {
