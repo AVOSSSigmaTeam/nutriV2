@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.98";
+const version = "2.0.99";
 
 history.scrollRestoration = "manual";
 
@@ -309,6 +309,11 @@ async function runFirstLoadAnimation(next) {
 
   const tl = gsap.timeline();
 
+  tl.call(() => {
+    resetPage(next);
+    scrollToInitialHash(next);
+  }, null, 0);
+
   if (reducedMotion) {
     tl.set(next, { autoAlpha: 1 });
     tl.add("pageReady");
@@ -360,7 +365,7 @@ async function runFirstLoadAnimation(next) {
 
   tl.add("pageReady");
   // tl.call(resetPage, [next], "pageReady");
-  await resetPage(next);
+  // await resetPage(next);
 
   return new Promise(resolve => {
     tl.call(resolve, [], "pageReady");
@@ -452,42 +457,25 @@ function runPageLeaveAnimation(current, next) {
 }
 
 
-barba.hooks.beforeLeave(data => {
-  freezeCurrentPage(data.current.container);
+
+barba.hooks.beforeEnter(data => {
+  // Position new container
+  gsap.set(data.next.container, {
+    position: "fixed",
+    left: 0,
+    right: 0,
+  });
 
   if (lenis && typeof lenis.stop === "function") {
     lenis.stop();
   }
-});
-
-// barba.hooks.beforeEnter(data => {
-//   // Position new container
-//   gsap.set(data.next.container, {
-//     position: "fixed",
-//     left: 0,
-//     right: 0,
-//   });
-
-//   if (lenis && typeof lenis.stop === "function") {
-//     lenis.stop();
-//   }
-
-//   initBeforeEnterFunctions(data.next.container);
-//   applyThemeFrom(data.next.container);
-
-//   if (DEBUG) console.log("Barba beforeEnter");
-// });
-
-barba.hooks.beforeEnter(data => {
-  gsap.set(data.next.container, {
-    autoAlpha: 0,
-  });
 
   initBeforeEnterFunctions(data.next.container);
   applyThemeFrom(data.next.container);
 
   if (DEBUG) console.log("Barba beforeEnter");
 });
+
 
 barba.hooks.afterLeave(() => {
   if (hasScrollTrigger) {
@@ -626,118 +614,21 @@ function initLenis() {
 
 }
 
-// function resetPage(container) {
-//   window.scrollTo(0, 0);
-
-//   gsap.set(container, {
-//     clearProps: "position,left,right,transform"
-//   });
-
-//   if (hasLenis) {
-//     lenis.resize();
-//     lenis.start();
-//   }
-
-//   if (DEBUG) console.log("Page reset");
-// }
-// function resetPage(container) {
-//   window.scrollTo(0, 0);
-
-//   gsap.set(container, {
-//     clearProps: "position,left,right,transform"
-//   });
-
-//   if (hasLenis) {
-//     lenis.resize();
-//     lenis.start();
-//   }
-
-//   requestAnimationFrame(() => {
-//     requestAnimationFrame(() => {
-//       if (hasLenis) lenis.resize();
-//       if (hasScrollTrigger) ScrollTrigger.refresh();
-
-//       scrollToPendingAnchor(container);
-//     });
-//   });
-
-//   if (DEBUG) console.log("Page reset");
-// }
-
-// function resetPage(container, { scrollAnchor = true } = {}) {
-// // function resetPage(container) {
-  
-//   // window.scrollTo(0, 0);
-//   if (hasLenis && lenis && typeof lenis.scrollTo === "function") {
-//     lenis.scrollTo(0, {
-//       immediate: true,
-//       force: true
-//     });
-//   } else {
-//     window.scrollTo(0, 0);
-//   }
-//   if (DEBUG) console.log("Page scroll reset to top");
-
-//   gsap.set(container, {
-//     clearProps: "position,left,right,transform"
-//   });
-
-//   if (hasLenis) {
-//     lenis.resize();
-//     lenis.start();
-//   }
-
-//   return new Promise(resolve => {
-//     requestAnimationFrame(() => {
-//       requestAnimationFrame(() => {
-//         if (hasLenis) lenis.resize();
-//         if (hasScrollTrigger) ScrollTrigger.refresh();
-
-//         if (scrollAnchor) {
-//           scrollToPendingAnchor(container);
-//         }
-
-//         if (DEBUG) console.log("Page reset");
-//         resolve();
-//       });
-//     });
-//   });
-// }
-
-function resetPage(container, { scrollAnchor = true, startLenis = true } = {}) {
-  if (hasLenis && lenis && typeof lenis.scrollTo === "function") {
-    lenis.scrollTo(0, {
-      immediate: true,
-      force: true
-    });
-  } else {
-    window.scrollTo(0, 0);
-  }
+function resetPage(container) {
+  window.scrollTo(0, 0);
 
   gsap.set(container, {
-    clearProps: "position,left,right,top,width,transform"
+    clearProps: "position,left,right,transform"
   });
 
   if (hasLenis) {
     lenis.resize();
-    if (startLenis) lenis.start();
+    lenis.start();
   }
 
-  return new Promise(resolve => {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        if (hasLenis) lenis.resize();
-        if (hasScrollTrigger) ScrollTrigger.refresh();
-
-        if (scrollAnchor) {
-          scrollToPendingAnchor(container);
-        }
-
-        resolve();
-      });
-    });
-  });
+  if (DEBUG) console.log("Page reset");
 }
+
 
 function debounceOnWidthChange(fn, ms) {
   let last = innerWidth,
@@ -778,120 +669,27 @@ function initBarbaNavUpdate(data) {
 }
 
 
-function getCleanUrl(url) {
-  const cleanUrl = new URL(url.href);
-  cleanUrl.hash = "";
-  return cleanUrl.href;
-}
-
-function normalizePath(pathname) {
-  return pathname.replace(/\/$/, "") || "/";
-}
-
-function isCrossPageAnchorLink(url) {
-  const current = new URL(window.location.href);
-
-  return (
-    url.origin === current.origin &&
-    url.hash &&
-    (
-      normalizePath(url.pathname) !== normalizePath(current.pathname) ||
-      url.search !== current.search
-    )
-  );
-}
-
-function initCrossPageAnchorLinks() { // TODO check if this function works propperly, as it is only called on first page load.
-  document.addEventListener("click", (event) => {
-    const link = event.target.closest("a[href]");
-    if (!link) return;
-    if (event.defaultPrevented) return;
-    if (event.button !== 0) return;
-    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    if (link.target && link.target !== "_self") return;
-    if (link.hasAttribute("download")) return;
-    if (link.closest("[data-barba-prevent]")) return;
-
-    const url = new URL(link.href);
-
-    if (!isCrossPageAnchorLink(url)) return;
-
-    pendingAnchorHash = url.hash;
-
-    event.preventDefault();
-    event.stopPropagation();
-
-    barba.go(getCleanUrl(url), link);
-  }, true);
-}
-
-function getAnchorTarget(container, hash) {
-  if (!hash) return null;
-
-  const id = decodeURIComponent(hash.slice(1));
-  if (!id) return null;
-
-  const escapedId = window.CSS?.escape ? CSS.escape(id) : id.replace(/["\\]/g, "\\$&");
-
-  return (
-    container.querySelector(`#${escapedId}`) ||
-    container.querySelector(`[name="${escapedId}"]`)
-  );
-}
-
-function scrollToPendingAnchor(container) {
-  if (!pendingAnchorHash) return;
-
-  const hash = pendingAnchorHash;
-  pendingAnchorHash = null;
-
-  const target = getAnchorTarget(container, hash);
+function scrollToInitialHash(container = document) {
+  const hash = window.location.hash;
+  if (!hash || hash === "#") return;
+  const target = container.querySelector(hash) || document.querySelector(hash);
   if (!target) return;
-
-  const nav = document.querySelector("[data-theme-nav]");
-  const offset = nav ? -nav.offsetHeight : 0;
-
-  if (history.replaceState) {
-    const url = new URL(window.location.href);
-    url.hash = hash;
-    history.replaceState(history.state, "", url.href);
+  // Reduced motion: jump
+  if (reducedMotion) {
+    target.scrollIntoView();
+    return;
   }
-
-  if (lenis && typeof lenis.scrollTo === "function") {
+  // Smooth: Lenis if available, else native smooth
+  if (hasLenis && lenis) {
     lenis.scrollTo(target, {
-      offset,
-      // duration: reducedMotion ? 0 : 5,
-      // lerp: reducedMotion ? 1 : lenisLerpValue,
-      // easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      // immediate: reducedMotion,
-      immediate: true,
-      force: true
+      offset: 0,
+      duration: 1,
+      immediate: false,
+      lock: true,
     });
   } else {
-    target.scrollIntoView({
-      behavior: reducedMotion ? "auto" : "smooth",
-      block: "start"
-    });
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
   }
-}
-
-function getScrollY() {
-  return lenis && typeof lenis.scroll === "number"
-    ? lenis.scroll
-    : window.scrollY || window.pageYOffset || 0;
-}
-
-function freezeCurrentPage(container) {
-  const scrollY = getScrollY();
-
-  gsap.set(container, {
-    position: "fixed",
-    top: -scrollY,
-    left: 0,
-    right: 0,
-    width: "100%",
-    zIndex: 1,
-  });
 }
 
 
