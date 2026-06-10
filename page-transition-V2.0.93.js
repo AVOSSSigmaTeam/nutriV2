@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.92";
+const version = "2.0.93";
 
 history.scrollRestoration = "manual";
 
@@ -377,7 +377,7 @@ function runPageLeaveAnimation(current, next) {
   const tl = gsap.timeline({
     onComplete: () => { 
       current.remove();
-      onDone();
+      // onDone();
     }
   });
 
