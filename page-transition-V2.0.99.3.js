@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.99.2";
+const version = "2.0.99.3";
 
 history.scrollRestoration = "manual";
 
@@ -201,7 +201,7 @@ function runPageOnceAnimation(next) {
 
   tl.call(() => {
     resetPage(next);
-    scrollToInitialHash(next);
+    // scrollToInitialHash(next);
   }, null, 0);
 
   return tl;
@@ -646,6 +646,8 @@ function initLenis() {
 
 function resetPage(container) {
   window.scrollTo(0, 0);
+    
+  scrollToInitialHash(container);
 
   gsap.set(container, {
     clearProps: "position,left,right,transform"
