@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.0.97";
+const version = "2.0.98";
 
 history.scrollRestoration = "manual";
 
@@ -216,7 +216,7 @@ async function runPageEnterAnimation(next) {
 
   const getY = normalizePaths(transitionLogoPath);
 
-  // await resetPage(next);
+  await resetPage(next);
 
   const tl = gsap.timeline();
 
@@ -452,18 +452,36 @@ function runPageLeaveAnimation(current, next) {
 }
 
 
-
-barba.hooks.beforeEnter(data => {
-  // Position new container
-  gsap.set(data.next.container, {
-    position: "fixed",
-    left: 0,
-    right: 0,
-  });
+barba.hooks.beforeLeave(data => {
+  freezeCurrentPage(data.current.container);
 
   if (lenis && typeof lenis.stop === "function") {
     lenis.stop();
   }
+});
+
+// barba.hooks.beforeEnter(data => {
+//   // Position new container
+//   gsap.set(data.next.container, {
+//     position: "fixed",
+//     left: 0,
+//     right: 0,
+//   });
+
+//   if (lenis && typeof lenis.stop === "function") {
+//     lenis.stop();
+//   }
+
+//   initBeforeEnterFunctions(data.next.container);
+//   applyThemeFrom(data.next.container);
+
+//   if (DEBUG) console.log("Barba beforeEnter");
+// });
+
+barba.hooks.beforeEnter(data => {
+  gsap.set(data.next.container, {
+    autoAlpha: 0,
+  });
 
   initBeforeEnterFunctions(data.next.container);
   applyThemeFrom(data.next.container);
@@ -646,10 +664,47 @@ function initLenis() {
 //   if (DEBUG) console.log("Page reset");
 // }
 
-function resetPage(container, { scrollAnchor = true } = {}) {
-// function resetPage(container) {
+// function resetPage(container, { scrollAnchor = true } = {}) {
+// // function resetPage(container) {
   
-  // window.scrollTo(0, 0);
+//   // window.scrollTo(0, 0);
+//   if (hasLenis && lenis && typeof lenis.scrollTo === "function") {
+//     lenis.scrollTo(0, {
+//       immediate: true,
+//       force: true
+//     });
+//   } else {
+//     window.scrollTo(0, 0);
+//   }
+//   if (DEBUG) console.log("Page scroll reset to top");
+
+//   gsap.set(container, {
+//     clearProps: "position,left,right,transform"
+//   });
+
+//   if (hasLenis) {
+//     lenis.resize();
+//     lenis.start();
+//   }
+
+//   return new Promise(resolve => {
+//     requestAnimationFrame(() => {
+//       requestAnimationFrame(() => {
+//         if (hasLenis) lenis.resize();
+//         if (hasScrollTrigger) ScrollTrigger.refresh();
+
+//         if (scrollAnchor) {
+//           scrollToPendingAnchor(container);
+//         }
+
+//         if (DEBUG) console.log("Page reset");
+//         resolve();
+//       });
+//     });
+//   });
+// }
+
+function resetPage(container, { scrollAnchor = true, startLenis = true } = {}) {
   if (hasLenis && lenis && typeof lenis.scrollTo === "function") {
     lenis.scrollTo(0, {
       immediate: true,
@@ -658,15 +713,14 @@ function resetPage(container, { scrollAnchor = true } = {}) {
   } else {
     window.scrollTo(0, 0);
   }
-  if (DEBUG) console.log("Page scroll reset to top");
 
   gsap.set(container, {
-    clearProps: "position,left,right,transform"
+    clearProps: "position,left,right,top,width,transform"
   });
 
   if (hasLenis) {
     lenis.resize();
-    lenis.start();
+    if (startLenis) lenis.start();
   }
 
   return new Promise(resolve => {
@@ -679,7 +733,6 @@ function resetPage(container, { scrollAnchor = true } = {}) {
           scrollToPendingAnchor(container);
         }
 
-        if (DEBUG) console.log("Page reset");
         resolve();
       });
     });
@@ -820,6 +873,25 @@ function scrollToPendingAnchor(container) {
       block: "start"
     });
   }
+}
+
+function getScrollY() {
+  return lenis && typeof lenis.scroll === "number"
+    ? lenis.scroll
+    : window.scrollY || window.pageYOffset || 0;
+}
+
+function freezeCurrentPage(container) {
+  const scrollY = getScrollY();
+
+  gsap.set(container, {
+    position: "fixed",
+    top: -scrollY,
+    left: 0,
+    right: 0,
+    width: "100%",
+    zIndex: 1,
+  });
 }
 
 
