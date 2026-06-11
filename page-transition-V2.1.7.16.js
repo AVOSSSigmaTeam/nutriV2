@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.1.7.15";
+const version = "2.1.7.16";
 
 history.scrollRestoration = "manual";
 
@@ -477,7 +477,9 @@ barba.hooks.afterEnter(data => {
     ScrollTrigger.refresh();
   }
 
-  scrollToInitialHash(data.next.container);
+  setTimeout(() => {
+    scrollToInitialHash(data.next.container);
+  }, 100);
 
   if (DEBUG) console.log("Barba afterEnter");
 });
