@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.1.7.2";
+const version = "2.1.7.3";
 
 history.scrollRestoration = "manual";
 
@@ -673,7 +673,7 @@ function scrollToInitialHash(container = document) {
   if (hasLenis && lenis) {
     lenis.scrollTo(target, {
       offset: 0,
-      duration: 1,
+      duration: 10,
       immediate: false,
       lock: true,
     });
