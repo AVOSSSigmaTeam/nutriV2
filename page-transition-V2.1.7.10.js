@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.1.7.9";
+const version = "2.1.7.10";
 
 history.scrollRestoration = "manual";
 
@@ -218,7 +218,6 @@ function runPageEnterAnimation(next) {
   //   tl.set(next, { backgroundColor: "blue" }, 0);
   // }
 
-
   tl.add("startEnter", 1.35);
 
   tl.set(next, {
@@ -277,7 +276,6 @@ function runPageEnterAnimation(next) {
   });
 }
 
-// async function runFirstLoadAnimation(next) {
 function runFirstLoadAnimation(next) {
   const transitionWrap = document.querySelector("[data-transition-init-wrap]");
   const transitionPanel = transitionWrap.querySelector("[data-transition-init-panel]");
@@ -288,8 +286,6 @@ function runFirstLoadAnimation(next) {
 
   const getY = normalizePaths(transitionLogoPath);
 
-  // await resetPage(next);
-
   const tl = gsap.timeline();
 
   if (reducedMotion) {
@@ -298,6 +294,8 @@ function runFirstLoadAnimation(next) {
     tl.call(resetPage, [next], "pageReady");
     return new Promise(resolve => tl.call(resolve, [], "pageReady"));
   }
+
+  scrollToInitialHash(next);
 
   tl.add("startEnter", 1.35);
 
@@ -343,7 +341,6 @@ function runFirstLoadAnimation(next) {
 
   tl.add("pageReady");
   tl.call(resetPage, [next], "pageReady");
-  // await resetPage(next);
 
   return new Promise(resolve => {
     tl.call(resolve, [], "pageReady");
