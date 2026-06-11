@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.1.7.13";
+const version = "2.1.7.14";
 
 history.scrollRestoration = "manual";
 
@@ -594,7 +594,7 @@ function resetPage(container) {
     clearProps: "position,left,right,transform"
   });
 
-  scrollToInitialHash(next);
+  scrollToInitialHash(container);
 
   if (hasLenis) {
     lenis.resize();
