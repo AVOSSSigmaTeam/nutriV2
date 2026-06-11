@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.1.1";
+const version = "2.1.2";
 
 history.scrollRestoration = "manual";
 
@@ -54,7 +54,6 @@ const colors = {
   "dark-BtnAnimatedArrow": "#212121"
 }
 
-let pendingAnchorHash = window.location.hash || null;
 
 
 // FUNCTION REGISTRY
@@ -195,16 +194,6 @@ function initAfterEnterFunctions(next) {
 
 // PAGE TRANSITIONS
 
-function normalizePaths(paths) {
-  const heights = Array.from(paths).map(p => p.getBBox().height);
-  const maxHeight = Math.max(...heights);
-
-  return (index) => {
-    const h = heights[index];
-    return (maxHeight / h) * 100;
-  };
-}
-
 // async function runPageEnterAnimation(next) {
 function runPageEnterAnimation(next) {
   const transitionWrap = document.querySelector("[data-transition-wrap]");
@@ -282,7 +271,7 @@ function runPageEnterAnimation(next) {
   }, ">");
 
   tl.add("pageReady");
-  // tl.call(resetPage, [next], "pageReady");
+  tl.call(resetPage, [next], "pageReady");
 
   return new Promise(resolve => {
     tl.call(resolve, [], "pageReady");
@@ -443,7 +432,7 @@ function runPageLeaveAnimation(current, next) {
   }, 0);
   
 
-  // return tl;
+  return tl;
 }
 
 
@@ -655,6 +644,17 @@ function initBarbaNavUpdate(data) {
     var newClassList = next.getAttribute('class') || '';
     curr.setAttribute('class', newClassList);
   });
+}
+
+
+function normalizePaths(paths) {
+  const heights = Array.from(paths).map(p => p.getBBox().height);
+  const maxHeight = Math.max(...heights);
+
+  return (index) => {
+    const h = heights[index];
+    return (maxHeight / h) * 100;
+  };
 }
 
 
