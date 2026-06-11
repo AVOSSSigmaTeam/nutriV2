@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.1.2";
+const version = "2.1.3";
 
 history.scrollRestoration = "manual";
 
@@ -194,7 +194,6 @@ function initAfterEnterFunctions(next) {
 
 // PAGE TRANSITIONS
 
-// async function runPageEnterAnimation(next) {
 function runPageEnterAnimation(next) {
   const transitionWrap = document.querySelector("[data-transition-wrap]");
   const transitionPanel = transitionWrap.querySelector("[data-transition-panel]");
@@ -205,14 +204,13 @@ function runPageEnterAnimation(next) {
 
   const getY = normalizePaths(transitionLogoPath);
 
-  // await resetPage(next);
-
   const tl = gsap.timeline();
 
   if (reducedMotion) {
     tl.set(next, { autoAlpha: 1 });
     tl.add("pageReady");
     tl.call(resetPage, [next], "pageReady");
+    scrollToInitialHash(next);
     return new Promise(resolve => tl.call(resolve, [], "pageReady"));
   }
 
@@ -270,16 +268,21 @@ function runPageEnterAnimation(next) {
     force3D: false
   }, ">");
 
-  tl.add("pageReady");
-  tl.call(resetPage, [next], "pageReady");
+  // tl.add("pageReady");
+  // tl.call(resetPage, [next], "pageReady");
 
-  return new Promise(resolve => {
-    tl.call(resolve, [], "pageReady");
-  });
+  // return new Promise(resolve => {
+  //   tl.call(resolve, [], "pageReady");
+  // });
+  tl.add("pageReady");
+  tl.call(() => {
+    resetPage(next);
+    scrollToInitialHash(next);
+  }, [], "pageReady");
 }
 
-async function runFirstLoadAnimation(next) {
-// function runFirstLoadAnimation(next) {
+// async function runFirstLoadAnimation(next) {
+function runFirstLoadAnimation(next) {
   const transitionWrap = document.querySelector("[data-transition-init-wrap]");
   const transitionPanel = transitionWrap.querySelector("[data-transition-init-panel]");
   const transitionPanelTop = transitionWrap.querySelector("[data-transition-init-panel-top]");
@@ -342,9 +345,19 @@ async function runFirstLoadAnimation(next) {
     yPercent: 0
   }, ">");
 
+  // tl.add("pageReady");
+  // // tl.call(resetPage, [next], "pageReady");
+  // await resetPage(next);
+
+  // return new Promise(resolve => {
+  //   tl.call(resolve, [], "pageReady");
+  // });
+
   tl.add("pageReady");
-  // tl.call(resetPage, [next], "pageReady");
-  await resetPage(next);
+  tl.call(() => {
+    resetPage(next);
+    scrollToInitialHash(next);
+  }, [], "pageReady");
 
   return new Promise(resolve => {
     tl.call(resolve, [], "pageReady");
@@ -655,6 +668,30 @@ function normalizePaths(paths) {
     const h = heights[index];
     return (maxHeight / h) * 100;
   };
+}
+
+
+function scrollToInitialHash(container = document) {
+  const hash = window.location.hash;
+  if (!hash || hash === "#") return;
+  const target = container.querySelector(hash) || document.querySelector(hash);
+  if (!target) return;
+  // Reduced motion: jump
+  if (reducedMotion) {
+    target.scrollIntoView();
+    return;
+  }
+  // Smooth: Lenis if available, else native smooth
+  if (hasLenis && lenis) {
+    lenis.scrollTo(target, {
+      offset: 0,
+      duration: 1,
+      immediate: false,
+      lock: true,
+    });
+  } else {
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 }
 
 
