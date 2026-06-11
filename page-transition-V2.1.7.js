@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.1.6";
+const version = "2.1.7";
 
 history.scrollRestoration = "manual";
 
@@ -188,6 +188,9 @@ function initAfterEnterFunctions(next) {
   if (hasScrollTrigger) {
     ScrollTrigger.refresh();
   }
+
+  scrollToInitialHash(nextPage);
+
 }
 
 
@@ -209,12 +212,7 @@ function runPageEnterAnimation(next) {
   if (reducedMotion) {
     tl.set(next, { autoAlpha: 1 });
     tl.add("pageReady");
-    // tl.call(resetPage, [next], "pageReady");
-    // scrollToInitialHash(next);
-    tl.call(() => {
-      resetPage(next, { scrollTop: false });
-      scrollToInitialHash(next, { immediate: true });
-    }, [], "pageReady");
+    tl.call(resetPage, [next], "pageReady");
     return new Promise(resolve => tl.call(resolve, [], "pageReady"));
   }
 
@@ -222,7 +220,6 @@ function runPageEnterAnimation(next) {
   //   tl.set(next, { backgroundColor: "blue" }, 0);
   // }
 
-  const hashTarget = getInitialHashTarget(next);
 
   tl.add("startEnter", 1.35);
 
@@ -261,26 +258,9 @@ function runPageEnterAnimation(next) {
     duration: 1,
   }, "startEnter");
 
-  tl.add("contentSettled", ">");
-
-  if (hashTarget) {
-    tl.call(() => {
-      resetPage(next, { scrollTop: false });
-
-      if (hasScrollTrigger) {
-        ScrollTrigger.refresh();
-      }
-
-      scrollToInitialHash(next, { immediate: true });
-    }, [], "contentSettled");
-  }
-
-  // tl.set(transitionPanel, {
-  //   autoAlpha: 0
-  // }, ">");
   tl.set(transitionPanel, {
     autoAlpha: 0
-  }, hashTarget ? "contentSettled+=0.05" : ">");
+  }, ">");
 
   tl.set(transitionLogo, {
     autoAlpha: 0
@@ -291,24 +271,8 @@ function runPageEnterAnimation(next) {
     force3D: false
   }, ">");
 
-  // tl.add("pageReady");
-  // tl.call(resetPage, [next], "pageReady");
-
-  // return new Promise(resolve => {
-  //   tl.call(resolve, [], "pageReady");
-  // });
-
-  // tl.add("pageReady");
-  // tl.call(() => {
-  //   resetPage(next);
-  //   scrollToInitialHash(next);
-  // }, [], "pageReady");
-
   tl.add("pageReady");
-
-  if (!hashTarget) {
-    tl.call(resetPage, [next], "pageReady");
-  }
+  tl.call(resetPage, [next], "pageReady");
 
   return new Promise(resolve => {
     tl.call(resolve, [], "pageReady");
@@ -369,26 +333,9 @@ function runFirstLoadAnimation(next) {
     duration: 1,
   }, "startEnter");
 
-  tl.add("contentSettled", ">");
-
-  if (hashTarget) {
-    tl.call(() => {
-      resetPage(next, { scrollTop: false });
-
-      if (hasScrollTrigger) {
-        ScrollTrigger.refresh();
-      }
-
-      scrollToInitialHash(next, { immediate: true });
-    }, [], "contentSettled");
-  }
-
-  // tl.set(transitionPanel, {
-  //   autoAlpha: 0
-  // }, ">");
   tl.set(transitionPanel, {
     autoAlpha: 0
-  }, hashTarget ? "contentSettled+=0.05" : ">");
+  }, ">");
 
   tl.set(transitionLogo, {
     autoAlpha: 0
@@ -398,28 +345,9 @@ function runFirstLoadAnimation(next) {
     yPercent: 0
   }, ">");
 
-  // tl.add("pageReady");
-  // // tl.call(resetPage, [next], "pageReady");
-  // await resetPage(next);
-
-  // return new Promise(resolve => {
-  //   tl.call(resolve, [], "pageReady");
-  // });
-
-  // tl.add("pageReady");
-  // tl.call(() => {
-  //   resetPage(next);
-  //   scrollToInitialHash(next);
-  // }, [], "pageReady");
-
-  // return new Promise(resolve => {
-  //   tl.call(resolve, [], "pageReady");
-  // });
   tl.add("pageReady");
-
-  if (!hashTarget) {
-    tl.call(resetPage, [next], "pageReady");
-  }
+  // tl.call(resetPage, [next], "pageReady");
+  await resetPage(next);
 
   return new Promise(resolve => {
     tl.call(resolve, [], "pageReady");
@@ -667,26 +595,8 @@ function initLenis() {
 
 }
 
-// function resetPage(container) {
-//   window.scrollTo(0, 0);
-
-//   gsap.set(container, {
-//     clearProps: "position,left,right,transform"
-//   });
-
-//   if (hasLenis) {
-//     lenis.resize();
-//     lenis.start();
-//   }
-
-//   if (DEBUG) console.log("Page reset");
-// }
-function resetPage(container, options = {}) {
-  const { scrollTop = true } = options;
-
-  if (scrollTop) {
-    window.scrollTo(0, 0);
-  }
+function resetPage(container) {
+  window.scrollTo(0, 0);
 
   gsap.set(container, {
     clearProps: "position,left,right,transform"
@@ -751,58 +661,26 @@ function normalizePaths(paths) {
 }
 
 
-// function scrollToInitialHash(container = document) {
-//   const hash = window.location.hash;
-//   if (!hash || hash === "#") return;
-//   const target = container.querySelector(hash) || document.querySelector(hash);
-//   if (!target) return;
-//   // Reduced motion: jump
-//   if (reducedMotion) {
-//     target.scrollIntoView();
-//     return;
-//   }
-//   // Smooth: Lenis if available, else native smooth
-//   if (hasLenis && lenis) {
-//     lenis.scrollTo(target, {
-//       offset: 0,
-//       duration: 1,
-//       immediate: false,
-//       lock: true,
-//     });
-//   } else {
-//     target.scrollIntoView({ behavior: "smooth", block: "start" });
-//   }
-// }
-function scrollToInitialHash(container = document, options = {}) {
-  const { immediate = false, duration = 1.4, offset = 0 } = options;
-  const target = getInitialHashTarget(container);
-  if (!target) return false;
-
+function scrollToInitialHash(container = document) {
+  const hash = window.location.hash;
+  if (!hash || hash === "#") return;
+  const target = container.querySelector(hash) || document.querySelector(hash);
+  if (!target) return;
+  // Reduced motion: jump
+  if (reducedMotion) {
+    target.scrollIntoView();
+    return;
+  }
+  // Smooth: Lenis if available, else native smooth
   if (hasLenis && lenis) {
     lenis.scrollTo(target, {
-      offset,
-      duration: immediate || reducedMotion ? 0 : duration,
-      immediate: immediate || reducedMotion,
-      lock: !immediate,
+      offset: 0,
+      duration: 1,
+      immediate: false,
+      lock: true,
     });
   } else {
-    target.scrollIntoView({
-      behavior: immediate || reducedMotion ? "auto" : "smooth",
-      block: "start"
-    });
-  }
-
-  return true;
-}
-
-function getInitialHashTarget(container = document) {
-  const hash = window.location.hash;
-  if (!hash || hash === "#") return null;
-
-  try {
-    return container.querySelector(hash) || document.querySelector(hash);
-  } catch (e) {
-    return null;
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 }
 
