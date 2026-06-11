@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.1.7.3";
+const version = "2.1.7.4";
 
 history.scrollRestoration = "manual";
 
@@ -670,16 +670,16 @@ function scrollToInitialHash(container = document) {
     return;
   }
   // Smooth: Lenis if available, else native smooth
-  if (hasLenis && lenis) {
-    lenis.scrollTo(target, {
-      offset: 0,
-      duration: 10,
-      immediate: false,
-      lock: true,
-    });
-  } else {
+  // if (hasLenis && lenis) {
+  //   lenis.scrollTo(target, {
+  //     offset: 0,
+  //     duration: 10,
+  //     immediate: false,
+  //     lock: true,
+  //   });
+  // } else {
     target.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
+  // }
 }
 
 
