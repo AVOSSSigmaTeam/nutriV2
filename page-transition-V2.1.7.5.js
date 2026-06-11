@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.1.7.4";
+const version = "2.1.7.5";
 
 history.scrollRestoration = "manual";
 
@@ -188,8 +188,6 @@ function initAfterEnterFunctions(next) {
   if (hasScrollTrigger) {
     ScrollTrigger.refresh();
   }
-
-  scrollToInitialHash(nextPage);
 
 }
 
@@ -594,7 +592,8 @@ function initLenis() {
 }
 
 function resetPage(container) {
-  window.scrollTo(0, 0);
+  // window.scrollTo(0, 0);
+  scrollToInitialHash(container);
 
   gsap.set(container, {
     clearProps: "position,left,right,transform"
@@ -661,7 +660,10 @@ function normalizePaths(paths) {
 
 function scrollToInitialHash(container = document) {
   const hash = window.location.hash;
-  if (!hash || hash === "#") return;
+  if (!hash || hash === "#") { 
+    window.scrollTo(0, 0);
+    return;
+  }
   const target = container.querySelector(hash) || document.querySelector(hash);
   if (!target) return;
   // Reduced motion: jump
@@ -670,16 +672,16 @@ function scrollToInitialHash(container = document) {
     return;
   }
   // Smooth: Lenis if available, else native smooth
-  // if (hasLenis && lenis) {
-  //   lenis.scrollTo(target, {
-  //     offset: 0,
-  //     duration: 10,
-  //     immediate: false,
-  //     lock: true,
-  //   });
-  // } else {
+  if (hasLenis && lenis) {
+    lenis.scrollTo(target, {
+      offset: 0,
+      duration: 1,
+      immediate: false,
+      lock: true,
+    });
+  } else {
     target.scrollIntoView({ behavior: "smooth", block: "start" });
-  // }
+  }
 }
 
 
