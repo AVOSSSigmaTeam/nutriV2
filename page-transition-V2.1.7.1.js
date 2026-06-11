@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.1.7";
+const version = "2.1.7.1";
 
 history.scrollRestoration = "manual";
 
@@ -346,8 +346,8 @@ function runFirstLoadAnimation(next) {
   }, ">");
 
   tl.add("pageReady");
-  // tl.call(resetPage, [next], "pageReady");
-  await resetPage(next);
+  tl.call(resetPage, [next], "pageReady");
+  // await resetPage(next);
 
   return new Promise(resolve => {
     tl.call(resolve, [], "pageReady");
