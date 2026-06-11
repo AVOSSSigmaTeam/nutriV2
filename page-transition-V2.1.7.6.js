@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.1.7.5";
+const version = "2.1.7.6";
 
 history.scrollRestoration = "manual";
 
@@ -188,6 +188,8 @@ function initAfterEnterFunctions(next) {
   if (hasScrollTrigger) {
     ScrollTrigger.refresh();
   }
+
+  scrollToInitialHash(next);
 
 }
 
@@ -592,8 +594,7 @@ function initLenis() {
 }
 
 function resetPage(container) {
-  // window.scrollTo(0, 0);
-  scrollToInitialHash(container);
+  window.scrollTo(0, 0);
 
   gsap.set(container, {
     clearProps: "position,left,right,transform"
@@ -660,10 +661,7 @@ function normalizePaths(paths) {
 
 function scrollToInitialHash(container = document) {
   const hash = window.location.hash;
-  if (!hash || hash === "#") { 
-    window.scrollTo(0, 0);
-    return;
-  }
+  if (!hash || hash === "#") { return; }
   const target = container.querySelector(hash) || document.querySelector(hash);
   if (!target) return;
   // Reduced motion: jump
@@ -682,6 +680,7 @@ function scrollToInitialHash(container = document) {
   } else {
     target.scrollIntoView({ behavior: "smooth", block: "start" });
   }
+  if (DEBUG) console.log("Scrolled to hash #" + hash + "");
 }
 
 
