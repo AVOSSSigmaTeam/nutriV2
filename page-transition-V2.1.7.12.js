@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.1.7.11";
+const version = "2.1.7.12";
 
 history.scrollRestoration = "manual";
 
@@ -187,7 +187,7 @@ function initAfterEnterFunctions(next) {
     ScrollTrigger.refresh();
   }
 
-  // scrollToInitialHash(next);
+  scrollToInitialHash(next);
 
 }
 
