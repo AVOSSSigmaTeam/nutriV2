@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.1.7.6";
+const version = "2.1.7.7";
 
 history.scrollRestoration = "manual";
 
@@ -189,7 +189,7 @@ function initAfterEnterFunctions(next) {
     ScrollTrigger.refresh();
   }
 
-  scrollToInitialHash(next);
+  // scrollToInitialHash(next);
 
 }
 
@@ -215,6 +215,8 @@ function runPageEnterAnimation(next) {
     tl.call(resetPage, [next], "pageReady");
     return new Promise(resolve => tl.call(resolve, [], "pageReady"));
   }
+
+  scrollToInitialHash(next);
 
   // if (DEBUG) {
   //   tl.set(next, { backgroundColor: "blue" }, 0);
@@ -680,7 +682,7 @@ function scrollToInitialHash(container = document) {
   } else {
     target.scrollIntoView({ behavior: "smooth", block: "start" });
   }
-  if (DEBUG) console.log("Scrolled to hash #" + hash + "");
+  if (DEBUG) console.log("Scrolled to " + hash + "");
 }
 
 
