@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.1.7.7";
+const version = "2.1.7.8";
 
 history.scrollRestoration = "manual";
 
@@ -122,6 +122,7 @@ function initBeforeEnterFunctions(next) {
 
   };
 
+  scrollToInitialHash(next);
 
 }
 
@@ -215,8 +216,6 @@ function runPageEnterAnimation(next) {
     tl.call(resetPage, [next], "pageReady");
     return new Promise(resolve => tl.call(resolve, [], "pageReady"));
   }
-
-  scrollToInitialHash(next);
 
   // if (DEBUG) {
   //   tl.set(next, { backgroundColor: "blue" }, 0);
