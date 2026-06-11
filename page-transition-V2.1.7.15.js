@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.1.7.14";
+const version = "2.1.7.15";
 
 history.scrollRestoration = "manual";
 
@@ -476,6 +476,9 @@ barba.hooks.afterEnter(data => {
   if (hasScrollTrigger) {
     ScrollTrigger.refresh();
   }
+
+  scrollToInitialHash(data.next.container);
+
   if (DEBUG) console.log("Barba afterEnter");
 });
 
@@ -593,8 +596,6 @@ function resetPage(container) {
   gsap.set(container, {
     clearProps: "position,left,right,transform"
   });
-
-  scrollToInitialHash(container);
 
   if (hasLenis) {
     lenis.resize();
