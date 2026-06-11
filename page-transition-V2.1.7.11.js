@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.1.7.10";
+const version = "2.1.7.11";
 
 history.scrollRestoration = "manual";
 
@@ -295,8 +295,6 @@ function runFirstLoadAnimation(next) {
     return new Promise(resolve => tl.call(resolve, [], "pageReady"));
   }
 
-  scrollToInitialHash(next);
-
   tl.add("startEnter", 1.35);
 
   tl.to(transitionPanel, {
@@ -341,6 +339,7 @@ function runFirstLoadAnimation(next) {
 
   tl.add("pageReady");
   tl.call(resetPage, [next], "pageReady");
+  scrollToInitialHash(next);
 
   return new Promise(resolve => {
     tl.call(resolve, [], "pageReady");
@@ -451,13 +450,10 @@ barba.hooks.beforeEnter(data => {
   if (DEBUG) console.log("Barba beforeEnter");
 });
 
-// barba.hooks.afterLeave(() => {
-barba.hooks.afterLeave(data => {
+barba.hooks.afterLeave(() => {
   if (hasScrollTrigger) {
     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
   }
-
-  scrollToInitialHash(data.next.container);
 
   if (DEBUG) console.log("Barba afterLeave");
 });
@@ -468,7 +464,6 @@ barba.hooks.enter(data => {
 })
 
 barba.hooks.afterEnter(data => {
-
   // Run page functions
   initAfterEnterFunctions(data.next.container);
 
@@ -482,7 +477,6 @@ barba.hooks.afterEnter(data => {
     ScrollTrigger.refresh();
   }
   if (DEBUG) console.log("Barba afterEnter");
-
 });
 
 barba.init({
@@ -594,6 +588,7 @@ function initLenis() {
 
 function resetPage(container) {
   window.scrollTo(0, 0);
+  if (DEBUG) console.log("scrolled to 0");
 
   gsap.set(container, {
     clearProps: "position,left,right,transform"
@@ -604,7 +599,7 @@ function resetPage(container) {
     lenis.start();
   }
 
-  if (DEBUG) console.log("Page reset");
+  // if (DEBUG) console.log("Page reset");
 }
 
 
