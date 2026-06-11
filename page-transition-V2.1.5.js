@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.1.4";
+const version = "2.1.5";
 
 history.scrollRestoration = "manual";
 
@@ -220,13 +220,6 @@ function runPageEnterAnimation(next) {
 
   const hashTarget = getInitialHashTarget(next);
 
-  if (hashTarget) {
-    tl.call(() => {
-      resetPage(next, { scrollTop: false });
-      scrollToInitialHash(next, { immediate: true });
-    }, [], "startEnter-=0.05");
-  }
-
   tl.add("startEnter", 1.35);
 
   tl.set(next, {
@@ -264,9 +257,26 @@ function runPageEnterAnimation(next) {
     duration: 1,
   }, "startEnter");
 
+  tl.add("contentSettled", ">");
+
+  if (hashTarget) {
+    tl.call(() => {
+      resetPage(next, { scrollTop: false });
+
+      if (hasScrollTrigger) {
+        ScrollTrigger.refresh();
+      }
+
+      scrollToInitialHash(next, { immediate: true });
+    }, [], "contentSettled");
+  }
+
+  // tl.set(transitionPanel, {
+  //   autoAlpha: 0
+  // }, ">");
   tl.set(transitionPanel, {
     autoAlpha: 0
-  }, ">");
+  }, hashTarget ? "contentSettled+=0.05" : ">");
 
   tl.set(transitionLogo, {
     autoAlpha: 0
@@ -325,13 +335,6 @@ function runFirstLoadAnimation(next) {
 
   const hashTarget = getInitialHashTarget(next);
 
-  if (hashTarget) {
-    tl.call(() => {
-      resetPage(next, { scrollTop: false });
-      scrollToInitialHash(next, { immediate: true });
-    }, [], "startEnter-=0.05");
-  }
-
   tl.add("startEnter", 1.35);
 
   tl.to(transitionPanel, {
@@ -359,12 +362,29 @@ function runFirstLoadAnimation(next) {
     y: "25vh"
   }, {
     y: "0vh",
-    duration: 0.9,
+    duration: 1,
   }, "startEnter");
 
+  tl.add("contentSettled", ">");
+
+  if (hashTarget) {
+    tl.call(() => {
+      resetPage(next, { scrollTop: false });
+
+      if (hasScrollTrigger) {
+        ScrollTrigger.refresh();
+      }
+
+      scrollToInitialHash(next, { immediate: true });
+    }, [], "contentSettled");
+  }
+
+  // tl.set(transitionPanel, {
+  //   autoAlpha: 0
+  // }, ">");
   tl.set(transitionPanel, {
     autoAlpha: 0
-  }, ">");
+  }, hashTarget ? "contentSettled+=0.05" : ">");
 
   tl.set(transitionLogo, {
     autoAlpha: 0
@@ -479,7 +499,7 @@ function runPageLeaveAnimation(current, next) {
     y: "0vh"
   }, {
     y: "-15vh",
-    duration: 0.9,
+    duration: 1,
   }, 0);
   
 
