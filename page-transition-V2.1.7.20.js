@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.1.7.19";
+const version = "2.1.7.20";
 
 history.scrollRestoration = "manual";
 
@@ -447,6 +447,9 @@ barba.hooks.beforeEnter(data => {
   initBeforeEnterFunctions(data.next.container);
   applyThemeFrom(data.next.container);
 
+  // Set anchor before the loader/transition starts moving
+  scrollToInitialHash(data.next.container, { immediate: true });
+
   if (DEBUG) console.log("Barba beforeEnter");
 });
 
@@ -592,8 +595,13 @@ function initLenis() {
 }
 
 function resetPage(container) {
-  window.scrollTo(0, 0);
-  if (DEBUG) console.log("scrolled to 0");
+  const hasHash = window.location.hash && window.location.hash !== "#";
+
+  if (!hasHash) {
+    window.scrollTo(0, 0);
+  } else {
+    scrollToInitialHash(container, { immediate: true });
+  }
 
   gsap.set(container, {
     clearProps: "position,left,right,transform"
@@ -603,8 +611,6 @@ function resetPage(container) {
     lenis.resize();
     lenis.start();
   }
-
-  // if (DEBUG) console.log("Page reset");
 }
 
 
@@ -658,20 +664,23 @@ function normalizePaths(paths) {
 }
 
 
-function scrollToInitialHash(container = document) {
+function scrollToInitialHash(container = document, options = {}) {
   const hash = window.location.hash;
-  if (!hash || hash === "#") { return; }
+  if (!hash || hash === "#") return false;
+
   const target = container.querySelector(hash) || document.querySelector(hash);
-  if (!target) return;
-  // Reduced motion: jump
-  if (reducedMotion) {
-    target.scrollIntoView();
-    return;
+  if (!target) return false;
+
+  const { immediate = false, offset = 0 } = options;
+
+  if (reducedMotion || immediate) {
+    target.scrollIntoView({ behavior: "auto", block: "start" });
+    return true;
   }
-  // Smooth: Lenis if available, else native smooth
+
   if (hasLenis && lenis) {
     lenis.scrollTo(target, {
-      offset: 0,
+      offset,
       duration: 1,
       immediate: false,
       lock: true,
@@ -679,7 +688,8 @@ function scrollToInitialHash(container = document) {
   } else {
     target.scrollIntoView({ behavior: "smooth", block: "start" });
   }
-  if (DEBUG) console.log("Scrolled to " + hash + "");
+
+  return true;
 }
 
 
@@ -2297,3 +2307,7 @@ function initTestimonialMarqueeAnimation(page) {
 }
 
 // TODO handle anchor links
+  // try getting the anchor offset and setting the page reset scroll to that instead of 0
+  // Try clicking a ghost link instead of letting lenis handle the anchor
+
+// TODO test form validation and make sure the url error is not there
