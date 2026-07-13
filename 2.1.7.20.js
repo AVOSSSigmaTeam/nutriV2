@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "2.1.7.19";
+const version = "2.1.7.20";
 
 history.scrollRestoration = "manual";
 
@@ -187,7 +187,7 @@ function initAfterEnterFunctions(next) {
     ScrollTrigger.refresh();
   }
 
-  scrollToInitialHash(next);
+  // scrollToInitialHash(next);
 
 }
 
@@ -339,7 +339,7 @@ function runFirstLoadAnimation(next) {
 
   tl.add("pageReady");
   tl.call(resetPage, [next], "pageReady");
-  scrollToInitialHash(next);
+  // scrollToInitialHash(next);
 
   return new Promise(resolve => {
     tl.call(resolve, [], "pageReady");
@@ -658,29 +658,29 @@ function normalizePaths(paths) {
 }
 
 
-function scrollToInitialHash(container = document) {
-  const hash = window.location.hash;
-  if (!hash || hash === "#") { return; }
-  const target = container.querySelector(hash) || document.querySelector(hash);
-  if (!target) return;
-  // Reduced motion: jump
-  if (reducedMotion) {
-    target.scrollIntoView();
-    return;
-  }
-  // Smooth: Lenis if available, else native smooth
-  if (hasLenis && lenis) {
-    lenis.scrollTo(target, {
-      offset: 0,
-      duration: 1,
-      immediate: false,
-      lock: true,
-    });
-  } else {
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-  if (DEBUG) console.log("Scrolled to " + hash + "");
-}
+// function scrollToInitialHash(container = document) {
+//   const hash = window.location.hash;
+//   if (!hash || hash === "#") { return; }
+//   const target = container.querySelector(hash) || document.querySelector(hash);
+//   if (!target) return;
+//   // Reduced motion: jump
+//   if (reducedMotion) {
+//     target.scrollIntoView();
+//     return;
+//   }
+//   // Smooth: Lenis if available, else native smooth
+//   if (hasLenis && lenis) {
+//     lenis.scrollTo(target, {
+//       offset: 0,
+//       duration: 1,
+//       immediate: false,
+//       lock: true,
+//     });
+//   } else {
+//     target.scrollIntoView({ behavior: "smooth", block: "start" });
+//   }
+//   if (DEBUG) console.log("Scrolled to " + hash + "");
+// }
 
 
 // YOUR FUNCTIONS GO BELOW HERE
