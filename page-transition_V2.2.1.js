@@ -1,8 +1,11 @@
-gsap.registerPlugin(CustomEase);
+gsap.registerPlugin(CustomEase, ScrollTrigger);
+
+const version = "2.2.1";
 
 history.scrollRestoration = "manual";
 
 let lenis = null;
+const lenisLerpValue = 0.165;
 let nextPage = document;
 let onceFunctionsInitialized = false;
 
@@ -24,7 +27,32 @@ CustomEase.create("smooth", "M0,0 C0.38,0.005 0.215,1 1,1");
 CustomEase.create("outQuad", "M0,0 C0.25,0.46 0.45,0.94 1,1");
 gsap.defaults({ ease: "default", duration: durationDefault });
 
+const DEBUG = true;
 
+const colors = {
+  "color-Text": "#212121",
+  "main": "#63e89f",
+  "text": "#212121",
+  "color-White": "#fff",
+  "color-Background": "#f3f3f3",
+  "color-BigFooterBack": "#262626",
+  "color-FooterBlock": "#191919",
+  "color-DarkTint": "#191919",
+  "color-FooterDivider": "#f5f3f02e",
+  "white": "#fff",
+  "color-BtnAnimatedArrow": "#63e89f",
+  "background": "#f3f3f3",
+  "dark-FooterDivider": "#21212126",
+  "darkTint": "#191919",
+  "dark-Background": "#212121",
+  "border": "#f5f3f02e",
+  "dark-Text": "#fff",
+  "dark-White": "#191919",
+  "dark-DarkTint": "#f3f3f3",
+  "dark-BigFooterBack": "#f3f3f3",
+  "dark-FooterBlock": "#fff",
+  "dark-BtnAnimatedArrow": "#212121"
+}
 
 // FUNCTION REGISTRY
 
