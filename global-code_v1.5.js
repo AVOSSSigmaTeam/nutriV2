@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "1.4";
+const version = "1.5";
 
 history.scrollRestoration = "manual";
 
@@ -111,6 +111,86 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+function normalizePaths(paths) {
+  const heights = Array.from(paths).map(p => p.getBBox().height);
+  const maxHeight = Math.max(...heights);
+
+  return (index) => {
+    const h = heights[index];
+    return (maxHeight / h) * 100;
+  };
+}
+
+function runFirstLoadAnimation(next = document) {
+  const transitionWrap = document.querySelector("[data-transition-init-wrap]");
+  const transitionPanel = transitionWrap.querySelector("[data-transition-init-panel]");
+  const transitionPanelTop = transitionWrap.querySelector("[data-transition-init-panel-top]");
+  const transitionPanelBottom = transitionWrap.querySelector("[data-transition-init-panel-bottom]");
+  const transitionLogo = transitionWrap.querySelector("[data-transition-init-logo]");
+  const transitionLogoPath = transitionWrap.querySelectorAll("path");
+
+  const getY = normalizePaths(transitionLogoPath);
+
+  const tl = gsap.timeline();
+
+  // if (reducedMotion) {
+  //   tl.set(next, { autoAlpha: 1 });
+  //   tl.add("pageReady");
+  //   tl.call(resetPage, [next], "pageReady");
+  //   return new Promise(resolve => tl.call(resolve, [], "pageReady"));
+  // }
+
+  tl.add("startEnter", 1.35);
+
+  tl.to(transitionPanel, {
+    yPercent: -200,
+    duration: 1,
+    overwrite: "auto",
+    immediateRender: false
+  }, "startEnter");
+
+  tl.to(transitionPanelBottom, {
+    scaleY: 0,
+    duration: 1,
+  }, "<");
+
+  tl.to(transitionLogoPath, {
+    yPercent: (i) => -getY(i) * 1.3,
+    duration: 1.2,
+    ease: "expo.inOut",
+    stagger: {
+      each: -0.02
+    }
+  }, "startEnter-=0.4");
+
+  // tl.fromTo(next, {
+  //   y: "25vh"
+  // }, {
+  //   y: "0vh",
+  //   duration: 1,
+  // }, "startEnter");
+
+  tl.set(transitionPanel, {
+    autoAlpha: 0
+  }, ">");
+
+  tl.set(transitionLogo, {
+    autoAlpha: 0
+  }, ">");
+
+  tl.set(transitionLogoPath, {
+    yPercent: 0
+  }, ">");
+
+  // tl.add("pageReady");
+  // tl.call(resetPage, [next], "pageReady");
+  // scrollToInitialHash(next);
+
+  // return new Promise(resolve => {
+  //   tl.call(resolve, [], "pageReady");
+  // });
+}
+
 function initOnceFunctions() {
   initLenis();
   if (onceFunctionsInitialized) return;
@@ -123,6 +203,8 @@ function initOnceFunctions() {
   initNavLinkHoverAnimation();
   initNavButtonAnimation();
   initSkipLink();
+
+  runFirstLoadAnimation();
 }
 
 function initLenis() {
