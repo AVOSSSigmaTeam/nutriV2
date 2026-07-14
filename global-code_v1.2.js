@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "1.1";
+const version = "1.2";
 
 history.scrollRestoration = "manual";
 
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initOnceFunctions();
 
 
-  if (has('[data-faq-section]')) initFAQ();
+  if (has('[data-faq-item]')) initFAQ();
   if (has('[data-footer]')) {
     initFooterLinkHoverAnimation();
     setCopyrightYear();
@@ -99,6 +99,15 @@ document.addEventListener("DOMContentLoaded", () => {
   if (has('[data-form-validate]')) initBasicFormValidation();
 
   if (has('[data-plan-popup-wrapper]')) initPlanPopupV2();
+
+
+  if (hasLenis) {
+    lenis.resize();
+  }
+
+  if (hasScrollTrigger) {
+    ScrollTrigger.refresh();
+  }
 
 });
 
