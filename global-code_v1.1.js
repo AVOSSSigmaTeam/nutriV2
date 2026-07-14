@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "1.0";
+const version = "1.1";
 
 history.scrollRestoration = "manual";
 
@@ -114,6 +114,49 @@ function initOnceFunctions() {
   initNavLinkHoverAnimation();
   initNavButtonAnimation();
   initSkipLink();
+}
+
+function initLenis() {
+  if (lenis) return; // already created
+  if (!hasLenis) return;
+
+  lenis = new Lenis({
+    // lerp: 0.165,
+    lerp: lenisLerpValue,
+    wheelMultiplier: 1.25,
+  });
+
+  history.scrollRestoration = 'manual';
+
+  if (hasScrollTrigger) {
+    lenis.on("scroll", ScrollTrigger.update);
+  }
+
+  gsap.ticker.add((time) => {
+    lenis.raf(time * 1000);
+  });
+
+  gsap.ticker.lagSmoothing(0);
+
+  let disableScrollElements = document.querySelectorAll('[scrolldisable-element="disable"]');
+  let enableScrollElements = document.querySelectorAll('[scrolldisable-element="enable"]');
+
+  disableScrollElements.forEach(element => {
+    element.addEventListener('click', () => {
+      lenis.stop();
+      if (DEBUG) console.log("Lenis stopped due to click on", element);
+    })
+  });
+
+  enableScrollElements.forEach(element => {
+    element.addEventListener('click', () => {
+      lenis.start();
+      if (DEBUG) console.log("Lenis started due to click on", element);
+    })
+  });
+
+  if (DEBUG) console.log("Lenis initialized");
+
 }
 
 
