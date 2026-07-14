@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.0";
+const version = "3.1";
 
 history.scrollRestoration = "manual";
 
@@ -183,7 +183,7 @@ function initAfterEnterFunctions(next) {
     ScrollTrigger.refresh();
   }
 
-  // scrollToInitialHash(next);
+  scrollToInitialHash(next);
 
 }
 
@@ -335,14 +335,15 @@ function runFirstLoadAnimation(next) {
 
   tl.add("pageReady");
   tl.call(resetPage, [next], "pageReady");
-  // scrollToInitialHash(next);
+  scrollToInitialHash(next);
 
   return new Promise(resolve => {
     tl.call(resolve, [], "pageReady");
   });
 }
 
-function runPageLeaveAnimation(current, next) {
+// function runPageLeaveAnimation(current, next) {
+function runPageLeaveAnimation(current) {
   const transitionWrap = document.querySelector("[data-transition-wrap]");
   const transitionPanel = transitionWrap.querySelector("[data-transition-panel]");
   const transitionPanelTop = transitionWrap.querySelector("[data-transition-panel-top]");
@@ -381,9 +382,9 @@ function runPageLeaveAnimation(current, next) {
     yPercent: 0
   }, 0);
 
-  tl.set(next, {
-    autoAlpha: 0
-  }, 0);
+  // tl.set(next, {
+  //   autoAlpha: 0
+  // }, 0);
 
   tl.fromTo(transitionPanel, {
     yPercent: 0
@@ -473,9 +474,9 @@ barba.hooks.afterEnter(data => {
     ScrollTrigger.refresh();
   }
 
-  // setTimeout(() => {
-  //   scrollToInitialHash(data.next.container);
-  // }, 200);
+  setTimeout(() => {
+    scrollToInitialHash(data.next.container);
+  }, 200);
 
   if (DEBUG) console.log("Barba afterEnter");
 });
@@ -654,29 +655,29 @@ function normalizePaths(paths) {
 }
 
 
-// function scrollToInitialHash(container = document) {
-//   const hash = window.location.hash;
-//   if (!hash || hash === "#") { return; }
-//   const target = container.querySelector(hash) || document.querySelector(hash);
-//   if (!target) return;
-//   // Reduced motion: jump
-//   if (reducedMotion) {
-//     target.scrollIntoView();
-//     return;
-//   }
-//   // Smooth: Lenis if available, else native smooth
-//   if (hasLenis && lenis) {
-//     lenis.scrollTo(target, {
-//       offset: 0,
-//       duration: 1,
-//       immediate: false,
-//       lock: true,
-//     });
-//   } else {
-//     target.scrollIntoView({ behavior: "smooth", block: "start" });
-//   }
-//   if (DEBUG) console.log("Scrolled to " + hash + "");
-// }
+function scrollToInitialHash(container = document) {
+  const hash = window.location.hash;
+  if (!hash || hash === "#") { return; }
+  const target = container.querySelector(hash) || document.querySelector(hash);
+  if (!target) return;
+  // Reduced motion: jump
+  if (reducedMotion) {
+    target.scrollIntoView();
+    return;
+  }
+  // Smooth: Lenis if available, else native smooth
+  if (hasLenis && lenis) {
+    lenis.scrollTo(target, {
+      offset: 0,
+      duration: 1,
+      immediate: false,
+      lock: true,
+    });
+  } else {
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  if (DEBUG) console.log("Scrolled to " + hash + "");
+}
 
 
 // YOUR FUNCTIONS GO BELOW HERE
