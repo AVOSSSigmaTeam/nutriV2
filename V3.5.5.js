@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.5.4";
+const version = "3.5.5";
 
 history.scrollRestoration = "manual";
 
@@ -460,7 +460,7 @@ barba.hooks.afterEnter(data => {
   // Run page functions
   
   if (pendingHash != "") {
-    const target = data.next.container.querySelector(pendingHash);
+    const target = data.next.container.querySelector('#' + pendingHash);
     if (DEBUG) console.log(target);
     // if (hasLenis && lenis) {
     //   lenis.scrollTo(target, {
