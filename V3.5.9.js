@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.5.8";
+const version = "3.5.9";
 
 history.scrollRestoration = "manual";
 
@@ -471,6 +471,12 @@ barba.hooks.afterEnter(data => {
     ScrollTrigger.refresh();
   }
 
+  if (pendingHash != "" && pendingHash != undefined) {
+    const target = data.next.container.querySelector('#' + pendingHash);
+    // const target = container.querySelector('#' + pendingHash);
+    if (DEBUG) console.log(target);
+    target.scrollIntoView({ behavior: "instant", block: "start" });
+  }
   // setTimeout(() => {
   //   scrollToInitialHash(data.next.container);
   // }, 200);
@@ -588,13 +594,6 @@ function initLenis() {
 function resetPage(container) {
   window.scrollTo(0, 0);
   if (DEBUG) console.log("scrolled to 0");
-
-  if (pendingHash != "" && pendingHash != undefined) {
-    // const target = data.next.container.querySelector('#' + pendingHash);
-    const target = container.querySelector('#' + pendingHash);
-    if (DEBUG) console.log(target);
-    target.scrollIntoView({ behavior: "instant", block: "start" });
-  }
 
   gsap.set(container, {
     clearProps: "position,left,right,transform"
