@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.4";
+const version = "3.5";
 
 history.scrollRestoration = "manual";
 
@@ -434,16 +434,8 @@ barba.hooks.beforeEnter(data => {
   });
 
   if (pendingHash != "") {
-    // if (hasLenis && lenis) {
-    //   lenis.scrollTo(pendingHash, {
-    //     offset: 0,
-    //     duration: 1,
-    //     immediate: false,
-    //     lock: true,
-    //   });
-    // } else {
-      pendingHash.scrollIntoView({ behavior: "smooth", block: "start" });
-    // }
+    const target = container.querySelector(pendingHash) || document.querySelector(pendingHash);
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
 
