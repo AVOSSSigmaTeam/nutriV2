@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.5.12";
+const version = "3.5.14";
 
 history.scrollRestoration = "manual";
 
@@ -269,8 +269,9 @@ function runPageEnterAnimation(next) {
 
   if (pendingHash != "" && pendingHash != undefined) {
     // const target = data.next.container.querySelector('#' + pendingHash);
-    const target = next.container.querySelector('#' + pendingHash);
+    // const target = next.container.querySelector('#' + pendingHash);
     // const target = container.querySelector('#' + pendingHash);
+    const target = next.querySelector('#' + pendingHash);
     if (DEBUG) console.log(target);
     target.scrollIntoView({ behavior: "instant", block: "start" });
   }
