@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "1.2";
+const version = "1.3";
 
 history.scrollRestoration = "manual";
 
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (has('[data-steps-section]')) {
     initStepsFlowerAnimation();
-    initStepsProgressBarAnimation();
+    // initStepsProgressBarAnimation();
     initStepsScrollAnimation();
   }
 
@@ -929,6 +929,14 @@ function initFAQ(page = document) {
       }
     });
   });
+
+  if (hasLenis) {
+    lenis.resize();
+  }
+
+  if (hasScrollTrigger) {
+    ScrollTrigger.refresh();
+  }
 
   if (DEBUG) console.log("FAQ initialized");
 

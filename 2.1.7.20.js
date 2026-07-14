@@ -80,9 +80,7 @@ function initBeforeEnterFunctions(next) {
   // Runs before the enter animation
   // if (has('[data-something]')) initSomething();
 
-  if (has('[data-faq-section]')) {
-    initFAQ(nextPage);
-  }
+  if (has('[data-faq-section]')) initFAQ(nextPage);
 
   if (has('[data-footer]')) {
     initFooterLinkHoverAnimation(nextPage);
@@ -129,9 +127,7 @@ function initAfterEnterFunctions(next) {
   // Runs after enter animation completes
   // if (has('[data-something]')) initSomething();
 
-  if (has('[data-faq-section]')) {
-    initFAQSectionAnimation(nextPage);
-  }
+  if (has('[data-faq-section]')) initFAQSectionAnimation(nextPage);
 
   if (has('[data-footer]')) {
     initFooterSignature(nextPage);
@@ -2113,9 +2109,9 @@ function initNavLinkHoverAnimation() {
         duration: 0.3,
         ease: "smooth",
         overwrite: true,
-        onComplete: () => {
+        // onComplete: () => {
           // if (DEBUG) console.log("Nav links dimmed for hover effect");
-        },
+        // },
       });
 
       gsap.to(link, {
@@ -2135,9 +2131,9 @@ function initNavLinkHoverAnimation() {
       duration: 0.3,
       ease: "smooth",
       overwrite: true,
-      onComplete: () => {
+      // onComplete: () => {
         // if (DEBUG) console.log("Nav links opacity reset after hover");
-      },
+      // },
     });
   });
 
