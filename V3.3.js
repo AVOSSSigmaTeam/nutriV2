@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.2";
+const version = "3.3";
 
 history.scrollRestoration = "manual";
 
@@ -109,8 +109,8 @@ function initBeforeEnterFunctions(next) {
       initBlogPostDate(nextPage);
       break;
     // case "contact":
-      // initBasicFormValidation(nextPage);
-      // break;
+    // initBasicFormValidation(nextPage);
+    // break;
     case "bmi-calc":
       initBMICalculatorV2(nextPage);
       break;
@@ -342,7 +342,6 @@ function runFirstLoadAnimation(next) {
   });
 }
 
-// function runPageLeaveAnimation(current, next) {
 function runPageLeaveAnimation(current) {
   const transitionWrap = document.querySelector("[data-transition-wrap]");
   const transitionPanel = transitionWrap.querySelector("[data-transition-panel]");
@@ -382,10 +381,6 @@ function runPageLeaveAnimation(current) {
     yPercent: 0
   }, 0);
 
-  // tl.set(next, {
-  //   autoAlpha: 0
-  // }, 0);
-
   tl.fromTo(transitionPanel, {
     yPercent: 0
   }, {
@@ -412,17 +407,13 @@ function runPageLeaveAnimation(current) {
     ease: "expo.out",
   }, 0.25);
 
-  // if (DEBUG) {
-  //   tl.set(current, { backgroundColor: "red" }, 0);
-  // }
-
   tl.fromTo(current, {
     y: "0vh"
   }, {
     y: "-15vh",
     duration: 1,
   }, 0);
-  
+
 
   return tl;
 }
@@ -441,6 +432,21 @@ barba.hooks.beforeEnter(data => {
     left: 0,
     right: 0,
   });
+
+  if (pendingHash != "") {
+    if (hasLenis && lenis) {
+      lenis.scrollTo(pendingHash, {
+        offset: 0,
+        duration: 1,
+        immediate: false,
+        lock: true,
+      });
+    } else {
+      pendingHash.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
+
 
   if (lenis && typeof lenis.stop === "function") {
     lenis.stop();
@@ -776,7 +782,7 @@ function initPlanPopupV2(page) {
     gsap.killTweensOf([popupWrapper, allPopups, blurTargets]);
 
     gsap.timeline()
-    // .set(pageContainer, { zIndex: 0 }, 0)
+      // .set(pageContainer, { zIndex: 0 }, 0)
       .to(popup, { autoAlpha: 0 })
       .set(popup, { display: "none" })
       .to(popupWrapper, { display: "none" }, 0.01)
@@ -992,9 +998,9 @@ function setCopyrightYear(page) {
   // if (DEBUG) console.log("Copyright year set to", currentYear);
 
 }
-function initFooterLinkHoverAnimation(page) { 
+function initFooterLinkHoverAnimation(page) {
   const linkWraps = page.querySelectorAll("[data-footer-link-wrap]");
-  
+
   const canHover = () =>
     window.matchMedia("(hover: hover) and (pointer: fine)").matches &&
     window.innerWidth > 991;
@@ -1133,12 +1139,12 @@ function initFooterLogoFlowerSpin(page) {
 }
 
 //form specific
-function formRandomUUID(form) { 
+function formRandomUUID(form) {
   const uuid = crypto.randomUUID();
   const formName = form.getAttribute("data-name") || "Nova Poruka - ";
   const newFormName = formName + " #" + uuid;
   form.setAttribute("data-name", newFormName);
-  
+
   if (DEBUG) console.log("Form name changed to: " + form.getAttribute("data-name"));
 }
 function initBasicFormValidation(page) {
@@ -1492,20 +1498,20 @@ function initStepsFlowerAnimation(page) {
 
     // ScrollTrigger.matchMedia({
     //   "(min-width: 992px)": function () {
-        gsap.fromTo(flower, {
-          rotation: 0,
-        }, {
-          rotation: 360,
-          ease: "none",
-          scrollTrigger: {
-            trigger: step,
-            start: "top center",
-            end: "bottom center",
-            scrub: true,
-            markers: DEBUG,
-          }
-        });
+    gsap.fromTo(flower, {
+      rotation: 0,
+    }, {
+      rotation: 360,
+      ease: "none",
+      scrollTrigger: {
+        trigger: step,
+        start: "top center",
+        end: "bottom center",
+        scrub: true,
+        markers: DEBUG,
       }
+    });
+  }
   //   });
   // }
 
@@ -2119,7 +2125,7 @@ function initNavLinkHoverAnimation() {
         ease: "smooth",
         overwrite: true,
         // onComplete: () => {
-          // if (DEBUG) console.log("Nav links dimmed for hover effect");
+        // if (DEBUG) console.log("Nav links dimmed for hover effect");
         // },
       });
 
@@ -2141,7 +2147,7 @@ function initNavLinkHoverAnimation() {
       ease: "smooth",
       overwrite: true,
       // onComplete: () => {
-        // if (DEBUG) console.log("Nav links opacity reset after hover");
+      // if (DEBUG) console.log("Nav links opacity reset after hover");
       // },
     });
   });
