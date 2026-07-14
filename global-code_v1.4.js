@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "1.3";
+const version = "1.4";
 
 history.scrollRestoration = "manual";
 
@@ -1742,12 +1742,12 @@ function initClientMarqueeAnimation(page = document) {
         duration: 45,
         ease: "linear",
         repeat: -1,
-        scrollTrigger: {
-          trigger: track,
-          start: "top bottom",
-          toggleActions: "play none none none",
-          markers: DEBUG,
-        }
+        // scrollTrigger: {
+        //   trigger: track,
+        //   start: "top bottom",
+        //   toggleActions: "play none none none",
+        //   markers: DEBUG,
+        // }
       });
     });
   });
@@ -1775,12 +1775,12 @@ function initTestimonialMarqueeAnimation(page = document) {
         duration: 30,
         ease: "linear",
         repeat: -1,
-        scrollTrigger: {
-          trigger: section,
-          start: "top bottom",
-          toggleActions: "play none none none",
-          markers: DEBUG,
-        }
+        // scrollTrigger: {
+        //   trigger: section,
+        //   start: "top bottom",
+        //   toggleActions: "play none none none",
+        //   markers: DEBUG,
+        // }
       });
     });
   });
