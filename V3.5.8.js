@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.5.7";
+const version = "3.5.8";
 
 history.scrollRestoration = "manual";
 
@@ -589,8 +589,9 @@ function resetPage(container) {
   window.scrollTo(0, 0);
   if (DEBUG) console.log("scrolled to 0");
 
-  if (pendingHash != "") {
-    const target = data.next.container.querySelector('#' + pendingHash);
+  if (pendingHash != "" && pendingHash != undefined) {
+    // const target = data.next.container.querySelector('#' + pendingHash);
+    const target = container.querySelector('#' + pendingHash);
     if (DEBUG) console.log(target);
     target.scrollIntoView({ behavior: "instant", block: "start" });
   }
