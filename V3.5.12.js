@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.5.11";
+const version = "3.5.12";
 
 history.scrollRestoration = "manual";
 
@@ -267,6 +267,14 @@ function runPageEnterAnimation(next) {
   tl.add("pageReady");
   tl.call(resetPage, [next], "pageReady");
 
+  if (pendingHash != "" && pendingHash != undefined) {
+    // const target = data.next.container.querySelector('#' + pendingHash);
+    const target = next.container.querySelector('#' + pendingHash);
+    // const target = container.querySelector('#' + pendingHash);
+    if (DEBUG) console.log(target);
+    target.scrollIntoView({ behavior: "instant", block: "start" });
+  }
+
   return new Promise(resolve => {
     tl.call(resolve, [], "pageReady");
   });
@@ -504,12 +512,6 @@ barba.init({
       // New page enters
       async enter(data) {
         if (DEBUG) console.log("Barba enter");
-        if (pendingHash != "" && pendingHash != undefined) {
-          const target = data.next.container.querySelector('#' + pendingHash);
-          // const target = container.querySelector('#' + pendingHash);
-          if (DEBUG) console.log(target);
-          target.scrollIntoView({ behavior: "instant", block: "start" });
-        }
         return runPageEnterAnimation(data.next.container);
       },
 
