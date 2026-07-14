@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "1.5";
+const version = "1.6";
 
 history.scrollRestoration = "manual";
 
@@ -1084,30 +1084,30 @@ function initStepsFlowerAnimation(page = document) {
   // if (DEBUG) console.log("Steps flower animation initialized");
 
 }
-function initStepsProgressBarAnimation(page = document) {
-  const container = page.querySelector("[data-steps-container]");
-  if (!container) return;
-  const wrap = page.querySelector("[data-steps-progress-wrap]");
-  if (!wrap) return;
-  const progressBar = wrap.querySelector("[data-steps-progress-bar]");
-  if (!progressBar) return;
+// function initStepsProgressBarAnimation(page = document) {
+//   const container = page.querySelector("[data-steps-container]");
+//   if (!container) return;
+//   const wrap = page.querySelector("[data-steps-progress-wrap]");
+//   if (!wrap) return;
+//   const progressBar = wrap.querySelector("[data-steps-progress-bar]");
+//   if (!progressBar) return;
 
-  gsap.fromTo(progressBar, {
-    height: "0%",
-  }, {
-    height: "100%",
-    ease: "none",
-    scrollTrigger: {
-      trigger: container,
-      start: "top center",
-      end: "bottom center",
-      scrub: true,
-      markers: DEBUG,
-    }
-  });
+//   gsap.fromTo(progressBar, {
+//     height: "0%",
+//   }, {
+//     height: "100%",
+//     ease: "none",
+//     scrollTrigger: {
+//       trigger: container,
+//       start: "top center",
+//       end: "bottom center",
+//       scrub: true,
+//       markers: DEBUG,
+//     }
+//   });
 
-  // if (DEBUG) console.log("Steps progress bar animation initialized");
-}
+//   // if (DEBUG) console.log("Steps progress bar animation initialized");
+// }
 function initStepsScrollAnimation(page = document) {
   const steps = page.querySelectorAll("[data-step]");
   if (steps.length === 0) return;
@@ -1252,6 +1252,8 @@ function initBMICalculatorV2(page = document) {
 
   if (!heightInput || !weightInput) return;
 
+  let calculated = false;
+
   const rangeIndicator = page.querySelector("[data-bmi-range-indicator]");
   const rangeIndicatorTextWrap = page.querySelector("[data-bmi-indicator-text-wrap]");
   const rangeIndicatorText = page.querySelector("[data-bmi-indicator-text-main]");
@@ -1394,13 +1396,13 @@ function initBMICalculatorV2(page = document) {
     const weightEmptyError = weightState.empty && weightTouched;
 
     if (heightState.invalid || heightEmptyError) {
-      showError("height");
+      if (calculated) showError("height");
     } else {
       hideError("height");
     }
 
     if (weightState.invalid || weightEmptyError) {
-      showError("weight");
+      if (calculated) showError("weight");
     } else {
       hideError("weight");
     }
@@ -1454,6 +1456,7 @@ function initBMICalculatorV2(page = document) {
     }
 
     updateText(BMI);
+    calculated = true;
   }
 
   heightInput.addEventListener("input", () => {
