@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.6.14";
+const version = "3.6.15";
 
 history.scrollRestoration = "manual";
 
@@ -198,9 +198,6 @@ function runPageEnterAnimation(next) {
   const transitionPanelBottom = transitionWrap.querySelector("[data-transition-panel-bottom]");
   const transitionLogo = transitionWrap.querySelector("[data-transition-logo]");
   const transitionLogoPath = transitionWrap.querySelectorAll("path");
-  const skipLink = document.querySelector('[data-skip-link]');
-
-  gsap.set(skipLink, { autoAlpha: 0 });
 
   const getY = normalizePaths(transitionLogoPath);
 
@@ -209,8 +206,8 @@ function runPageEnterAnimation(next) {
   if (reducedMotion) {
     tl.set(next, { autoAlpha: 1 });
     tl.add("pageReady");
+    tl.call(scrollToPendingHash, [next], "pageReady");
     tl.call(resetPage, [next], "pageReady");
-    // tl.call(scrollToPendingHash, [next], "pageReady");
     return new Promise(resolve => tl.call(resolve, [], "pageReady"));
   }
 
@@ -267,10 +264,8 @@ function runPageEnterAnimation(next) {
   }, ">");
 
   tl.add("pageReady");
+  tl.call(scrollToPendingHash, [next], "pageReady");
   tl.call(resetPage, [next], "pageReady");
-  // tl.call(scrollToPendingHash, [next], "pageReady");
-
-  gsap.set(skipLink, { autoAlpha: 1 });
 
   return new Promise(resolve => tl.call(resolve, [], "pageReady"));
 }
@@ -282,9 +277,6 @@ function runFirstLoadAnimation(next) {
   const transitionPanelBottom = transitionWrap.querySelector("[data-transition-init-panel-bottom]");
   const transitionLogo = transitionWrap.querySelector("[data-transition-init-logo]");
   const transitionLogoPath = transitionWrap.querySelectorAll("path");
-  const skipLink = document.querySelector('[data-skip-link]');
-
-  gsap.set(skipLink, { autoAlpha: 0 });
 
   const getY = normalizePaths(transitionLogoPath);
 
@@ -293,8 +285,8 @@ function runFirstLoadAnimation(next) {
   if (reducedMotion) {
     tl.set(next, { autoAlpha: 1 });
     tl.add("pageReady");
+    tl.call(scrollToPendingHash, [next], "pageReady");
     tl.call(resetPage, [next], "pageReady");
-    // tl.call(scrollToPendingHash, [next], "pageReady");
     return new Promise(resolve => tl.call(resolve, [], "pageReady"));
   }
 
@@ -345,10 +337,8 @@ function runFirstLoadAnimation(next) {
   }, ">");
 
   tl.add("pageReady");
+  tl.call(scrollToPendingHash, [next], "pageReady");
   tl.call(resetPage, [next], "pageReady");
-  // tl.call(scrollToPendingHash, [next], "pageReady");
-
-  gsap.set(skipLink, { autoAlpha: 1 });
 
   return new Promise(resolve => tl.call(resolve, [], "pageReady"));
 }
@@ -613,22 +603,23 @@ function resetPage(container) {
 
     if (DEBUG) console.log("Page reset"); 
 
-  } else {
+  } 
+  // else {
     
-    gsap.set(container, {
-      clearProps: "position,left,right,transform"
-    });
+  //   gsap.set(container, {
+  //     clearProps: "position,left,right,transform"
+  //   });
 
-    if (hasLenis) {
-      lenis.resize();
-      lenis.start();
-    }
+  //   if (hasLenis) {
+  //     lenis.resize();
+  //     lenis.start();
+  //   }
 
-    scrollToPendingHash(container);
+  //   scrollToPendingHash(container);
 
-    if (DEBUG) console.log("scrolled to pending hash");
+  //   if (DEBUG) console.log("scrolled to pending hash");
 
-  }
+  // }
 
   // gsap.set(container, {
   //   clearProps: "position,left,right,transform"
