@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.6.11";
+const version = "3.6.12";
 
 history.scrollRestoration = "manual";
 
@@ -198,6 +198,9 @@ function runPageEnterAnimation(next) {
   const transitionPanelBottom = transitionWrap.querySelector("[data-transition-panel-bottom]");
   const transitionLogo = transitionWrap.querySelector("[data-transition-logo]");
   const transitionLogoPath = transitionWrap.querySelectorAll("path");
+  const skipLink = document.querySelector('[data-skip-link]');
+
+  gsap.set(skipLink, { autoAlpha: 0 });
 
   const getY = normalizePaths(transitionLogoPath);
 
@@ -266,6 +269,8 @@ function runPageEnterAnimation(next) {
   tl.add("pageReady");
   tl.call(resetPage, [next], "pageReady");
   // tl.call(scrollToPendingHash, [next], "pageReady");
+
+  gsap.set(skipLink, { autoAlpha: 1 });
 
   return new Promise(resolve => tl.call(resolve, [], "pageReady"));
 }
