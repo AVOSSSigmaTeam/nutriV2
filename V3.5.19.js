@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.5.18";
+const version = "3.5.19";
 
 history.scrollRestoration = "manual";
 
@@ -217,11 +217,22 @@ function runPageEnterAnimation(next) {
 
   tl.add("startEnter", 1);
 
-  tl.set(next, {
-    autoAlpha: 1,
-  }, "startEnter");
+  // tl.set(next, { autoAlpha: 1, }, "startEnter");
 
-  tl.call(scrollToPendingHash, [next], "startEnter");
+  // tl.call(scrollToPendingHash, [next], "startEnter");
+
+  tl.call(() => {
+    scrollToPendingHash(next);
+
+    // Force Lenis/browser to acknowledge the new position
+    if (lenis) {
+      lenis.resize();
+    }
+  }, [], "startEnter");
+
+  tl.set(next, {
+    autoAlpha: 1
+  }, "startEnter+=0.01");
 
   tl.fromTo(transitionPanel, {
     yPercent: -100,
@@ -297,7 +308,7 @@ function runFirstLoadAnimation(next) {
 
   tl.add("startEnter", 1);
 
-  tl.call(scrollToPendingHash, [next], "startEnter");
+  // tl.call(scrollToPendingHash, [next], "startEnter");
 
   tl.to(transitionPanel, {
     yPercent: -200,
@@ -348,80 +359,62 @@ function runFirstLoadAnimation(next) {
   });
 }
 
-function runPageLeaveAnimation(current) {
-  const transitionWrap = document.querySelector("[data-transition-wrap]");
-  const transitionPanel = transitionWrap.querySelector("[data-transition-panel]");
-  const transitionPanelTop = transitionWrap.querySelector("[data-transition-panel-top]");
-  const transitionPanelBottom = transitionWrap.querySelector("[data-transition-panel-bottom]");
-  const transitionLogo = transitionWrap.querySelector("[data-transition-logo]");
-  const transitionLogoPath = transitionWrap.querySelectorAll("path");
-
-  const tl = gsap.timeline({
-    onComplete: () => { current.remove(); }
-  });
-
-  if (reducedMotion) {
-    return tl.set(current, { autoAlpha: 0 });
+function resetPage(container) {
+  if (pendingHash === "" || pendingHash === undefined) {
+    window.scrollTo(0, 0);
+    if (DEBUG) console.log("scrolled to 0");
   }
 
-  tl.set(transitionPanel, {
-    autoAlpha: 1
-  }, 0);
+  gsap.set(container, {
+    clearProps: "position,left,right,transform"
+  });
 
-  tl.set(transitionPanelTop, {
-    scaleY: 0,
-    height: "15vw"
-  }, 0);
+  if (pendingHash != "" && pendingHash != undefined) {
+    scrollToPendingHash(container);
+  }
 
-  tl.set(transitionPanelBottom, {
-    scaleY: 1,
-    height: "20vw"
-  }, 0);
+  if (hasLenis) {
+    lenis.resize();
+    lenis.start();
+  }
 
-  tl.set(transitionLogo, {
-    autoAlpha: 0,
-    yPercent: 105
-  }, 0);
+  if (DEBUG) console.log("Page reset");
+}
 
-  tl.set(transitionLogoPath, {
-    yPercent: 0
-  }, 0);
+// function scrollToPendingHash(container) {
+//   const hash = pendingHash || "";
 
-  tl.fromTo(transitionPanel, {
-    yPercent: 0
-  }, {
-    yPercent: -100,
-    duration: 1,
-  }, 0);
+//   if (!hash) return;
 
-  tl.fromTo(transitionPanelTop, {
-    scaleY: 0
-  }, {
-    scaleY: 1,
-    duration: 1,
-  }, "<");
+//   const selector = hash.startsWith("#") ? hash : `#${hash}`;
+//   const target = container?.querySelector(selector);
 
-  tl.set(transitionLogo, {
-    autoAlpha: 1
-  }, 0.25);
+//   if (!target) {
+//     if (DEBUG) console.warn("Hash target not found for", selector);
+//     return;
+//   }
 
-  tl.fromTo(transitionLogo, {
-    yPercent: 105
-  }, {
-    yPercent: 0,
-    duration: 0.8,
-    ease: "expo.out",
-  }, 0.25);
+//   requestAnimationFrame(() => {
+//     target.scrollIntoView({ behavior: "instant", block: "start" });
+//   });
+// }
+function scrollToPendingHash(container) {
+  if (!pendingHash) return;
 
-  tl.fromTo(current, {
-    y: "0vh"
-  }, {
-    y: "-15vh",
-    duration: 1,
-  }, 0);
+  const selector = pendingHash.startsWith("#")
+    ? pendingHash
+    : `#${pendingHash}`;
 
+  const target = container.querySelector(selector);
 
-  return tl;
+  if (!target) return;
+
+  const y = target.getBoundingClientRect().top + window.pageYOffset;
+
+  window.scrollTo({
+    top: y,
+    behavior: "instant"
+  });
 }
 
 let pendingHash = "";
@@ -686,30 +679,6 @@ function scrollToPendingHash(container) {
   target.scrollIntoView({ behavior: "instant", block: "start" });
 }
 
-// function scrollToInitialHash(container) {
-//   const hash = window.location.hash;
-//   if (!hash || hash === "#") { return; }
-//   const target = container.querySelector(hash) || document.querySelector(hash);
-//   if (!target) return;
-//   // Reduced motion: jump
-//   if (reducedMotion) {
-//     target.scrollIntoView();
-//     return;
-//   }
-//   // Smooth: Lenis if available, else native smooth
-//   if (hasLenis && lenis) {
-//     lenis.scrollTo(target, {
-//       offset: 0,
-//       duration: 1,
-//       immediate: false,
-//       lock: true,
-//     });
-//   } else {
-//     target.scrollIntoView({ behavior: "smooth", block: "start" });
-//   }
-//   if (DEBUG) console.log("Scrolled to " + hash + "");
-// }
-
 
 // YOUR FUNCTIONS GO BELOW HERE
 
@@ -723,7 +692,6 @@ function initSkipLink() {
   });
 
   // if (DEBUG) console.log("Skip link initialized");
-
 }
 
 //plan popup
@@ -1016,7 +984,6 @@ function setCopyrightYear(page) {
   yearElement.textContent = currentYear;
 
   // if (DEBUG) console.log("Copyright year set to", currentYear);
-
 }
 function initFooterLinkHoverAnimation(page) {
   const linkWraps = page.querySelectorAll("[data-footer-link-wrap]");
