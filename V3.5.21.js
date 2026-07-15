@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.5.20";
+const version = "3.5.21";
 
 history.scrollRestoration = "manual";
 
@@ -663,21 +663,21 @@ function normalizePaths(paths) {
 }
 
 
-function scrollToPendingHash(container) {
-  const hash = pendingHash || "";
+// function scrollToPendingHash(container) {
+//   const hash = pendingHash || "";
 
-  if (!hash) return;
+//   if (!hash) return;
 
-  const selector = hash.startsWith("#") ? hash : `#${hash}`;
-  const target = container?.querySelector(selector);
+//   const selector = hash.startsWith("#") ? hash : `#${hash}`;
+//   const target = container?.querySelector(selector);
 
-  if (!target) {
-    if (DEBUG) console.warn("Hash target not found for", selector);
-    return;
-  }
+//   if (!target) {
+//     if (DEBUG) console.warn("Hash target not found for", selector);
+//     return;
+//   }
 
-  target.scrollIntoView({ behavior: "instant", block: "start" });
-}
+//   target.scrollIntoView({ behavior: "instant", block: "start" });
+// }
 
 
 // YOUR FUNCTIONS GO BELOW HERE
