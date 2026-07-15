@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.5.19";
+const version = "3.5.20";
 
 history.scrollRestoration = "manual";
 
@@ -584,33 +584,33 @@ function initLenis() {
 
 }
 
-function resetPage(container) {
+// function resetPage(container) {
 
-  if (pendingHash === "" || pendingHash === undefined) {
-    window.scrollTo(0, 0);
-    if (DEBUG) console.log("scrolled to 0");
-  }
+//   if (pendingHash === "" || pendingHash === undefined) {
+//     window.scrollTo(0, 0);
+//     if (DEBUG) console.log("scrolled to 0");
+//   }
 
-  gsap.set(container, {
-    clearProps: "position,left,right,transform"
-  });
+//   gsap.set(container, {
+//     clearProps: "position,left,right,transform"
+//   });
 
-  if (pendingHash != "" && pendingHash != undefined) {
-    // const target = data.next.container.querySelector('#' + pendingHash);
-    // const target = next.container.querySelector('#' + pendingHash);
-    const target = container.querySelector('#' + pendingHash);
-    // const target = next.querySelector('#' + pendingHash);
-    if (DEBUG) console.log(target);
-    target.scrollIntoView({ behavior: "instant", block: "start" });
-  }
+//   if (pendingHash != "" && pendingHash != undefined) {
+//     // const target = data.next.container.querySelector('#' + pendingHash);
+//     // const target = next.container.querySelector('#' + pendingHash);
+//     const target = container.querySelector('#' + pendingHash);
+//     // const target = next.querySelector('#' + pendingHash);
+//     if (DEBUG) console.log(target);
+//     target.scrollIntoView({ behavior: "instant", block: "start" });
+//   }
 
-  if (hasLenis) {
-    lenis.resize();
-    lenis.start();
-  }
+//   if (hasLenis) {
+//     lenis.resize();
+//     lenis.start();
+//   }
 
-  if (DEBUG) console.log("Page reset");
-}
+//   if (DEBUG) console.log("Page reset");
+// }
 
 
 function debounceOnWidthChange(fn, ms) {
