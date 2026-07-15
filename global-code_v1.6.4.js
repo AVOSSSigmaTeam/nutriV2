@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "1.6.2";
+const version = "1.6.4";
 
 history.scrollRestoration = "manual";
 
@@ -1550,7 +1550,7 @@ function initTDEECalculatorV2(page = document) {
     if (weightError) errors.push(errorText.weight);
     if (selectError) errors.push(errorText.select);
 
-    return errors.length === 1 ? errors[0] : "Više grešaka u unosu. Proverite polja i pokušajte ponovo.";
+    return errors.length === 1 ? errors[0] : "Više grešaka u unosu.";
   }
 
   function setFieldError(errorElement, inputElement, hasError) {
