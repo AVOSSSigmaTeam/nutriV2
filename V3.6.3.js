@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.6.2";
+const version = "3.6.3";
 
 history.scrollRestoration = "manual";
 
@@ -206,8 +206,8 @@ function runPageEnterAnimation(next) {
   if (reducedMotion) {
     tl.set(next, { autoAlpha: 1 });
     tl.add("pageReady");
-    tl.call(scrollToPendingHash, [next], "pageReady");
     tl.call(resetPage, [next], "pageReady");
+    tl.call(scrollToPendingHash, [next], "pageReady");
     return new Promise(resolve => tl.call(resolve, [], "pageReady"));
   }
 
@@ -216,8 +216,6 @@ function runPageEnterAnimation(next) {
   tl.set(next, {
     autoAlpha: 1,
   }, "startEnter");
-
-  tl.call(scrollToPendingHash, [next], "startEnter");
 
   tl.fromTo(transitionPanel, {
     yPercent: -100,
@@ -265,6 +263,7 @@ function runPageEnterAnimation(next) {
 
   tl.add("pageReady");
   tl.call(resetPage, [next], "pageReady");
+  tl.call(scrollToPendingHash, [next], "pageReady");
 
   return new Promise(resolve => {
     tl.call(resolve, [], "pageReady");
@@ -286,8 +285,8 @@ function runFirstLoadAnimation(next) {
   if (reducedMotion) {
     tl.set(next, { autoAlpha: 1 });
     tl.add("pageReady");
-    tl.call(scrollToPendingHash, [next], "pageReady");
     tl.call(resetPage, [next], "pageReady");
+    tl.call(scrollToPendingHash, [next], "pageReady");
     return new Promise(resolve => tl.call(resolve, [], "pageReady"));
   }
 
@@ -668,7 +667,10 @@ function scrollToPendingHash(container) {
     return;
   }
 
-  target.scrollIntoView({ behavior: "instant", block: "start" });
+  // target.scrollIntoView({ behavior: "instant", block: "start" });
+  lenis.scrollTo(target, {
+    immediate: true,
+  });
 }
 
 function initSkipLink() {
