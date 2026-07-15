@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.5.17";
+const version = "3.5.18";
 
 history.scrollRestoration = "manual";
 
@@ -206,6 +206,7 @@ function runPageEnterAnimation(next) {
   if (reducedMotion) {
     tl.set(next, { autoAlpha: 1 });
     tl.add("pageReady");
+    tl.call(scrollToPendingHash, [next], "pageReady");
     tl.call(resetPage, [next], "pageReady");
     return new Promise(resolve => tl.call(resolve, [], "pageReady"));
   }
@@ -214,11 +215,13 @@ function runPageEnterAnimation(next) {
   //   tl.set(next, { backgroundColor: "blue" }, 0);
   // }
 
-  tl.add("startEnter", 1.35);
+  tl.add("startEnter", 1);
 
   tl.set(next, {
     autoAlpha: 1,
   }, "startEnter");
+
+  tl.call(scrollToPendingHash, [next], "startEnter");
 
   tl.fromTo(transitionPanel, {
     yPercent: -100,
@@ -287,11 +290,14 @@ function runFirstLoadAnimation(next) {
   if (reducedMotion) {
     tl.set(next, { autoAlpha: 1 });
     tl.add("pageReady");
+    tl.call(scrollToPendingHash, [next], "pageReady");
     tl.call(resetPage, [next], "pageReady");
     return new Promise(resolve => tl.call(resolve, [], "pageReady"));
   }
 
-  tl.add("startEnter", 1.35);
+  tl.add("startEnter", 1);
+
+  tl.call(scrollToPendingHash, [next], "startEnter");
 
   tl.to(transitionPanel, {
     yPercent: -200,
@@ -663,6 +669,22 @@ function normalizePaths(paths) {
   };
 }
 
+
+function scrollToPendingHash(container) {
+  const hash = pendingHash || "";
+
+  if (!hash) return;
+
+  const selector = hash.startsWith("#") ? hash : `#${hash}`;
+  const target = container?.querySelector(selector);
+
+  if (!target) {
+    if (DEBUG) console.warn("Hash target not found for", selector);
+    return;
+  }
+
+  target.scrollIntoView({ behavior: "instant", block: "start" });
+}
 
 // function scrollToInitialHash(container) {
 //   const hash = window.location.hash;
