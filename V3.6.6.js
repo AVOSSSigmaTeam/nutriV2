@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.6.5";
+const version = "3.6.6";
 
 history.scrollRestoration = "manual";
 
@@ -207,7 +207,7 @@ function runPageEnterAnimation(next) {
     tl.set(next, { autoAlpha: 1 });
     tl.add("pageReady");
     tl.call(resetPage, [next], "pageReady");
-    tl.call(scrollToPendingHash, [next], "pageReady");
+    // tl.call(scrollToPendingHash, [next], "pageReady");
     return new Promise(resolve => tl.call(resolve, [], "pageReady"));
   }
 
@@ -263,7 +263,7 @@ function runPageEnterAnimation(next) {
 
   tl.add("pageReady");
   tl.call(resetPage, [next], "pageReady");
-  tl.call(scrollToPendingHash, [next], "pageReady");
+  // tl.call(scrollToPendingHash, [next], "pageReady");
 
   return new Promise(resolve => tl.call(resolve, [], "pageReady"));
 }
@@ -284,13 +284,13 @@ function runFirstLoadAnimation(next) {
     tl.set(next, { autoAlpha: 1 });
     tl.add("pageReady");
     tl.call(resetPage, [next], "pageReady");
-    tl.call(scrollToPendingHash, [next], "pageReady");
+    // tl.call(scrollToPendingHash, [next], "pageReady");
     return new Promise(resolve => tl.call(resolve, [], "pageReady"));
   }
 
   tl.add("startEnter", 1);
 
-  tl.call(scrollToPendingHash, [next], "startEnter");
+  // tl.call(scrollToPendingHash, [next], "startEnter");
 
   tl.to(transitionPanel, {
     yPercent: -200,
@@ -334,7 +334,7 @@ function runFirstLoadAnimation(next) {
 
   tl.add("pageReady");
   tl.call(resetPage, [next], "pageReady");
-  tl.call(scrollToPendingHash, [next], "pageReady");
+  // tl.call(scrollToPendingHash, [next], "pageReady");
 
   return new Promise(resolve => tl.call(resolve, [], "pageReady"));
 }
@@ -586,6 +586,9 @@ function resetPage(container) {
   if (pendingHash === "" || pendingHash === undefined) {
     window.scrollTo(0, 0);
     if (DEBUG) console.log("scrolled to 0");
+  } else {
+    scrollToPendingHash(container);
+    if (DEBUG) console.log("scrolled to pending hash");
   }
 
   gsap.set(container, {
