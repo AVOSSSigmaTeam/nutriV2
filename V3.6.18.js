@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.6.17";
+const version = "3.6.18";
 
 history.scrollRestoration = "manual";
 
@@ -604,22 +604,22 @@ function resetPage(container) {
     if (DEBUG) console.log("Page reset"); 
 
   } 
-  // else {
+  else {
     
-  //   gsap.set(container, {
-  //     clearProps: "position,left,right,transform"
-  //   });
+    gsap.set(container, {
+      clearProps: "position,left,right,transform"
+    });
 
-  //   if (hasLenis) {
-  //     lenis.resize();
-  //     lenis.start();
-  //   }
+    if (hasLenis) {
+      lenis.resize();
+      lenis.start();
+    }
 
-  //   scrollToPendingHash(container);
+    // scrollToPendingHash(container);
 
-  //   if (DEBUG) console.log("scrolled to pending hash");
+    if (DEBUG) console.log("scrolled to pending hash");
 
-  // }
+  }
 
   // gsap.set(container, {
   //   clearProps: "position,left,right,transform"
