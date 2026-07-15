@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.5.18";
+const version = "3.6.0";
 
 history.scrollRestoration = "manual";
 
