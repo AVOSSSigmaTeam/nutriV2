@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.6.9";
+const version = "3.6.10";
 
 history.scrollRestoration = "manual";
 
@@ -700,6 +700,8 @@ function scrollToPendingHash(container) {
   lenis.scrollTo(target, {
     immediate: true,
   });
+
+  pendingHash = "";
 }
 
 function initSkipLink() {
