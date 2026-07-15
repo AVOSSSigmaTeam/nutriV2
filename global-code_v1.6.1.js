@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "1.6";
+const version = "1.6.1";
 
 history.scrollRestoration = "manual";
 
@@ -27,7 +27,7 @@ CustomEase.create("smooth", "M0,0 C0.38,0.005 0.215,1 1,1");
 CustomEase.create("outQuad", "M0,0 C0.25,0.46 0.45,0.94 1,1");
 gsap.defaults({ ease: "default", duration: durationDefault });
 
-const DEBUG = true;
+const DEBUG = false;
 
 const colors = {
   "color-Text": "#212121",
