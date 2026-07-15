@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.6.8";
+const version = "3.6.9";
 
 history.scrollRestoration = "manual";
 
@@ -243,10 +243,12 @@ function runPageEnterAnimation(next) {
     force3D: false
   }, "startEnter-=0.4");
 
-  tl.from(next, {
-    y: "25vh",
-    duration: 1,
-  }, "startEnter");
+  if (pendingHash === "" || pendingHash === undefined) {
+    tl.from(next, {
+      y: "25vh",
+      duration: 1,
+    }, "startEnter");
+  }
 
   tl.set(transitionPanel, {
     autoAlpha: 0
@@ -313,12 +315,14 @@ function runFirstLoadAnimation(next) {
     }
   }, "startEnter-=0.4");
 
-  tl.fromTo(next, {
-    y: "25vh"
-  }, {
-    y: "0vh",
-    duration: 1,
-  }, "startEnter");
+  if (pendingHash === "" || pendingHash === undefined) {
+    tl.fromTo(next, {
+      y: "25vh"
+    }, {
+      y: "0vh",
+      duration: 1,
+    }, "startEnter");
+  }
 
   tl.set(transitionPanel, {
     autoAlpha: 0
