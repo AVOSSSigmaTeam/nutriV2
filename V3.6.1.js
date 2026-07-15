@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.6.0";
+const version = "3.6.1";
 
 history.scrollRestoration = "manual";
 
@@ -211,10 +211,6 @@ function runPageEnterAnimation(next) {
     return new Promise(resolve => tl.call(resolve, [], "pageReady"));
   }
 
-  // if (DEBUG) {
-  //   tl.set(next, { backgroundColor: "blue" }, 0);
-  // }
-
   tl.add("startEnter", 1);
 
   tl.set(next, {
@@ -341,7 +337,6 @@ function runFirstLoadAnimation(next) {
 
   tl.add("pageReady");
   tl.call(resetPage, [next], "pageReady");
-  // scrollToInitialHash(next);
 
   return new Promise(resolve => {
     tl.call(resolve, [], "pageReady");
@@ -419,7 +414,6 @@ function runPageLeaveAnimation(current) {
     y: "-15vh",
     duration: 1,
   }, 0);
-
 
   return tl;
 }
@@ -593,23 +587,12 @@ function initLenis() {
 
 function resetPage(container) {
 
-  if (pendingHash === "" || pendingHash === undefined) {
-    window.scrollTo(0, 0);
-    if (DEBUG) console.log("scrolled to 0");
-  }
+  window.scrollTo(0, 0);
+  if (DEBUG) console.log("scrolled to 0");
 
   gsap.set(container, {
     clearProps: "position,left,right,transform"
   });
-
-  if (pendingHash != "" && pendingHash != undefined) {
-    // const target = data.next.container.querySelector('#' + pendingHash);
-    // const target = next.container.querySelector('#' + pendingHash);
-    const target = container.querySelector('#' + pendingHash);
-    // const target = next.querySelector('#' + pendingHash);
-    if (DEBUG) console.log(target);
-    target.scrollIntoView({ behavior: "instant", block: "start" });
-  }
 
   if (hasLenis) {
     lenis.resize();
@@ -685,33 +668,6 @@ function scrollToPendingHash(container) {
 
   target.scrollIntoView({ behavior: "instant", block: "start" });
 }
-
-// function scrollToInitialHash(container) {
-//   const hash = window.location.hash;
-//   if (!hash || hash === "#") { return; }
-//   const target = container.querySelector(hash) || document.querySelector(hash);
-//   if (!target) return;
-//   // Reduced motion: jump
-//   if (reducedMotion) {
-//     target.scrollIntoView();
-//     return;
-//   }
-//   // Smooth: Lenis if available, else native smooth
-//   if (hasLenis && lenis) {
-//     lenis.scrollTo(target, {
-//       offset: 0,
-//       duration: 1,
-//       immediate: false,
-//       lock: true,
-//     });
-//   } else {
-//     target.scrollIntoView({ behavior: "smooth", block: "start" });
-//   }
-//   if (DEBUG) console.log("Scrolled to " + hash + "");
-// }
-
-
-// YOUR FUNCTIONS GO BELOW HERE
 
 function initSkipLink() {
   document.querySelector('[data-skip-link]').addEventListener('click', function (e) {
