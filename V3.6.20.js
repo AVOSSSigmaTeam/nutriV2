@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.6.19";
+const version = "3.6.20";
 
 history.scrollRestoration = "manual";
 
@@ -591,17 +591,6 @@ function resetPage(container) {
 
     window.scrollTo(0, 0);
     if (DEBUG) console.log("scrolled to 0"); 
-
-    gsap.set(container, {
-      clearProps: "position,left,right,transform"
-    });
-
-    if (hasLenis) {
-      lenis.resize();
-      lenis.start();
-    }
-
-    if (DEBUG) console.log("Page reset"); 
 
   // } 
 
