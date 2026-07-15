@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "1.6.1";
+const version = "1.6.2";
 
 history.scrollRestoration = "manual";
 
@@ -1570,7 +1570,7 @@ function initTDEECalculatorV2(page = document) {
     setFieldError(weightErrorElement, weightInput, weightError);
     setFieldError(selectErrorElement, activitySelect, selectError);
 
-    if (calculated && hasAnyError()) {
+    if (hasAnyError()) {
       errorTextWrap.style.display = "flex";
       errorTextElement.innerText = getGlobalErrorMessage();
       resultTextWrap.style.display = "none";
