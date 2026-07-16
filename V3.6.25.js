@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.6.24";
+const version = "3.6.25";
 
 history.scrollRestoration = "manual";
 
@@ -261,8 +261,8 @@ function runPageEnterAnimation(next) {
   }, ">");
 
   tl.add("pageReady");
-  tl.call(test, [], "pageReady");
   tl.call(resetPage, [next], "pageReady");
+  tl.call(test, [], "pageReady");
 
   return new Promise(resolve => tl.call(resolve, [], "pageReady"));
 }
