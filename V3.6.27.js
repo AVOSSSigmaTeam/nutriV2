@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.6.26";
+const version = "3.6.27";
 
 history.scrollRestoration = "manual";
 
@@ -329,10 +329,12 @@ function runFirstLoadAnimation(next) {
     yPercent: 0
   }, ">");
 
-  tl.add("pageReady");
-  tl.call(resetPage, [next], "pageReady");
+  // tl.add("pageReady");
+  // tl.call(resetPage, [next], "pageReady");
 
-  return new Promise(resolve => tl.call(resolve, [], "pageReady"));
+  // return new Promise(resolve => tl.call(resolve, [], "pageReady"));
+
+  resetPage(next);
 }
 
 function runPageLeaveAnimation(current) {
@@ -415,12 +417,12 @@ function test() {
   scrollToInitialHash();
 }
 
-// let pendingHash = "";
+let pendingHash = "";
 
-// barba.hooks.before((data) => {
-//   pendingHash = data.next.url.hash;
-//   if (DEBUG) console.log("Barba before hook", data.next.url.href, "pendingHash:", pendingHash);
-// });
+barba.hooks.before((data) => {
+  pendingHash = data.next.url.hash;
+  if (DEBUG) console.log("Barba before hook", data.next.url.href, "pendingHash:", pendingHash);
+});
 
 barba.hooks.beforeEnter(data => {
   // Position new container
@@ -584,8 +586,8 @@ function initLenis() {
 
 function resetPage(container) {
 
-    window.scrollTo(0, 0);
-    if (DEBUG) console.log("scrolled to 0"); 
+  window.scrollTo(0, 0);
+  if (DEBUG) console.log("scrolled to 0"); 
 
   gsap.set(container, {
     clearProps: "position,left,right,transform"
@@ -656,21 +658,21 @@ function scrollToInitialHash(container = document) {
   const target = container.querySelector(hash) || document.querySelector(hash);
   if (!target) return;
   // Reduced motion: jump
-  if (reducedMotion) {
+  // if (reducedMotion) {
     target.scrollIntoView();
-    return;
-  }
+  //   return;
+  // }
   // Smooth: Lenis if available, else native smooth
-  if (hasLenis && lenis) {
-    lenis.scrollTo(target, {
-      offset: 0,
-      duration: 1,
-      immediate: false,
-      lock: true,
-    });
-  } else {
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
+  // if (hasLenis && lenis) {
+  //   lenis.scrollTo(target, {
+  //     offset: 0,
+  //     duration: 1,
+  //     immediate: false,
+  //     lock: true,
+  //   });
+  // } else {
+  //   target.scrollIntoView({ behavior: "smooth", block: "start" });
+  // }
   if (DEBUG) console.log("Scrolled to hash", hash, "target:", target);
 }
 
