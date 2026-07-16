@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "1.6.4";
+const version = "1.6.5";
 
 history.scrollRestoration = "manual";
 
@@ -163,12 +163,12 @@ function runFirstLoadAnimation(next = document) {
     }
   }, "startEnter-=0.4");
 
-  // tl.fromTo(next, {
-  //   y: "25vh"
-  // }, {
-  //   y: "0vh",
-  //   duration: 1,
-  // }, "startEnter");
+  tl.fromTo(next, {
+    y: "25vh"
+  }, {
+    y: "0vh",
+    duration: 1,
+  }, "startEnter");
 
   tl.set(transitionPanel, {
     autoAlpha: 0
