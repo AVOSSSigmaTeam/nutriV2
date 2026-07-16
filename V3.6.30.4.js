@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.6.30.2";
+const version = "3.6.30.3";
 
 // history.scrollRestoration = "manual";
 history.scrollRestoration = "auto";
@@ -275,7 +275,7 @@ function runPageEnterAnimation(next, data) {
   // return new Promise(resolve => tl.call(resolve, [], "pageReady"));
 
   resetPage(next, { preserveScroll });
-  if (!preserveScroll) test();
+  // if (!preserveScroll) test();
 }
 
 function runFirstLoadAnimation(next) {
@@ -425,7 +425,8 @@ function runPageLeaveAnimation(current) {
 
 function test() {
   console.log("test");
-  scrollToInitialHash();
+  // scrollToInitialHash();
+  scrollToInitialHash(next, pendingHash || window.location.hash);
 }
 
 let pendingHash = "";
@@ -467,11 +468,8 @@ barba.hooks.enter(data => {
 })
 
 barba.hooks.afterEnter(data => {
-  // Run page functions
-
   initAfterEnterFunctions(data.next.container);
 
-  // Settle
   if (hasLenis) {
     lenis.resize();
     lenis.start();
@@ -481,12 +479,33 @@ barba.hooks.afterEnter(data => {
     ScrollTrigger.refresh();
   }
 
-  // setTimeout(() => {
-  //   scrollToInitialHash(data.next.container);
-  // }, 200);
+  const nextHash = pendingHash || data.next.url.hash || "";
+  scrollToInitialHash(data.next.container, nextHash);
+  pendingHash = "";
 
   if (DEBUG) console.log("Barba afterEnter");
 });
+// barba.hooks.afterEnter(data => {
+//   // Run page functions
+
+//   initAfterEnterFunctions(data.next.container);
+
+//   // Settle
+//   if (hasLenis) {
+//     lenis.resize();
+//     lenis.start();
+//   }
+
+//   if (hasScrollTrigger) {
+//     ScrollTrigger.refresh();
+//   }
+
+//   // setTimeout(() => {
+//   //   scrollToInitialHash(data.next.container);
+//   // }, 200);
+
+//   if (DEBUG) console.log("Barba afterEnter");
+// });
 
 barba.init({
   debug: DEBUG,
@@ -669,30 +688,56 @@ function normalizePaths(paths) {
   };
 }
 
+function scrollToInitialHash(container = document, hash = "") {
+  const hashValue = (hash || pendingHash || window.location.hash || "").trim();
+  if (!hashValue || hashValue === "#") return;
 
-function scrollToInitialHash(container = document) {
-  const hash = window.location.hash;
-  if (!hash || hash === "#") return;
-  const target = container.querySelector(hash) || document.querySelector(hash);
-  if (!target) return;
-  // Reduced motion: jump
-  // if (reducedMotion) {
-    target.scrollIntoView();
-  //   return;
-  // }
-  // Smooth: Lenis if available, else native smooth
-  // if (hasLenis && lenis) {
-  //   lenis.scrollTo(target, {
-  //     offset: 0,
-  //     duration: 1,
-  //     immediate: false,
-  //     lock: true,
-  //   });
-  // } else {
-  //   target.scrollIntoView({ behavior: "smooth", block: "start" });
-  // }
-  if (DEBUG) console.log("Scrolled to hash", hash, "target:", target);
+  const normalizedHash = hashValue.startsWith("#") ? hashValue : `#${hashValue}`;
+  const target = container?.querySelector?.(normalizedHash) || document.querySelector(normalizedHash);
+
+  if (!target) {
+    if (DEBUG) console.warn("Hash target not found", normalizedHash);
+    return;
+  }
+
+  const doScroll = () => {
+    target.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      setTimeout(doScroll, 50);
+    });
+  });
+
+  if (DEBUG) console.log("Attempting to scroll to hash", normalizedHash, target);
 }
+// function scrollToInitialHash(container = document) {
+//   const hash = window.location.hash;
+//   if (!hash || hash === "#") return;
+//   const target = container.querySelector(hash) || document.querySelector(hash);
+//   if (!target) return;
+//   // Reduced motion: jump
+//   // if (reducedMotion) {
+//     target.scrollIntoView();
+//   //   return;
+//   // }
+//   // Smooth: Lenis if available, else native smooth
+//   // if (hasLenis && lenis) {
+//   //   lenis.scrollTo(target, {
+//   //     offset: 0,
+//   //     duration: 1,
+//   //     immediate: false,
+//   //     lock: true,
+//   //   });
+//   // } else {
+//   //   target.scrollIntoView({ behavior: "smooth", block: "start" });
+//   // }
+//   if (DEBUG) console.log("Scrolled to hash", hash, "target:", target);
+// }
 
 function initSkipLink() {
   document.querySelector('[data-skip-link]').addEventListener('click', function (e) {
