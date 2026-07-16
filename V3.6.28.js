@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.6.27";
+const version = "3.6.28";
 
 history.scrollRestoration = "manual";
 
@@ -260,11 +260,14 @@ function runPageEnterAnimation(next) {
     force3D: false
   }, ">");
 
-  tl.add("pageReady");
-  tl.call(resetPage, [next], "pageReady");
-  tl.call(test, [], "pageReady");
+  // tl.add("pageReady");
+  // tl.call(resetPage, [next], "pageReady");
+  // tl.call(test, [], "pageReady");
 
-  return new Promise(resolve => tl.call(resolve, [], "pageReady"));
+  // return new Promise(resolve => tl.call(resolve, [], "pageReady"));
+
+  resetPage(next);
+  test();
 }
 
 function runFirstLoadAnimation(next) {
