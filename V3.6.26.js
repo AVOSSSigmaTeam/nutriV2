@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.6.25";
+const version = "3.6.26";
 
 history.scrollRestoration = "manual";
 
@@ -412,6 +412,7 @@ function runPageLeaveAnimation(current) {
 
 function test() {
   console.log("test");
+  scrollToInitialHash();
 }
 
 // let pendingHash = "";
@@ -670,6 +671,7 @@ function scrollToInitialHash(container = document) {
   } else {
     target.scrollIntoView({ behavior: "smooth", block: "start" });
   }
+  if (DEBUG) console.log("Scrolled to hash", hash, "target:", target);
 }
 
 function initSkipLink() {
