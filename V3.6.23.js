@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.6.22";
+const version = "3.6.23";
 
 history.scrollRestoration = "manual";
 
@@ -207,7 +207,6 @@ function runPageEnterAnimation(next) {
     tl.set(next, { autoAlpha: 1 });
     tl.add("pageReady");
     tl.call(resetPage, [next], "pageReady");
-    tl.call(scrollToPendingHash, [next], "pageReady");
     return new Promise(resolve => tl.call(resolve, [], "pageReady"));
   }
 
@@ -243,12 +242,10 @@ function runPageEnterAnimation(next) {
     force3D: false
   }, "startEnter-=0.4");
 
-  if (pendingHash === "" || pendingHash === undefined) {
     tl.from(next, {
       y: "25vh",
       duration: 1,
     }, "startEnter");
-  }
 
   tl.set(transitionPanel, {
     autoAlpha: 0
@@ -265,7 +262,6 @@ function runPageEnterAnimation(next) {
 
   tl.add("pageReady");
   tl.call(resetPage, [next], "pageReady");
-  tl.call(scrollToPendingHash, [next], "pageReady");
 
   return new Promise(resolve => tl.call(resolve, [], "pageReady"));
 }
@@ -286,13 +282,11 @@ function runFirstLoadAnimation(next) {
     tl.set(next, { autoAlpha: 1 });
     tl.add("pageReady");
     tl.call(resetPage, [next], "pageReady");
-    tl.call(scrollToPendingHash, [next], "pageReady");
     return new Promise(resolve => tl.call(resolve, [], "pageReady"));
   }
 
   tl.add("startEnter", 1);
 
-  // tl.call(scrollToPendingHash, [next], "startEnter");
 
   tl.to(transitionPanel, {
     yPercent: -200,
@@ -315,14 +309,12 @@ function runFirstLoadAnimation(next) {
     }
   }, "startEnter-=0.4");
 
-  if (pendingHash === "" || pendingHash === undefined) {
     tl.fromTo(next, {
       y: "25vh"
     }, {
       y: "0vh",
       duration: 1,
     }, "startEnter");
-  }
 
   tl.set(transitionPanel, {
     autoAlpha: 0
@@ -337,8 +329,8 @@ function runFirstLoadAnimation(next) {
   }, ">");
 
   tl.add("pageReady");
+  tl.call(test, [], "pageReady");
   tl.call(resetPage, [next], "pageReady");
-  tl.call(scrollToPendingHash, [next], "pageReady");
 
   return new Promise(resolve => tl.call(resolve, [], "pageReady"));
 }
@@ -418,12 +410,16 @@ function runPageLeaveAnimation(current) {
   return tl;
 }
 
-let pendingHash = "";
+function test() {
+  console.log("test");
+}
 
-barba.hooks.before((data) => {
-  pendingHash = data.next.url.hash;
-  if (DEBUG) console.log("Barba before hook", data.next.url.href, "pendingHash:", pendingHash);
-});
+// let pendingHash = "";
+
+// barba.hooks.before((data) => {
+//   pendingHash = data.next.url.hash;
+//   if (DEBUG) console.log("Barba before hook", data.next.url.href, "pendingHash:", pendingHash);
+// });
 
 barba.hooks.beforeEnter(data => {
   // Position new container
@@ -587,20 +583,12 @@ function initLenis() {
 
 function resetPage(container) {
 
-  if (pendingHash === "" || pendingHash === undefined) {
-
     window.scrollTo(0, 0);
     if (DEBUG) console.log("scrolled to 0"); 
-
-  } 
 
   gsap.set(container, {
     clearProps: "position,left,right,transform"
   });
-
-  if (pendingHash && pendingHash !== "" && pendingHash !== undefined) {
-    scrollToPendingHash(container);
-  }
 
   if (hasLenis) {
     lenis.resize();
@@ -661,27 +649,27 @@ function normalizePaths(paths) {
 }
 
 
-function scrollToPendingHash(container) {
-  const hash = pendingHash || "";
-
-  if (!hash) return;
-
-  const selector = hash.startsWith("#") ? hash : `#${hash}`;
-  const target = container?.querySelector(selector);
-
-  if (!target) {
-    if (DEBUG) console.warn("Hash target not found for", selector);
+function scrollToInitialHash(container = document) {
+  const hash = window.location.hash;
+  if (!hash || hash === "#") return;
+  const target = container.querySelector(hash) || document.querySelector(hash);
+  if (!target) return;
+  // Reduced motion: jump
+  if (reducedMotion) {
+    target.scrollIntoView();
     return;
   }
-
-  // target.scrollIntoView({ behavior: "instant", block: "start" });
-  lenis.scrollTo(target, {
-    immediate: true,
-  });
-
-  if (DEBUG) console.log("Scrolled to hash target", selector);
-
-  pendingHash = "";
+  // Smooth: Lenis if available, else native smooth
+  if (hasLenis && lenis) {
+    lenis.scrollTo(target, {
+      offset: 0,
+      duration: 1,
+      immediate: false,
+      lock: true,
+    });
+  } else {
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 }
 
 function initSkipLink() {
