@@ -1,8 +1,13 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.6.28";
+const version = "3.6.29";
 
-history.scrollRestoration = "manual";
+// history.scrollRestoration = "manual";
+history.scrollRestoration = "auto";
+
+function isHistoryNavigation(data) {
+  return data?.trigger === "popstate";
+}
 
 let lenis = null;
 const lenisLerpValue = 0.165;
@@ -191,7 +196,7 @@ function initAfterEnterFunctions(next) {
 
 // PAGE TRANSITIONS
 
-function runPageEnterAnimation(next) {
+function runPageEnterAnimation(next, data) {
   const transitionWrap = document.querySelector("[data-transition-wrap]");
   const transitionPanel = transitionWrap.querySelector("[data-transition-panel]");
   const transitionPanelTop = transitionWrap.querySelector("[data-transition-panel-top]");
@@ -203,10 +208,13 @@ function runPageEnterAnimation(next) {
 
   const tl = gsap.timeline();
 
+  const preserveScroll = isHistoryNavigation(data);
+
   if (reducedMotion) {
     tl.set(next, { autoAlpha: 1 });
     tl.add("pageReady");
-    tl.call(resetPage, [next], "pageReady");
+    // tl.call(resetPage, [next], "pageReady");
+    tl.call(resetPage, [next, { preserveScroll }], "pageReady");
     return new Promise(resolve => tl.call(resolve, [], "pageReady"));
   }
 
@@ -266,8 +274,8 @@ function runPageEnterAnimation(next) {
 
   // return new Promise(resolve => tl.call(resolve, [], "pageReady"));
 
-  resetPage(next);
-  test();
+  resetPage(next, { preserveScroll });
+  if (!preserveScroll) test();
 }
 
 function runFirstLoadAnimation(next) {
@@ -506,7 +514,8 @@ barba.init({
       // New page enters
       async enter(data) {
         if (DEBUG) console.log("Barba enter");
-        return runPageEnterAnimation(data.next.container);
+        // return runPageEnterAnimation(data.next.container);
+        return runPageEnterAnimation(data.next.container, data);
       },
 
     }
@@ -554,7 +563,7 @@ function initLenis() {
     wheelMultiplier: 1.25,
   });
 
-  history.scrollRestoration = 'manual';
+  // history.scrollRestoration = 'manual';
 
   if (hasScrollTrigger) {
     lenis.on("scroll", ScrollTrigger.update);
@@ -589,8 +598,13 @@ function initLenis() {
 
 function resetPage(container) {
 
-  window.scrollTo(0, 0);
-  if (DEBUG) console.log("scrolled to 0"); 
+  // window.scrollTo(0, 0);
+  // if (DEBUG) console.log("scrolled to 0"); 
+
+  const preserveScroll = options?.preserveScroll ?? false;
+  if (!preserveScroll) {
+    window.scrollTo(0, 0);
+  }
 
   gsap.set(container, {
     clearProps: "position,left,right,transform"
