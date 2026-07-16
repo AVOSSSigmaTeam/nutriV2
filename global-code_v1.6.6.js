@@ -1,8 +1,8 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "1.6.5";
+const version = "1.6.6";
 
-history.scrollRestoration = "manual";
+// history.scrollRestoration = "manual";
 
 let lenis = null;
 const lenisLerpValue = 0.165;
@@ -121,7 +121,8 @@ function normalizePaths(paths) {
   };
 }
 
-function runFirstLoadAnimation(next = document) {
+function runFirstLoadAnimation() {
+  const next = document.querySelector('[data-barba="container"]');
   const transitionWrap = document.querySelector("[data-transition-init-wrap]");
   const transitionPanel = transitionWrap.querySelector("[data-transition-init-panel]");
   const transitionPanelTop = transitionWrap.querySelector("[data-transition-init-panel-top]");
