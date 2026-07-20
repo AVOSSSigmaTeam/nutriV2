@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "3.6.30.4";
+const version = "3.6.30.5";
 
 // history.scrollRestoration = "manual";
 history.scrollRestoration = "auto";
@@ -268,14 +268,14 @@ function runPageEnterAnimation(next, data) {
     force3D: false
   }, ">");
 
-  // tl.add("pageReady");
-  // tl.call(resetPage, [next], "pageReady");
-  // tl.call(test, [], "pageReady");
+  tl.add("pageReady");
+  tl.call(resetPage, [next], "pageReady");
 
+  tl.add("afterPageReady");
+  tl.call(test, [], "afterPageReady");
+
+  return new Promise(resolve => tl.call(resolve, [], "afterPageReady"));
   // return new Promise(resolve => tl.call(resolve, [], "pageReady"));
-
-  resetPage(next, { preserveScroll });
-  // if (!preserveScroll) test();
 }
 
 function runFirstLoadAnimation(next) {
@@ -340,12 +340,15 @@ function runFirstLoadAnimation(next) {
     yPercent: 0
   }, ">");
 
-  // tl.add("pageReady");
-  // tl.call(resetPage, [next], "pageReady");
+  tl.add("pageReady");
+  tl.call(resetPage, [next], "pageReady");
+
+  tl.add("afterPageReady");
+  tl.call(test, [], "afterPageReady");
+
+  return new Promise(resolve => tl.call(resolve, [], "afterPageReady"));
 
   // return new Promise(resolve => tl.call(resolve, [], "pageReady"));
-
-  resetPage(next);
 }
 
 function runPageLeaveAnimation(current) {
@@ -615,16 +618,16 @@ function initLenis() {
 
 }
 
-function resetPage(container, options = {}) {
-// function resetPage(container) {
+// function resetPage(container, options = {}) {
+function resetPage(container) {
 
-  // window.scrollTo(0, 0);
-  // if (DEBUG) console.log("scrolled to 0"); 
+  window.scrollTo(0, 0);
+  if (DEBUG) console.log("scrolled to 0"); 
 
-  const preserveScroll = options?.preserveScroll ?? false;
-  if (!preserveScroll) {
-    window.scrollTo(0, 0);
-  }
+  // const preserveScroll = options?.preserveScroll ?? false;
+  // if (!preserveScroll) {
+  //   window.scrollTo(0, 0);
+  // }
 
   gsap.set(container, {
     clearProps: "position,left,right,transform"
