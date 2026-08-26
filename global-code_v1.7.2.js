@@ -1972,37 +1972,14 @@ function initTDEECalculatorV3(page = document) {
   const activitySelect = page.querySelector("[data-activity-select]");
   const genderInputs = page.querySelectorAll('input[name="gender"]');
 
-  const resultTextWrap = page.querySelector(
-    "[data-tdee-result-text-wrap]",
-  );
-
-  const errorTextWrap = page.querySelector(
-    "[data-tdee-error-text-wrap]",
-  );
-
-  const errorTextElement = page.querySelector(
-    "[data-tdee-error-text]",
-  );
-
-  const ageErrorElement = page.querySelector(
-    "[data-tdee-age-error-text]",
-  );
-
-  const heightErrorElement = page.querySelector(
-    "[data-tdee-height-error-text]",
-  );
-
-  const weightErrorElement = page.querySelector(
-    "[data-tdee-weight-error-text]",
-  );
-
-  const selectErrorElement = page.querySelector(
-    "[data-tdee-activity-error-text]",
-  );
-
-  const resultElement = page.querySelector(
-    "[data-tdee-result-main]",
-  );
+  const resultTextWrap = page.querySelector("[data-tdee-result-text-wrap]");
+  const errorTextWrap = page.querySelector("[data-tdee-error-text-wrap]");
+  const errorTextElement = page.querySelector("[data-tdee-error-text]");
+  const ageErrorElement = page.querySelector("[data-tdee-age-error-text]");
+  const heightErrorElement = page.querySelector("[data-tdee-height-error-text]");
+  const weightErrorElement = page.querySelector("[data-tdee-weight-error-text]");
+  const selectErrorElement = page.querySelector("[data-tdee-activity-error-text]");
+  const resultElement = page.querySelector("[data-tdee-result-main]");
 
   // ------------------------------------
   // Error messages
@@ -2025,6 +2002,7 @@ function initTDEECalculatorV3(page = document) {
       error: ageErrorElement,
       min: ageMIN,
       max: ageMAX,
+      unitString: "godina",
       touched: false,
       errorMessage: errorText.age,
     },
@@ -2034,6 +2012,7 @@ function initTDEECalculatorV3(page = document) {
       error: heightErrorElement,
       min: heightMIN,
       max: heightMAX,
+      unitString: "cm",
       touched: false,
       errorMessage: errorText.height,
     },
@@ -2043,6 +2022,7 @@ function initTDEECalculatorV3(page = document) {
       error: weightErrorElement,
       min: weightMIN,
       max: weightMAX,
+      unitString: "kg",
       touched: false,
       errorMessage: errorText.weight,
     },
@@ -2059,12 +2039,48 @@ function initTDEECalculatorV3(page = document) {
   // Validation
   // ------------------------------------
 
+  // function validateNumberField(field) {
+  //   const { input, min, max } = fields[field];
+
+  //   const value = input.value.trim();
+
+  //   // Empty is not considered an error while typing.
+  //   if (!value) {
+  //     return {
+  //       valid: true,
+  //       empty: true,
+  //     };
+  //   }
+
+  //   const number = Number(value);
+
+  //   if (!Number.isFinite(number)) {
+  //     return {
+  //       valid: false,
+  //       empty: false,
+  //       message: fields[field].errorMessage,
+  //     };
+  //   }
+
+  //   if (number < min || number > max) {
+  //     return {
+  //       valid: false,
+  //       empty: false,
+  //       message: fields[field].errorMessage,
+  //     };
+  //   }
+
+  //   return {
+  //     valid: true,
+  //     empty: false,
+  //   };
+  // }
   function validateNumberField(field) {
-    const { input, min, max } = fields[field];
+    const { input, min, max, unitString } = fields[field];
 
     const value = input.value.trim();
 
-    // Empty is not considered an error while typing.
+    // Empty = not an error while typing
     if (!value) {
       return {
         valid: true,
@@ -2078,15 +2094,23 @@ function initTDEECalculatorV3(page = document) {
       return {
         valid: false,
         empty: false,
-        message: fields[field].errorMessage,
+        message: "Unesite ispravnu vrednost",
       };
     }
 
-    if (number < min || number > max) {
+    if (number < min) {
       return {
         valid: false,
         empty: false,
-        message: fields[field].errorMessage,
+        message: `Minimalna vrednost je ${min}${unitString}`,
+      };
+    }
+
+    if (number > max) {
+      return {
+        valid: false,
+        empty: false,
+        message: `Maksimalna vrednost je ${max}${unitString}`,
       };
     }
 
@@ -2095,6 +2119,7 @@ function initTDEECalculatorV3(page = document) {
       empty: false,
     };
   }
+
 
   function validateActivity() {
     const value = Number(activitySelect.value);
@@ -2323,22 +2348,12 @@ function initTDEECalculatorV3(page = document) {
     let BMR;
 
     if (gender === "women") {
-      BMR =
-        10 * weight +
-        6.25 * height -
-        5 * age -
-        161;
+      BMR = 10 * weight + 6.25 * height - 5 * age - 161;
     } else {
-      BMR =
-        10 * weight +
-        6.25 * height -
-        5 * age +
-        5;
+      BMR = 10 * weight + 6.25 * height - 5 * age + 5;
     }
 
-    const TDEEResult = Math.round(
-      BMR * activityIndex,
-    );
+    const TDEEResult = Math.round( BMR * activityIndex );
 
     // Update all activity result values
     for (let i = 0; i < activityIndexArray.length; i++) {
@@ -2488,9 +2503,9 @@ function initTDEECalculatorV3(page = document) {
     errorTextWrap.style.display = "none";
   }
 
-  if (resultTextWrap) {
-    resultTextWrap.style.display = "none";
-  }
+  // if (resultTextWrap) {
+  //   resultTextWrap.style.display = "none";
+  // }
 
   if (DEBUG) {
     console.log("TDEE calculator initialized");
