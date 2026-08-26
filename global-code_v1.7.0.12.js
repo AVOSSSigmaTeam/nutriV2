@@ -1683,6 +1683,23 @@ function initBMICalculatorV3(page = document) {
 
     calculateBMI();
   });
+
+  initBMICalculatorIndicatorFlowerSpinAnimation();
+}
+function initBMICalculatorIndicatorFlowerSpinAnimation(page = document) {
+  const rangeIndicator = page.querySelector("[data-bmi-range-indicator]");
+  const flower = page.querySelector("[data-indicator-flower]");
+
+  gsap.ticker.add(() => {
+    const right = parseFloat(getComputedStyle(rangeIndicator).right);
+    const parentWidth = rangeIndicator.parentElement.offsetWidth;
+
+    const progress = right / parentWidth;
+
+    gsap.set(flower, {
+      rotation: gsap.utils.mapRange(0, 1, -360, 360, progress)
+    });
+  });
 }
 
 function initBMICalculatorV2(page = document) {
