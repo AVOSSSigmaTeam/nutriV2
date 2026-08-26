@@ -1437,6 +1437,7 @@ function initBMICalculatorV3(page = document) {
   const rangeIndicatorErrorText = page.querySelector("[data-bmi-indicator-text-error]");
   // Optional: your main result/error element
   const mainResultText = page.querySelector("[data-bmi-result-text]");
+  const mainTextWrap = page.querySelector("[data-main-text-wrap]");
 
   const inputs = {
     height: {
