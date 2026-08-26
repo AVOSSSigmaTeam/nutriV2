@@ -2265,7 +2265,7 @@ function initTDEECalculatorV3(page = document) {
       }
 
       if (errorTextElement) {
-        errorTextElement.textContent = getGlobalErrorMessage(state);
+        // errorTextElement.textContent = getGlobalErrorMessage(state);
       }
 
       if (resultTextWrap) {
