@@ -1580,7 +1580,7 @@ function initBMICalculatorV3(page = document) {
     const weight = Number(weightInput.value);
 
     // const heightInMeters = height / 100;
-    const bmi = weight / Math.pow(height / 100, 2);
+    let bmi = weight / Math.pow(height / 100, 2);
     bmi = Math.round((bmi + Number.EPSILON) * 100) / 100;
     
     const rangeIndicatorMultiplier = 2;
