@@ -1547,43 +1547,34 @@ function initBMICalculatorV3(page = document) {
 
   const updateMainMessage = () => {
     const state = validateAll();
+    const errorTextString = "Molimo ispravite označene vrednosti.";
 
     if (!mainResultText) {
       mainTextWrap.style.display = "none";
       rangeIndicatorText.textContent = "";
       rangeIndicatorSecondaryText.textContent = "";
-      rangeIndicatorErrorText.textContent = "Please correct the highlighted values.";
+      rangeIndicatorErrorText.textContent = errorTextString;
       return state;
     }
 
     if (state.hasInvalidField) {
-      rangeIndicatorSecondaryText.textContent = "Please correct the highlighted values.";
-      // mainResultText.classList.add("is-error");
+      rangeIndicatorSecondaryText.textContent = errorTextString;
       return state;
     }
 
     // Don't show an error while the user hasn't completed both fields.
     if (state.hasEmptyField) {
       rangeIndicatorSecondaryText.textContent = "";
-      // mainResultText.classList.remove("is-error");
       return state;
     }
 
     // Everything is valid.
     rangeIndicatorSecondaryText.textContent = "";
-    // mainResultText.classList.remove("is-error");
 
     return state;
   };
 
     function updateBMIResultText(BMI, error = false, errorText = "Neispravan unos") {
-    // if (error) {
-    //   mainTextWrap.style.display = "none";
-    //   rangeIndicatorText.textContent = "";
-    //   rangeIndicatorSecondaryText.textContent = "";
-    //   rangeIndicatorErrorText.textContent = errorText;
-    //   return;
-    // }
 
     let indicatorText = "";
 
