@@ -1466,6 +1466,8 @@ function initBMICalculatorV3(page = document) {
     },
   };
 
+  let hasCalculated = false;
+
   const setError = (field, message = "") => {
     const { input, error } = inputs[field];
 
@@ -1553,6 +1555,35 @@ function initBMICalculatorV3(page = document) {
     };
   };
 
+  // const updateMainMessage = () => {
+  //   const state = validateAll();
+  //   const errorTextString = "Molimo ispravite označene vrednosti.";
+
+  //   if (!mainResultText) {
+  //     mainTextWrap.style.display = "none";
+  //     rangeIndicatorText.textContent = "";
+  //     rangeIndicatorSecondaryText.textContent = "";
+  //     rangeIndicatorErrorText.textContent = errorTextString;
+  //     return state;
+  //   }
+
+  //   if (state.hasInvalidField) {
+  //     // rangeIndicatorSecondaryText.textContent = errorTextString;
+  //     return state;
+  //   }
+
+  //   // Don't show an error while the user hasn't completed both fields.
+  //   if (state.hasEmptyField) {
+  //     rangeIndicatorSecondaryText.textContent = "";
+  //     return state;
+  //   }
+
+  //   // Everything is valid.
+  //   rangeIndicatorSecondaryText.textContent = "";
+
+  //   return state;
+  // };
+
   const updateMainMessage = () => {
     const state = validateAll();
     const errorTextString = "Molimo ispravite označene vrednosti.";
@@ -1561,23 +1592,30 @@ function initBMICalculatorV3(page = document) {
       mainTextWrap.style.display = "none";
       rangeIndicatorText.textContent = "";
       rangeIndicatorSecondaryText.textContent = "";
-      rangeIndicatorErrorText.textContent = errorTextString;
+
+      if (hasCalculated && state.hasInvalidField) {
+        rangeIndicatorErrorText.textContent = errorTextString;
+      } else {
+        rangeIndicatorErrorText.textContent = "";
+      }
+
       return state;
     }
 
     if (state.hasInvalidField) {
-      // rangeIndicatorSecondaryText.textContent = errorTextString;
+      if (hasCalculated) {
+        rangeIndicatorErrorText.textContent = errorTextString;
+      }
+
       return state;
     }
 
-    // Don't show an error while the user hasn't completed both fields.
     if (state.hasEmptyField) {
       rangeIndicatorSecondaryText.textContent = "";
       return state;
     }
 
-    // Everything is valid.
-    rangeIndicatorSecondaryText.textContent = "";
+    rangeIndicatorErrorText.textContent = "";
 
     return state;
   };
@@ -1647,6 +1685,7 @@ function initBMICalculatorV3(page = document) {
 
     // Update your result here
     updateBMIResultText(bmi);
+    hasCalculated = true;
     // console.log(bmi);
   };
 
@@ -1698,18 +1737,35 @@ function initBMICalculatorV3(page = document) {
 
   initBMICalculatorIndicatorFlowerSpinAnimation();
 }
+// function initBMICalculatorIndicatorFlowerSpinAnimation(page = document) {
+//   const rangeIndicator = page.querySelector("[data-bmi-range-indicator]");
+//   const flower = page.querySelector("[data-indicator-flower]");
+
+//   gsap.ticker.add(() => {
+//     const right = parseFloat(getComputedStyle(rangeIndicator).right);
+//     const parentWidth = rangeIndicator.parentElement.offsetWidth;
+
+//     const progress = right / parentWidth;
+
+//     gsap.set(flower, {
+//       rotation: gsap.utils.mapRange(0, 1, -360, 360, progress),
+//     });
+//   });
+// }
 function initBMICalculatorIndicatorFlowerSpinAnimation(page = document) {
   const rangeIndicator = page.querySelector("[data-bmi-range-indicator]");
   const flower = page.querySelector("[data-indicator-flower]");
 
+  const initialRight = parseFloat(getComputedStyle(rangeIndicator).right);
+  const parentWidth = rangeIndicator.parentElement.offsetWidth;
+
   gsap.ticker.add(() => {
     const right = parseFloat(getComputedStyle(rangeIndicator).right);
-    const parentWidth = rangeIndicator.parentElement.offsetWidth;
 
-    const progress = right / parentWidth;
+    const progress = (initialRight - right) / parentWidth;
 
     gsap.set(flower, {
-      rotation: gsap.utils.mapRange(0, 1, -360, 360, progress),
+      rotation: progress * 360,
     });
   });
 }
