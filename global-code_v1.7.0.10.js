@@ -1552,7 +1552,7 @@ function initBMICalculatorV3(page = document) {
       mainTextWrap.style.display = "none";
       rangeIndicatorText.textContent = "";
       rangeIndicatorSecondaryText.textContent = "";
-      rangeIndicatorErrorText.textContent = errorText;
+      rangeIndicatorErrorText.textContent = "Please correct the highlighted values.";
       return state;
     }
 
