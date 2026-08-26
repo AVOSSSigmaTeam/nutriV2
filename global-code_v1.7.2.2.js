@@ -2260,17 +2260,17 @@ function initTDEECalculatorV3(page = document) {
     // ------------------------------------
 
     if (state.hasInvalidField) {
-      if (errorTextWrap) {
-        errorTextWrap.style.display = "flex";
-      }
+      // if (errorTextWrap) {
+      //   errorTextWrap.style.display = "flex";
+      // }
 
-      if (errorTextElement) {
-        // errorTextElement.textContent = getGlobalErrorMessage(state);
-      }
+      // if (errorTextElement) {
+      //   errorTextElement.textContent = getGlobalErrorMessage(state);
+      // }
 
-      if (resultTextWrap) {
-        resultTextWrap.style.display = "none";
-      }
+      // if (resultTextWrap) {
+      //   resultTextWrap.style.display = "none";
+      // }
 
       return state;
     }
