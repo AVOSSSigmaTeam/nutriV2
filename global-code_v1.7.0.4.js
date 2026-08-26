@@ -1432,9 +1432,9 @@ function initBMICalculatorV3(page = document) {
 
   const rangeIndicator = page.querySelector("[data-bmi-range-indicator]");
   const rangeIndicatorTextWrap = page.querySelector("[data-bmi-indicator-text-wrap]");
-  // const rangeIndicatorText = page.querySelector("[data-bmi-indicator-text-main]");
-  // const rangeIndicatorSecondaryText = page.querySelector("[data-bmi-indicator-text-secondary]");
-  // const rangeIndicatorErrorText = page.querySelector("[data-bmi-indicator-text-error]");
+  const rangeIndicatorText = page.querySelector("[data-bmi-indicator-text-main]");
+  const rangeIndicatorSecondaryText = page.querySelector("[data-bmi-indicator-text-secondary]");
+  const rangeIndicatorErrorText = page.querySelector("[data-bmi-indicator-text-error]");
   // Optional: your main result/error element
   const mainResultText = page.querySelector("[data-bmi-result-text]");
 
@@ -1569,6 +1569,44 @@ function initBMICalculatorV3(page = document) {
     return state;
   };
 
+    function updateBMIResultText(BMI, error = false, errorText = "Neispravan unos") {
+    // if (error) {
+    //   mainTextWrap.style.display = "none";
+    //   rangeIndicatorText.textContent = "";
+    //   rangeIndicatorSecondaryText.textContent = "";
+    //   rangeIndicatorErrorText.textContent = errorText;
+    //   return;
+    // }
+
+    let indicatorText = "";
+
+    switch (true) {
+      case BMI < 18.5:
+        indicatorText = "Pothranjenost";
+        break;
+      case BMI < 25:
+        indicatorText = "Normalna težina";
+        break;
+      case BMI < 30:
+        indicatorText = "Prekomerna težina";
+        break;
+      case BMI < 35:
+        indicatorText = "Gojaznost I stepena";
+        break;
+      case BMI < 40:
+        indicatorText = "Gojaznost II stepena";
+        break;
+      case BMI >= 40:
+        indicatorText = "Gojaznost III stepena";
+        break;
+    }
+
+    mainTextWrap.style.display = "block";
+    rangeIndicatorText.textContent = BMI.toFixed(2);
+    rangeIndicatorSecondaryText.textContent = indicatorText;
+    rangeIndicatorErrorText.textContent = "";
+  }
+
   const calculateBMI = () => {
     const state = updateMainMessage();
 
@@ -1598,6 +1636,7 @@ function initBMICalculatorV3(page = document) {
     }
 
     // Update your result here
+    updateBMIResultText(bmi);
     console.log(bmi);
   };
 
