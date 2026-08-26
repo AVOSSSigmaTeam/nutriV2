@@ -1444,7 +1444,7 @@ function initBMICalculatorV3(page = document) {
       error: heightErrorText,
       min: 100,
       max: 250,
-      value: "cm",
+      unitString: "cm",
       touched: false,
     },
     weight: {
@@ -1452,7 +1452,7 @@ function initBMICalculatorV3(page = document) {
       error: weightErrorText,
       min: 30,
       max: 300,
-      value: "kg",
+      unitString: "kg",
       touched: false,
     },
   };
@@ -1469,7 +1469,7 @@ function initBMICalculatorV3(page = document) {
   };
 
   const validateField = (field) => {
-    const { input, min, max } = inputs[field];
+    const { input, min, max, unitString } = inputs[field];
 
     const value = input.value.trim();
 
@@ -1497,7 +1497,7 @@ function initBMICalculatorV3(page = document) {
       return {
         valid: false,
         empty: false,
-        message: `Minimalna vrednost je ${min}${value}`,
+        message: `Minimalna vrednost je ${min}${unitString}`,
       };
     }
 
@@ -1506,7 +1506,7 @@ function initBMICalculatorV3(page = document) {
       return {
         valid: false,
         empty: false,
-        message: `Maksimalna vrednost je ${max}${value}`,
+        message: `Maksimalna vrednost je ${max}${unitString}`,
       };
     }
 
