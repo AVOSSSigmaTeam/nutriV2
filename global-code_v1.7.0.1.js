@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (has("[data-filter-group]")) initBlogPostFilter();
   if (has("[data-blog-post-item]")) initBlogPostHoverAnimation();
 
-  if (has("[data-bmi-calculator-v2]")) initBMICalculatorV2();
+  if (has("[data-bmi-calculator-v2]")) initBMICalculatorV3();
 
   if (has("[data-tdee-calculator-v2]")) initTDEECalculatorV2();
 
