@@ -1458,16 +1458,6 @@ function initBMICalculatorV3(page = document) {
     },
   };
 
-  // const setError = (field, message = "") => {
-  //   const { input, error } = inputs[field];
-
-  //   input.classList.toggle("is-error", Boolean(message));
-
-  //   if (error) {
-  //     error.textContent = message;
-  //     error.classList.toggle("is-visible", Boolean(message));
-  //   }
-  // };
   const setError = (field, message = "") => {
     const { input, error } = inputs[field];
 
@@ -1563,21 +1553,21 @@ function initBMICalculatorV3(page = document) {
     }
 
     if (state.hasInvalidField) {
-      mainResultText.textContent = "Please correct the highlighted values.";
-      mainResultText.classList.add("is-error");
+      rangeIndicatorSecondaryText.textContent = "Please correct the highlighted values.";
+      // mainResultText.classList.add("is-error");
       return state;
     }
 
     // Don't show an error while the user hasn't completed both fields.
     if (state.hasEmptyField) {
-      mainResultText.textContent = "";
-      mainResultText.classList.remove("is-error");
+      rangeIndicatorSecondaryText.textContent = "";
+      // mainResultText.classList.remove("is-error");
       return state;
     }
 
     // Everything is valid.
-    mainResultText.textContent = "";
-    mainResultText.classList.remove("is-error");
+    rangeIndicatorSecondaryText.textContent = "";
+    // mainResultText.classList.remove("is-error");
 
     return state;
   };
