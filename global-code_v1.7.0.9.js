@@ -1549,6 +1549,10 @@ function initBMICalculatorV3(page = document) {
     const state = validateAll();
 
     if (!mainResultText) {
+      mainTextWrap.style.display = "none";
+      rangeIndicatorText.textContent = "";
+      rangeIndicatorSecondaryText.textContent = "";
+      rangeIndicatorErrorText.textContent = errorText;
       return state;
     }
 
@@ -1623,7 +1627,7 @@ function initBMICalculatorV3(page = document) {
     // const heightInMeters = height / 100;
     let bmi = weight / Math.pow(height / 100, 2);
     bmi = Math.round((bmi + Number.EPSILON) * 100) / 100;
-    
+
     const rangeIndicatorMultiplier = 2;
     let rangeIndicatorPosition = Math.round(((bmi * rangeIndicatorMultiplier) + Number.EPSILON) * 100) / 100;
 
@@ -1640,7 +1644,7 @@ function initBMICalculatorV3(page = document) {
 
     // Update your result here
     updateBMIResultText(bmi);
-    console.log(bmi);
+    // console.log(bmi);
   };
 
   // ------------------------------------
