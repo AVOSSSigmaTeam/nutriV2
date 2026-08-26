@@ -1458,14 +1458,26 @@ function initBMICalculatorV3(page = document) {
     },
   };
 
+  // const setError = (field, message = "") => {
+  //   const { input, error } = inputs[field];
+
+  //   input.classList.toggle("is-error", Boolean(message));
+
+  //   if (error) {
+  //     error.textContent = message;
+  //     error.classList.toggle("is-visible", Boolean(message));
+  //   }
+  // };
   const setError = (field, message = "") => {
     const { input, error } = inputs[field];
 
-    input.classList.toggle("is-error", Boolean(message));
+    const hasError = Boolean(message);
+
+    input.classList.toggle("is-error", hasError);
 
     if (error) {
       error.textContent = message;
-      error.classList.toggle("is-visible", Boolean(message));
+      error.classList.toggle("is-visible", hasError);
     }
   };
 
