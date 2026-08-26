@@ -1566,7 +1566,7 @@ function initBMICalculatorV3(page = document) {
     }
 
     if (state.hasInvalidField) {
-      rangeIndicatorSecondaryText.textContent = errorTextString;
+      // rangeIndicatorSecondaryText.textContent = errorTextString;
       return state;
     }
 
