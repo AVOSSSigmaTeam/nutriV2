@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (has("[data-copy-email-button]")) initCopyEmailClipboard();
   if (has("[data-button-hover-animation]")) initButtonHoverAnimation();
 
-  if (has('[data-add-uuid]')) formRandomUUID();
+  if (has("[data-add-uuid]")) formRandomUUID();
 
   if (has("[data-creation-date]")) initBlogPostDate();
   if (has("[data-filter-group]")) initBlogPostFilter();
@@ -811,7 +811,8 @@ function formRandomUUID(page = document) {
     const formName = form.getAttribute("data-name") || "Nova Poruka - ";
     const newFormName = formName + " #" + uuid;
     form.setAttribute("data-name", newFormName);
-    if (DEBUG) console.log("Form name changed to: " + form.getAttribute("data-name"));
+    if (DEBUG)
+      console.log("Form name changed to: " + form.getAttribute("data-name"));
   });
 }
 function initBasicFormValidation(page = document) {
@@ -1587,17 +1588,57 @@ function initBMICalculatorV3(page = document) {
   //   return state;
   // };
 
+  // const updateMainMessage = () => {
+  //   const state = validateAll();
+  //   const errorTextString = "Molimo ispravite označene vrednosti.";
+
+  //   if (!mainResultText) {
+  //     mainTextWrap.style.display = "none";
+  //     rangeIndicatorText.textContent = "";
+  //     rangeIndicatorSecondaryText.textContent = "";
+
+  //     if (hasCalculated && state.hasInvalidField) {
+  //       rangeIndicatorErrorText.textContent = errorTextString;
+  //     } else {
+  //       rangeIndicatorErrorText.textContent = "";
+  //     }
+
+  //     return state;
+  //   }
+
+  //   if (state.hasInvalidField) {
+  //     if (hasCalculated) {
+  //       rangeIndicatorErrorText.textContent = errorTextString;
+  //     }
+
+  //     return state;
+  //   }
+
+  //   if (state.hasEmptyField) {
+  //     rangeIndicatorSecondaryText.textContent = "";
+  //     return state;
+  //   }
+
+  //   rangeIndicatorErrorText.textContent = "";
+
+  //   return state;
+  // };
+
   const updateMainMessage = () => {
     const state = validateAll();
-    const errorTextString = "Molimo ispravite označene vrednosti.";
+
+    const fillAllText = "Molimo popunite sva polja.";
+    const errorText = "Molimo ispravite označene vrednosti.";
 
     if (!mainResultText) {
       mainTextWrap.style.display = "none";
       rangeIndicatorText.textContent = "";
       rangeIndicatorSecondaryText.textContent = "";
 
-      if (hasCalculated && state.hasInvalidField) {
-        rangeIndicatorErrorText.textContent = errorTextString;
+      if (state.hasEmptyField) {
+        rangeIndicatorErrorText.textContent = fillAllText;
+      } else if (hasCalculated && state.hasInvalidField) {
+        rangeIndicatorErrorText.textContent = errorText;
       } else {
         rangeIndicatorErrorText.textContent = "";
       }
@@ -1605,16 +1646,16 @@ function initBMICalculatorV3(page = document) {
       return state;
     }
 
-    if (state.hasInvalidField) {
-      if (hasCalculated) {
-        rangeIndicatorErrorText.textContent = errorTextString;
-      }
-
+    if (state.hasEmptyField) {
+      rangeIndicatorErrorText.textContent = fillAllText;
       return state;
     }
 
-    if (state.hasEmptyField) {
-      rangeIndicatorSecondaryText.textContent = "";
+    if (state.hasInvalidField) {
+      if (hasCalculated) {
+        rangeIndicatorErrorText.textContent = errorText;
+      }
+
       return state;
     }
 
@@ -2020,9 +2061,15 @@ function initTDEECalculatorV3(page = document) {
   const errorTextWrap = page.querySelector("[data-tdee-error-text-wrap]");
   const errorTextElement = page.querySelector("[data-tdee-error-text]");
   const ageErrorElement = page.querySelector("[data-tdee-age-error-text]");
-  const heightErrorElement = page.querySelector("[data-tdee-height-error-text]");
-  const weightErrorElement = page.querySelector("[data-tdee-weight-error-text]");
-  const selectErrorElement = page.querySelector("[data-tdee-activity-error-text]");
+  const heightErrorElement = page.querySelector(
+    "[data-tdee-height-error-text]",
+  );
+  const weightErrorElement = page.querySelector(
+    "[data-tdee-weight-error-text]",
+  );
+  const selectErrorElement = page.querySelector(
+    "[data-tdee-activity-error-text]",
+  );
   const resultElement = page.querySelector("[data-tdee-result-main]");
 
   // ------------------------------------
@@ -2164,7 +2211,6 @@ function initTDEECalculatorV3(page = document) {
     };
   }
 
-
   function validateActivity() {
     const value = Number(activitySelect.value);
 
@@ -2214,22 +2260,12 @@ function initTDEECalculatorV3(page = document) {
       weight,
       activity,
 
-      valid:
-        age.valid &&
-        height.valid &&
-        weight.valid &&
-        activity.valid,
+      valid: age.valid && height.valid && weight.valid && activity.valid,
 
       hasInvalidField:
-        !age.valid ||
-        !height.valid ||
-        !weight.valid ||
-        !activity.valid,
+        !age.valid || !height.valid || !weight.valid || !activity.valid,
 
-      hasEmptyField:
-        age.empty ||
-        height.empty ||
-        weight.empty,
+      hasEmptyField: age.empty || height.empty || weight.empty,
     };
   }
 
@@ -2272,24 +2308,15 @@ function initTDEECalculatorV3(page = document) {
 
     // Individual field errors
     if (fields.age.touched) {
-      setFieldError(
-        "age",
-        state.age.valid ? "" : state.age.message,
-      );
+      setFieldError("age", state.age.valid ? "" : state.age.message);
     }
 
     if (fields.height.touched) {
-      setFieldError(
-        "height",
-        state.height.valid ? "" : state.height.message,
-      );
+      setFieldError("height", state.height.valid ? "" : state.height.message);
     }
 
     if (fields.weight.touched) {
-      setFieldError(
-        "weight",
-        state.weight.valid ? "" : state.weight.message,
-      );
+      setFieldError("weight", state.weight.valid ? "" : state.weight.message);
     }
 
     if (fields.activity.touched) {
@@ -2372,22 +2399,11 @@ function initTDEECalculatorV3(page = document) {
     const height = Number(heightInput.value);
     const age = Number(ageInput.value);
 
-    const gender = page.querySelector(
-      'input[name="gender"]:checked',
-    )?.value;
+    const gender = page.querySelector('input[name="gender"]:checked')?.value;
 
-    const activityIndexArray = [
-      1.2,
-      1.375,
-      1.55,
-      1.725,
-      1.9,
-    ];
+    const activityIndexArray = [1.2, 1.375, 1.55, 1.725, 1.9];
 
-    const activityIndex =
-      activityIndexArray[
-        Number(activitySelect.value) - 1
-      ];
+    const activityIndex = activityIndexArray[Number(activitySelect.value) - 1];
 
     let BMR;
 
@@ -2397,7 +2413,7 @@ function initTDEECalculatorV3(page = document) {
       BMR = 10 * weight + 6.25 * height - 5 * age + 5;
     }
 
-    const TDEEResult = Math.round( BMR * activityIndex );
+    const TDEEResult = Math.round(BMR * activityIndex);
 
     // Update all activity result values
     for (let i = 0; i < activityIndexArray.length; i++) {
@@ -2415,8 +2431,7 @@ function initTDEECalculatorV3(page = document) {
         duration: 0.5,
 
         onUpdate: () => {
-          resultElement.textContent =
-            Math.round(counter.var);
+          resultElement.textContent = Math.round(counter.var);
         },
       });
     }
@@ -2468,10 +2483,7 @@ function initTDEECalculatorV3(page = document) {
     if (state.empty) {
       setFieldError("age", "Unesite godine.");
     } else {
-      setFieldError(
-        "age",
-        state.valid ? "" : state.message,
-      );
+      setFieldError("age", state.valid ? "" : state.message);
     }
 
     updateErrorState();
@@ -2485,10 +2497,7 @@ function initTDEECalculatorV3(page = document) {
     if (state.empty) {
       setFieldError("height", "Unesite visinu.");
     } else {
-      setFieldError(
-        "height",
-        state.valid ? "" : state.message,
-      );
+      setFieldError("height", state.valid ? "" : state.message);
     }
 
     updateErrorState();
@@ -2502,10 +2511,7 @@ function initTDEECalculatorV3(page = document) {
     if (state.empty) {
       setFieldError("weight", "Unesite težinu.");
     } else {
-      setFieldError(
-        "weight",
-        state.valid ? "" : state.message,
-      );
+      setFieldError("weight", state.valid ? "" : state.message);
     }
 
     updateErrorState();
