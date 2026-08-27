@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "1.7.2";
+const version = "1.7.3";
 const DEBUG = false;
 
 // history.scrollRestoration = "manual";
@@ -2555,7 +2555,7 @@ function initTDEECalculatorV3(page = document) {
       error: ageErrorElement,
       min: ageMIN,
       max: ageMAX,
-      unitString: "godina",
+      unitString: " godina",
       touched: false,
       errorMessage: errorText.age,
     },
