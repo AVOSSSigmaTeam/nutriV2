@@ -1698,6 +1698,45 @@ function initBMICalculatorV3(page = document) {
     rangeIndicatorErrorText.textContent = "";
   }
 
+  // const calculateBMI = () => {
+  //   const state = updateMainMessage();
+
+  //   if (!state.valid) {
+  //     return;
+  //   }
+
+  //   const height = Number(heightInput.value);
+  //   const weight = Number(weightInput.value);
+
+  //   // const heightInMeters = height / 100;
+  //   let bmi = weight / Math.pow(height / 100, 2);
+  //   bmi = Math.round((bmi + Number.EPSILON) * 100) / 100;
+
+  //   const rangeIndicatorMultiplier = 2;
+  //   let rangeIndicatorPosition =
+  //     Math.round((bmi * rangeIndicatorMultiplier + Number.EPSILON) * 100) / 100;
+
+  //   if (rangeIndicatorPosition < 0) rangeIndicatorPosition = 0;
+  //   if (rangeIndicatorPosition > 100) rangeIndicatorPosition = 100;
+
+  //   rangeIndicator.style.left = rangeIndicatorPosition + "%";
+
+  //   if (document.body.clientWidth > 991) {
+  //     rangeIndicatorTextWrap.style.left = rangeIndicatorPosition + "%";
+  //   } else {
+  //     rangeIndicatorTextWrap.style.left = "0%";
+  //   }
+
+  //   // Update your result here
+  //   updateBMIResultText(bmi);
+  //   hasCalculated = true;
+  //   // console.log(bmi);
+  // };
+
+  // ------------------------------------
+  // Input events
+  // ------------------------------------
+
   const calculateBMI = () => {
     const state = updateMainMessage();
 
@@ -1708,11 +1747,11 @@ function initBMICalculatorV3(page = document) {
     const height = Number(heightInput.value);
     const weight = Number(weightInput.value);
 
-    // const heightInMeters = height / 100;
     let bmi = weight / Math.pow(height / 100, 2);
     bmi = Math.round((bmi + Number.EPSILON) * 100) / 100;
 
     const rangeIndicatorMultiplier = 2;
+
     let rangeIndicatorPosition =
       Math.round((bmi * rangeIndicatorMultiplier + Number.EPSILON) * 100) / 100;
 
@@ -1727,15 +1766,10 @@ function initBMICalculatorV3(page = document) {
       rangeIndicatorTextWrap.style.left = "0%";
     }
 
-    // Update your result here
     updateBMIResultText(bmi);
-    hasCalculated = true;
-    // console.log(bmi);
-  };
 
-  // ------------------------------------
-  // Input events
-  // ------------------------------------
+    hasCalculated = true;
+  };
 
   heightInput.addEventListener("input", () => {
     inputs.height.touched = true;
