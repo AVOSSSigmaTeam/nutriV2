@@ -804,13 +804,15 @@ function initFooterLogoFlowerSpin(page = document) {
 }
 
 //form specific
-function formRandomUUID(form) {
-  const uuid = crypto.randomUUID();
-  const formName = form.getAttribute("data-name") || "Nova Poruka - ";
-  const newFormName = formName + " #" + uuid;
-  form.setAttribute("data-name", newFormName);
-
-  if (DEBUG) console.log("Form name changed to: " + form.getAttribute("data-name"));
+function formRandomUUID(page = document) {
+  const forms = page.querySelectorAll("[data-add-uuid]");
+  forms.forEach((form) => {
+    const uuid = crypto.randomUUID();
+    const formName = form.getAttribute("data-name") || "Nova Poruka - ";
+    const newFormName = formName + " #" + uuid;
+    form.setAttribute("data-name", newFormName);
+    if (DEBUG) console.log("Form name changed to: " + form.getAttribute("data-name"));
+  });
 }
 function initBasicFormValidation(page = document) {
   const forms = page.querySelectorAll("[data-form-validate]");
