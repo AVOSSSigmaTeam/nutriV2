@@ -2491,6 +2491,464 @@ function initBMICalculatorV2(page = document) {
 //     console.log("TDEE calculator initialized");
 //   }
 // }
+
+
+// function initTDEECalculatorV3(page = document) {
+//   const weightMIN = 30;
+//   const weightMAX = 300;
+//   const heightMIN = 100;
+//   const heightMAX = 250;
+//   const ageMIN = 16;
+//   const ageMAX = 100;
+
+//   const counter = { var: 0 };
+
+//   // ------------------------------------
+//   // Elements
+//   // ------------------------------------
+
+//   const ageInput = page.querySelector("[data-tdee-age]");
+//   const heightInput = page.querySelector("[data-tdee-height]");
+//   const weightInput = page.querySelector("[data-tdee-weight]");
+//   const activitySelect = page.querySelector("[data-activity-select]");
+//   const genderInputs = page.querySelectorAll('input[name="gender"]');
+
+//   const resultTextWrap = page.querySelector("[data-tdee-result-text-wrap]");
+//   const errorTextWrap = page.querySelector("[data-tdee-error-text-wrap]");
+//   const errorTextElement = page.querySelector("[data-tdee-error-text]");
+
+//   const ageErrorElement = page.querySelector("[data-tdee-age-error-text]");
+//   const heightErrorElement = page.querySelector(
+//     "[data-tdee-height-error-text]",
+//   );
+//   const weightErrorElement = page.querySelector(
+//     "[data-tdee-weight-error-text]",
+//   );
+//   const selectErrorElement = page.querySelector(
+//     "[data-tdee-activity-error-text]",
+//   );
+
+//   const resultElement = page.querySelector("[data-tdee-result-main]");
+
+//   // ------------------------------------
+//   // Error messages
+//   // ------------------------------------
+
+//   const errorText = {
+//     age: "Neispravan unos za godine",
+//     height: "Neispravan unos za visinu",
+//     weight: "Neispravan unos za težinu",
+//     select: "Odaberite nivo aktivnosti",
+//   };
+
+//   const globalErrorText = {
+//     empty: "Molimo popunite sva polja.",
+//     error: "Molimo ispravite označene vrednosti.",
+//   };
+
+//   // ------------------------------------
+//   // Field state
+//   // ------------------------------------
+
+//   const fields = {
+//     age: {
+//       input: ageInput,
+//       error: ageErrorElement,
+//       min: ageMIN,
+//       max: ageMAX,
+//       unitString: "godina",
+//       touched: false,
+//       errorMessage: errorText.age,
+//     },
+
+//     height: {
+//       input: heightInput,
+//       error: heightErrorElement,
+//       min: heightMIN,
+//       max: heightMAX,
+//       unitString: "cm",
+//       touched: false,
+//       errorMessage: errorText.height,
+//     },
+
+//     weight: {
+//       input: weightInput,
+//       error: weightErrorElement,
+//       min: weightMIN,
+//       max: weightMAX,
+//       unitString: "kg",
+//       touched: false,
+//       errorMessage: errorText.weight,
+//     },
+
+//     activity: {
+//       input: activitySelect,
+//       error: selectErrorElement,
+//       touched: false,
+//       errorMessage: errorText.select,
+//     },
+//   };
+
+//   // ------------------------------------
+//   // Validation
+//   // ------------------------------------
+
+//   function validateNumberField(field) {
+//     const { input, min, max, unitString } = fields[field];
+
+//     const value = input.value.trim();
+
+//     // Empty
+//     if (!value) {
+//       return {
+//         valid: true,
+//         empty: true,
+//       };
+//     }
+
+//     const number = Number(value);
+
+//     // Invalid number
+//     if (!Number.isFinite(number)) {
+//       return {
+//         valid: false,
+//         empty: false,
+//         message: "Unesite ispravnu vrednost",
+//       };
+//     }
+
+//     // Below minimum
+//     if (number < min) {
+//       return {
+//         valid: false,
+//         empty: false,
+//         message: `Minimalna vrednost je ${min}${unitString}`,
+//       };
+//     }
+
+//     // Above maximum
+//     if (number > max) {
+//       return {
+//         valid: false,
+//         empty: false,
+//         message: `Maksimalna vrednost je ${max}${unitString}`,
+//       };
+//     }
+
+//     return {
+//       valid: true,
+//       empty: false,
+//     };
+//   }
+
+//   function validateActivity() {
+//     const value = Number(activitySelect.value);
+
+//     return {
+//       valid: value !== 0,
+//       empty: false,
+//       message: errorText.select,
+//     };
+//   }
+
+//   // ------------------------------------
+//   // Error UI
+//   // ------------------------------------
+
+//   function setFieldError(field, message = "") {
+//     const { input, error } = fields[field];
+
+//     const hasError = Boolean(message);
+
+//     input.classList.toggle("error", hasError);
+
+//     if (error) {
+//       error.textContent = message;
+
+//       gsap.to(error, {
+//         autoAlpha: hasError ? 1 : 0,
+//         duration: 0.25,
+//       });
+//     }
+//   }
+
+//   // ------------------------------------
+//   // Validate everything
+//   // ------------------------------------
+
+//   function validateAll() {
+//     const age = validateNumberField("age");
+//     const height = validateNumberField("height");
+//     const weight = validateNumberField("weight");
+//     const activity = validateActivity();
+
+//     return {
+//       age,
+//       height,
+//       weight,
+//       activity,
+
+//       valid:
+//         age.valid &&
+//         height.valid &&
+//         weight.valid &&
+//         activity.valid &&
+//         !age.empty &&
+//         !height.empty &&
+//         !weight.empty,
+
+//       hasInvalidField:
+//         !age.valid || !height.valid || !weight.valid || !activity.valid,
+
+//       hasEmptyField: age.empty || height.empty || weight.empty,
+//     };
+//   }
+
+//   // ------------------------------------
+//   // Update validation UI
+//   // ------------------------------------
+
+//   function updateErrorState() {
+//     const state = validateAll();
+
+//     // ------------------------------------
+//     // Individual field errors
+//     // ------------------------------------
+
+//     if (fields.age.touched) {
+//       setFieldError("age", state.age.valid ? "" : state.age.message);
+//     }
+
+//     if (fields.height.touched) {
+//       setFieldError("height", state.height.valid ? "" : state.height.message);
+//     }
+
+//     if (fields.weight.touched) {
+//       setFieldError("weight", state.weight.valid ? "" : state.weight.message);
+//     }
+
+//     if (fields.activity.touched) {
+//       setFieldError(
+//         "activity",
+//         state.activity.valid ? "" : state.activity.message,
+//       );
+//     }
+
+//     // ------------------------------------
+//     // EMPTY STATE
+//     // ------------------------------------
+
+//     if (state.hasEmptyField) {
+//       if (errorTextWrap) {
+//         errorTextWrap.style.display = "flex";
+//       }
+
+//       if (errorTextElement) {
+//         errorTextElement.textContent = globalErrorText.empty;
+//       }
+
+//       if (resultTextWrap) {
+//         resultTextWrap.style.display = "none";
+//       }
+
+//       return state;
+//     }
+
+//     // ------------------------------------
+//     // ERROR STATE
+//     // ------------------------------------
+
+//     if (state.hasInvalidField) {
+//       if (errorTextWrap) {
+//         errorTextWrap.style.display = "flex";
+//       }
+
+//       if (errorTextElement) {
+//         errorTextElement.textContent = globalErrorText.error;
+//       }
+
+//       if (resultTextWrap) {
+//         resultTextWrap.style.display = "none";
+//       }
+
+//       return state;
+//     }
+
+//     // ------------------------------------
+//     // VALID STATE
+//     // ------------------------------------
+
+//     if (errorTextWrap) {
+//       errorTextWrap.style.display = "none";
+//     }
+
+//     if (errorTextElement) {
+//       errorTextElement.textContent = "";
+//     }
+
+//     if (resultTextWrap) {
+//       resultTextWrap.style.display = "flex";
+//     }
+
+//     return state;
+//   }
+
+//   // ------------------------------------
+//   // TDEE calculation
+//   // ------------------------------------
+
+//   function calcTDEE() {
+//     const state = updateErrorState();
+
+//     // Never calculate if form is not valid
+//     if (!state.valid) {
+//       return;
+//     }
+
+//     const weight = Number(weightInput.value);
+//     const height = Number(heightInput.value);
+//     const age = Number(ageInput.value);
+
+//     const gender = page.querySelector('input[name="gender"]:checked')?.value;
+
+//     const activityIndexArray = [1.2, 1.375, 1.55, 1.725, 1.9];
+
+//     const activityIndex = activityIndexArray[Number(activitySelect.value) - 1];
+
+//     let BMR;
+
+//     if (gender === "women") {
+//       BMR = 10 * weight + 6.25 * height - 5 * age - 161;
+//     } else {
+//       BMR = 10 * weight + 6.25 * height - 5 * age + 5;
+//     }
+
+//     const TDEEResult = Math.round(BMR * activityIndex);
+
+//     // Update all activity result values
+//     for (let i = 0; i < activityIndexArray.length; i++) {
+//       const element = page.getElementById?.(String(i + 1));
+
+//       if (element) {
+//         element.textContent = TDEEResult;
+//       }
+//     }
+
+//     // Main animated result
+//     if (resultElement) {
+//       gsap.to(counter, {
+//         var: TDEEResult,
+//         duration: 0.5,
+
+//         onUpdate: () => {
+//           resultElement.textContent = Math.round(counter.var);
+//         },
+//       });
+//     }
+//   }
+
+//   // ------------------------------------
+//   // Input events
+//   // ------------------------------------
+
+//   ageInput.addEventListener("input", () => {
+//     fields.age.touched = true;
+//     calcTDEE();
+//   });
+
+//   heightInput.addEventListener("input", () => {
+//     fields.height.touched = true;
+//     calcTDEE();
+//   });
+
+//   weightInput.addEventListener("input", () => {
+//     fields.weight.touched = true;
+//     calcTDEE();
+//   });
+
+//   // ------------------------------------
+//   // Blur events
+//   // ------------------------------------
+
+//   ageInput.addEventListener("blur", () => {
+//     fields.age.touched = true;
+
+//     const state = validateNumberField("age");
+
+//     if (state.empty) {
+//       setFieldError("age", "Unesite godine.");
+//     } else {
+//       setFieldError("age", state.valid ? "" : state.message);
+//     }
+
+//     updateErrorState();
+//   });
+
+//   heightInput.addEventListener("blur", () => {
+//     fields.height.touched = true;
+
+//     const state = validateNumberField("height");
+
+//     if (state.empty) {
+//       setFieldError("height", "Unesite visinu.");
+//     } else {
+//       setFieldError("height", state.valid ? "" : state.message);
+//     }
+
+//     updateErrorState();
+//   });
+
+//   weightInput.addEventListener("blur", () => {
+//     fields.weight.touched = true;
+
+//     const state = validateNumberField("weight");
+
+//     if (state.empty) {
+//       setFieldError("weight", "Unesite težinu.");
+//     } else {
+//       setFieldError("weight", state.valid ? "" : state.message);
+//     }
+
+//     updateErrorState();
+//   });
+
+//   // ------------------------------------
+//   // Activity select
+//   // ------------------------------------
+
+//   activitySelect.addEventListener("change", () => {
+//     fields.activity.touched = true;
+
+//     calcTDEE();
+//   });
+
+//   // ------------------------------------
+//   // Gender
+//   // ------------------------------------
+
+//   genderInputs.forEach((input) => {
+//     input.addEventListener("change", () => {
+//       calcTDEE();
+//     });
+//   });
+
+//   // ------------------------------------
+//   // Initial state
+//   // ------------------------------------
+
+//   if (errorTextWrap) {
+//     errorTextWrap.style.display = "none";
+//   }
+
+//   if (resultTextWrap) {
+//     resultTextWrap.style.display = "none";
+//   }
+
+//   if (DEBUG) {
+//     console.log("TDEE calculator initialized");
+//   }
+// }
+
 function initTDEECalculatorV3(page = document) {
   const weightMIN = 30;
   const weightMAX = 300;
@@ -2696,9 +3154,15 @@ function initTDEECalculatorV3(page = document) {
         !weight.empty,
 
       hasInvalidField:
-        !age.valid || !height.valid || !weight.valid || !activity.valid,
+        !age.valid ||
+        !height.valid ||
+        !weight.valid ||
+        !activity.valid,
 
-      hasEmptyField: age.empty || height.empty || weight.empty,
+      hasEmptyField:
+        age.empty ||
+        height.empty ||
+        weight.empty,
     };
   }
 
@@ -2714,15 +3178,24 @@ function initTDEECalculatorV3(page = document) {
     // ------------------------------------
 
     if (fields.age.touched) {
-      setFieldError("age", state.age.valid ? "" : state.age.message);
+      setFieldError(
+        "age",
+        state.age.valid ? "" : state.age.message,
+      );
     }
 
     if (fields.height.touched) {
-      setFieldError("height", state.height.valid ? "" : state.height.message);
+      setFieldError(
+        "height",
+        state.height.valid ? "" : state.height.message,
+      );
     }
 
     if (fields.weight.touched) {
-      setFieldError("weight", state.weight.valid ? "" : state.weight.message);
+      setFieldError(
+        "weight",
+        state.weight.valid ? "" : state.weight.message,
+      );
     }
 
     if (fields.activity.touched) {
@@ -2807,18 +3280,28 @@ function initTDEECalculatorV3(page = document) {
     const height = Number(heightInput.value);
     const age = Number(ageInput.value);
 
-    const gender = page.querySelector('input[name="gender"]:checked')?.value;
+    const gender =
+      page.querySelector('input[name="gender"]:checked')?.value;
 
     const activityIndexArray = [1.2, 1.375, 1.55, 1.725, 1.9];
 
-    const activityIndex = activityIndexArray[Number(activitySelect.value) - 1];
+    const activityIndex =
+      activityIndexArray[Number(activitySelect.value) - 1];
 
     let BMR;
 
     if (gender === "women") {
-      BMR = 10 * weight + 6.25 * height - 5 * age - 161;
+      BMR =
+        10 * weight +
+        6.25 * height -
+        5 * age -
+        161;
     } else {
-      BMR = 10 * weight + 6.25 * height - 5 * age + 5;
+      BMR =
+        10 * weight +
+        6.25 * height -
+        5 * age +
+        5;
     }
 
     const TDEEResult = Math.round(BMR * activityIndex);
@@ -2876,7 +3359,10 @@ function initTDEECalculatorV3(page = document) {
     if (state.empty) {
       setFieldError("age", "Unesite godine.");
     } else {
-      setFieldError("age", state.valid ? "" : state.message);
+      setFieldError(
+        "age",
+        state.valid ? "" : state.message,
+      );
     }
 
     updateErrorState();
@@ -2890,7 +3376,10 @@ function initTDEECalculatorV3(page = document) {
     if (state.empty) {
       setFieldError("height", "Unesite visinu.");
     } else {
-      setFieldError("height", state.valid ? "" : state.message);
+      setFieldError(
+        "height",
+        state.valid ? "" : state.message,
+      );
     }
 
     updateErrorState();
@@ -2904,7 +3393,10 @@ function initTDEECalculatorV3(page = document) {
     if (state.empty) {
       setFieldError("weight", "Unesite težinu.");
     } else {
-      setFieldError("weight", state.valid ? "" : state.message);
+      setFieldError(
+        "weight",
+        state.valid ? "" : state.message,
+      );
     }
 
     updateErrorState();
