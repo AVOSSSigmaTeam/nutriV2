@@ -1,6 +1,6 @@
 gsap.registerPlugin(CustomEase, ScrollTrigger);
 
-const version = "1.7.1";
+const version = "1.7.2";
 const DEBUG = false;
 
 // history.scrollRestoration = "manual";
@@ -64,6 +64,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   if (has("[data-copy-email-button]")) initCopyEmailClipboard();
   if (has("[data-button-hover-animation]")) initButtonHoverAnimation();
+
+  if (has('[data-add-uuid]')) formRandomUUID();
 
   if (has("[data-creation-date]")) initBlogPostDate();
   if (has("[data-filter-group]")) initBlogPostFilter();
@@ -808,8 +810,7 @@ function formRandomUUID(form) {
   const newFormName = formName + " #" + uuid;
   form.setAttribute("data-name", newFormName);
 
-  if (DEBUG)
-    console.log("Form name changed to: " + form.getAttribute("data-name"));
+  if (DEBUG) console.log("Form name changed to: " + form.getAttribute("data-name"));
 }
 function initBasicFormValidation(page = document) {
   const forms = page.querySelectorAll("[data-form-validate]");
@@ -1737,21 +1738,6 @@ function initBMICalculatorV3(page = document) {
 
   initBMICalculatorIndicatorFlowerSpinAnimation();
 }
-// function initBMICalculatorIndicatorFlowerSpinAnimation(page = document) {
-//   const rangeIndicator = page.querySelector("[data-bmi-range-indicator]");
-//   const flower = page.querySelector("[data-indicator-flower]");
-
-//   gsap.ticker.add(() => {
-//     const right = parseFloat(getComputedStyle(rangeIndicator).right);
-//     const parentWidth = rangeIndicator.parentElement.offsetWidth;
-
-//     const progress = right / parentWidth;
-
-//     gsap.set(flower, {
-//       rotation: gsap.utils.mapRange(0, 1, -360, 360, progress),
-//     });
-//   });
-// }
 function initBMICalculatorIndicatorFlowerSpinAnimation(page = document) {
   const rangeIndicator = page.querySelector("[data-bmi-range-indicator]");
   const flower = page.querySelector("[data-indicator-flower]");
