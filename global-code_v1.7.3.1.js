@@ -118,107 +118,157 @@ function normalizePaths(paths) {
   };
 }
 
+// function runFirstLoadAnimation() {
+//   // const next = document.querySelector('[data-barba="container"]');
+//   const transitionWrap = document.querySelector("[data-transition-init-wrap]");
+//   const transitionPanel = transitionWrap.querySelector("[data-transition-init-panel]");
+//   // const transitionPanelTop = transitionWrap.querySelector("[data-transition-init-panel-top]");
+//   const transitionPanelBottom = transitionWrap.querySelector("[data-transition-init-panel-bottom]");
+//   const transitionLogo = transitionWrap.querySelector("[data-transition-init-logo]");
+//   const transitionLogoPath = transitionWrap.querySelectorAll("path");
+
+//   const getY = normalizePaths(transitionLogoPath);
+
+//   const tl = gsap.timeline();
+
+//   // if (reducedMotion) {
+//   //   tl.set(next, { autoAlpha: 1 });
+//   //   tl.add("pageReady");
+//   //   tl.call(resetPage, [next], "pageReady");
+//   //   return new Promise(resolve => tl.call(resolve, [], "pageReady"));
+//   // }
+
+//   tl.add("startEnter", 1.35);
+
+//   tl.to(
+//     transitionPanel,
+//     {
+//       yPercent: -200,
+//       duration: 1,
+//       overwrite: "auto",
+//       immediateRender: false,
+//     },
+//     "startEnter",
+//   );
+
+//   tl.to(
+//     transitionPanelBottom,
+//     {
+//       scaleY: 0,
+//       duration: 1,
+//     },
+//     "<",
+//   );
+
+//   tl.to(
+//     transitionLogoPath,
+//     {
+//       yPercent: (i) => -getY(i) * 1.3,
+//       duration: 1.2,
+//       ease: "expo.inOut",
+//       stagger: {
+//         each: -0.02,
+//       },
+//     },
+//     "startEnter-=0.4",
+//   );
+
+//   // tl.fromTo(next, {
+//   //   y: "25vh"
+//   // }, {
+//   //   y: "0vh",
+//   //   duration: 1,
+//   // }, "startEnter");
+
+//   tl.set(
+//     transitionPanel,
+//     {
+//       autoAlpha: 0,
+//     },
+//     ">",
+//   );
+
+//   tl.set(
+//     transitionLogo,
+//     {
+//       autoAlpha: 0,
+//     },
+//     ">",
+//   );
+
+//   tl.set(
+//     transitionLogoPath,
+//     {
+//       yPercent: 0,
+//     },
+//     ">",
+//   );
+
+//   // tl.add("pageReady");
+//   // tl.call(resetPage, [next], "pageReady");
+//   // scrollToInitialHash(next);
+
+//   // return new Promise(resolve => {
+//   //   tl.call(resolve, [], "pageReady");
+//   // });
+// }
 function runFirstLoadAnimation() {
-  // const next = document.querySelector('[data-barba="container"]');
   const transitionWrap = document.querySelector("[data-transition-init-wrap]");
-  const transitionPanel = transitionWrap.querySelector(
-    "[data-transition-init-panel]",
-  );
-  const transitionPanelTop = transitionWrap.querySelector(
-    "[data-transition-init-panel-top]",
-  );
-  const transitionPanelBottom = transitionWrap.querySelector(
-    "[data-transition-init-panel-bottom]",
-  );
-  const transitionLogo = transitionWrap.querySelector(
-    "[data-transition-init-logo]",
-  );
+  if (!transitionWrap) return;
+
+  const transitionPanel = transitionWrap.querySelector("[data-transition-init-panel]");
+  const transitionPanelBottom = transitionWrap.querySelector("[data-transition-init-panel-bottom]");
+  const transitionLogo = transitionWrap.querySelector("[data-transition-init-logo]");
   const transitionLogoPath = transitionWrap.querySelectorAll("path");
 
   const getY = normalizePaths(transitionLogoPath);
 
   const tl = gsap.timeline();
 
-  // if (reducedMotion) {
-  //   tl.set(next, { autoAlpha: 1 });
-  //   tl.add("pageReady");
-  //   tl.call(resetPage, [next], "pageReady");
-  //   return new Promise(resolve => tl.call(resolve, [], "pageReady"));
-  // }
-
   tl.add("startEnter", 1.35);
 
+  // Logo starts moving out BEFORE the main panel
+  tl.to(
+    transitionLogoPath,
+    {
+      yPercent: (i) => -getY(i) * 1.3,
+      duration: 0.85,
+      ease: "expo.inOut",
+      stagger: {
+        each: -0.02,
+      },
+    },
+    "startEnter-=0.55",
+  );
+
+  // Main panel
   tl.to(
     transitionPanel,
     {
       yPercent: -200,
       duration: 1,
+      ease: "power3.inOut",
       overwrite: "auto",
       immediateRender: false,
     },
     "startEnter",
   );
 
+  // Bottom panel reveal
   tl.to(
     transitionPanelBottom,
     {
       scaleY: 0,
       duration: 1,
+      ease: "power3.inOut",
     },
     "<",
   );
 
-  tl.to(
-    transitionLogoPath,
-    {
-      yPercent: (i) => -getY(i) * 1.3,
-      duration: 1.2,
-      ease: "expo.inOut",
-      stagger: {
-        each: -0.02,
-      },
-    },
-    "startEnter-=0.4",
-  );
-
-  // tl.fromTo(next, {
-  //   y: "25vh"
-  // }, {
-  //   y: "0vh",
-  //   duration: 1,
-  // }, "startEnter");
-
-  tl.set(
-    transitionPanel,
-    {
-      autoAlpha: 0,
-    },
-    ">",
-  );
-
-  tl.set(
-    transitionLogo,
-    {
-      autoAlpha: 0,
-    },
-    ">",
-  );
-
-  tl.set(
-    transitionLogoPath,
-    {
-      yPercent: 0,
-    },
-    ">",
-  );
-
-  // tl.add("pageReady");
-  // tl.call(resetPage, [next], "pageReady");
-  // scrollToInitialHash(next);
-
-  // return new Promise(resolve => {
-  //   tl.call(resolve, [], "pageReady");
-  // });
+  // Cleanup
+  tl.set(transitionPanel, { autoAlpha: 0 });
+  tl.set(transitionLogo, { autoAlpha: 0 });
+  tl.set(transitionLogoPath, { yPercent: 0 });
 }
 
 function initOnceFunctions() {
@@ -1729,769 +1779,7 @@ function initBMICalculatorIndicatorFlowerSpinAnimation(page = document) {
   });
 }
 
-function initBMICalculatorV2(page = document) {
-  const heightInput = page.querySelector("[data-bmi-height]");
-  const weightInput = page.querySelector("[data-bmi-weight]");
-
-  if (!heightInput || !weightInput) return;
-
-  let calculated = false;
-
-  const rangeIndicator = page.querySelector("[data-bmi-range-indicator]");
-  const rangeIndicatorTextWrap = page.querySelector(
-    "[data-bmi-indicator-text-wrap]",
-  );
-  const rangeIndicatorText = page.querySelector(
-    "[data-bmi-indicator-text-main]",
-  );
-  const rangeIndicatorSecondaryText = page.querySelector(
-    "[data-bmi-indicator-text-secondary]",
-  );
-  const rangeIndicatorErrorText = page.querySelector(
-    "[data-bmi-indicator-text-error]",
-  );
-  const mainTextWrap = page.querySelector("[data-main-text-wrap]");
-
-  const heightErrorText = page.querySelector("[data-bmi-height-error-text]");
-  const weightErrorText = page.querySelector("[data-bmi-weight-error-text]");
-
-  const weightMIN = 30;
-  const weightMAX = 300;
-  const heightMIN = 100;
-  const heightMAX = 250;
-  const defaultRangeIndicatorPosition = "42.44%";
-
-  function updateText(BMI, error = false, errorText = "Neispravan unos") {
-    if (error) {
-      mainTextWrap.style.display = "none";
-      rangeIndicatorText.textContent = "";
-      rangeIndicatorSecondaryText.textContent = "";
-      rangeIndicatorErrorText.textContent = errorText;
-      return;
-    }
-
-    let indicatorText = "";
-
-    switch (true) {
-      case BMI < 18.5:
-        indicatorText = "Pothranjenost";
-        break;
-      case BMI < 25:
-        indicatorText = "Normalna težina";
-        break;
-      case BMI < 30:
-        indicatorText = "Prekomerna težina";
-        break;
-      case BMI < 35:
-        indicatorText = "Gojaznost I stepena";
-        break;
-      case BMI < 40:
-        indicatorText = "Gojaznost II stepena";
-        break;
-      case BMI >= 40:
-        indicatorText = "Gojaznost III stepena";
-        break;
-    }
-
-    mainTextWrap.style.display = "block";
-    rangeIndicatorText.textContent = BMI.toFixed(2);
-    rangeIndicatorSecondaryText.textContent = indicatorText;
-    rangeIndicatorErrorText.textContent = "";
-  }
-
-  function showError(inputType) {
-    if (inputType === "weight") {
-      weightInput.classList.add("error");
-
-      gsap.to(weightErrorText, {
-        autoAlpha: 1,
-        duration: 0.25,
-      });
-    }
-
-    if (inputType === "height") {
-      heightInput.classList.add("error");
-
-      gsap.to(heightErrorText, {
-        autoAlpha: 1,
-        duration: 0.25,
-      });
-    }
-  }
-
-  function hideError(inputType) {
-    if (inputType === "weight") {
-      weightInput.classList.remove("error");
-
-      gsap.to(weightErrorText, {
-        autoAlpha: 0,
-        duration: 0.25,
-      });
-    }
-
-    if (inputType === "height") {
-      heightInput.classList.remove("error");
-
-      gsap.to(heightErrorText, {
-        autoAlpha: 0,
-        duration: 0.25,
-      });
-    }
-  }
-
-  function getInputNumber(input) {
-    const value = input.value.trim();
-
-    if (value === "") return null;
-
-    const number = Number(value);
-
-    return Number.isFinite(number) ? number : NaN;
-  }
-
-  function validateRange(value, min, max) {
-    if (value === null) {
-      return {
-        empty: true,
-        invalid: false,
-      };
-    }
-
-    return {
-      empty: false,
-      invalid: !Number.isFinite(value) || value < min || value > max,
-    };
-  }
-
-  function resetIndicatorPosition() {
-    if (document.body.clientWidth > 991) {
-      rangeIndicator.style.left = defaultRangeIndicatorPosition;
-      rangeIndicatorTextWrap.style.left = defaultRangeIndicatorPosition;
-    } else {
-      rangeIndicator.style.left = "0%";
-      rangeIndicatorTextWrap.style.left = "0%";
-    }
-  }
-
-  let heightTouched = false;
-  let weightTouched = false;
-
-  function calcBMI() {
-    const height = getInputNumber(heightInput);
-    const weight = getInputNumber(weightInput);
-
-    const heightState = validateRange(height, heightMIN, heightMAX);
-    const weightState = validateRange(weight, weightMIN, weightMAX);
-
-    const heightEmptyError = heightState.empty && heightTouched;
-    const weightEmptyError = weightState.empty && weightTouched;
-
-    if (heightState.invalid || heightEmptyError) {
-      if (calculated) showError("height");
-    } else {
-      hideError("height");
-    }
-
-    if (weightState.invalid || weightEmptyError) {
-      if (calculated) showError("weight");
-    } else {
-      hideError("weight");
-    }
-
-    if (heightState.empty || weightState.empty) {
-      const errorText =
-        heightEmptyError && weightEmptyError
-          ? "Unesite visinu i težinu"
-          : heightEmptyError
-            ? "Unesite visinu"
-            : weightEmptyError
-              ? "Unesite težinu"
-              : "";
-
-      if (errorText) {
-        updateText(null, true, errorText);
-        resetIndicatorPosition();
-      }
-
-      return;
-    }
-
-    if (heightState.invalid || weightState.invalid) {
-      const errorText =
-        heightState.invalid && weightState.invalid
-          ? "Visina i težina su van opsega"
-          : heightState.invalid
-            ? "Visina je van opsega"
-            : "Težina je van opsega";
-
-      updateText(null, true, errorText);
-      resetIndicatorPosition();
-      return;
-    }
-
-    let BMI = weight / Math.pow(height / 100, 2);
-    BMI = Math.round((BMI + Number.EPSILON) * 100) / 100;
-
-    const rangeIndicatorMultiplier = 2;
-    let rangeIndicatorPosition =
-      Math.round((BMI * rangeIndicatorMultiplier + Number.EPSILON) * 100) / 100;
-
-    if (rangeIndicatorPosition < 0) rangeIndicatorPosition = 0;
-    if (rangeIndicatorPosition > 100) rangeIndicatorPosition = 100;
-
-    rangeIndicator.style.left = rangeIndicatorPosition + "%";
-
-    if (document.body.clientWidth > 991) {
-      rangeIndicatorTextWrap.style.left = rangeIndicatorPosition + "%";
-    } else {
-      rangeIndicatorTextWrap.style.left = "0%";
-    }
-
-    updateText(BMI);
-    calculated = true;
-  }
-
-  heightInput.addEventListener("input", () => {
-    heightTouched = true;
-    calcBMI();
-  });
-
-  weightInput.addEventListener("input", () => {
-    weightTouched = true;
-    calcBMI();
-  });
-
-  window.addEventListener("resize", calcBMI);
-
-  if (DEBUG) console.log("BMI calculator initialized");
-}
-
 //TDEE calc
-// function initTDEECalculatorV3(page = document) {
-//   const weightMIN = 30;
-//   const weightMAX = 300;
-//   const heightMIN = 100;
-//   const heightMAX = 250;
-//   const ageMIN = 16;
-//   const ageMAX = 100;
-
-//   const counter = { var: 0 };
-
-//   // ------------------------------------
-//   // Elements
-//   // ------------------------------------
-
-//   const ageInput = page.querySelector("[data-tdee-age]");
-//   const heightInput = page.querySelector("[data-tdee-height]");
-//   const weightInput = page.querySelector("[data-tdee-weight]");
-//   const activitySelect = page.querySelector("[data-activity-select]");
-//   const genderInputs = page.querySelectorAll('input[name="gender"]');
-
-//   const resultTextWrap = page.querySelector("[data-tdee-result-text-wrap]");
-//   const errorTextWrap = page.querySelector("[data-tdee-error-text-wrap]");
-//   const errorTextElement = page.querySelector("[data-tdee-error-text]");
-//   const ageErrorElement = page.querySelector("[data-tdee-age-error-text]");
-//   const heightErrorElement = page.querySelector(
-//     "[data-tdee-height-error-text]",
-//   );
-//   const weightErrorElement = page.querySelector(
-//     "[data-tdee-weight-error-text]",
-//   );
-//   const selectErrorElement = page.querySelector(
-//     "[data-tdee-activity-error-text]",
-//   );
-//   const resultElement = page.querySelector("[data-tdee-result-main]");
-
-//   // ------------------------------------
-//   // Error messages
-//   // ------------------------------------
-
-//   const errorText = {
-//     age: "Neispravan unos za godine",
-//     height: "Neispravan unos za visinu",
-//     weight: "Neispravan unos za težinu",
-//     select: "Odaberite nivo aktivnosti",
-//   };
-
-//   // ------------------------------------
-//   // Field state
-//   // ------------------------------------
-
-//   const fields = {
-//     age: {
-//       input: ageInput,
-//       error: ageErrorElement,
-//       min: ageMIN,
-//       max: ageMAX,
-//       unitString: "godina",
-//       touched: false,
-//       errorMessage: errorText.age,
-//     },
-
-//     height: {
-//       input: heightInput,
-//       error: heightErrorElement,
-//       min: heightMIN,
-//       max: heightMAX,
-//       unitString: "cm",
-//       touched: false,
-//       errorMessage: errorText.height,
-//     },
-
-//     weight: {
-//       input: weightInput,
-//       error: weightErrorElement,
-//       min: weightMIN,
-//       max: weightMAX,
-//       unitString: "kg",
-//       touched: false,
-//       errorMessage: errorText.weight,
-//     },
-
-//     activity: {
-//       input: activitySelect,
-//       error: selectErrorElement,
-//       touched: false,
-//       errorMessage: errorText.select,
-//     },
-//   };
-
-//   // ------------------------------------
-//   // Validation
-//   // ------------------------------------
-
-//   // function validateNumberField(field) {
-//   //   const { input, min, max } = fields[field];
-
-//   //   const value = input.value.trim();
-
-//   //   // Empty is not considered an error while typing.
-//   //   if (!value) {
-//   //     return {
-//   //       valid: true,
-//   //       empty: true,
-//   //     };
-//   //   }
-
-//   //   const number = Number(value);
-
-//   //   if (!Number.isFinite(number)) {
-//   //     return {
-//   //       valid: false,
-//   //       empty: false,
-//   //       message: fields[field].errorMessage,
-//   //     };
-//   //   }
-
-//   //   if (number < min || number > max) {
-//   //     return {
-//   //       valid: false,
-//   //       empty: false,
-//   //       message: fields[field].errorMessage,
-//   //     };
-//   //   }
-
-//   //   return {
-//   //     valid: true,
-//   //     empty: false,
-//   //   };
-//   // }
-//   function validateNumberField(field) {
-//     const { input, min, max, unitString } = fields[field];
-
-//     const value = input.value.trim();
-
-//     // Empty = not an error while typing
-//     if (!value) {
-//       return {
-//         valid: true,
-//         empty: true,
-//       };
-//     }
-
-//     const number = Number(value);
-
-//     if (!Number.isFinite(number)) {
-//       return {
-//         valid: false,
-//         empty: false,
-//         message: "Unesite ispravnu vrednost",
-//       };
-//     }
-
-//     if (number < min) {
-//       return {
-//         valid: false,
-//         empty: false,
-//         message: `Minimalna vrednost je ${min}${unitString}`,
-//       };
-//     }
-
-//     if (number > max) {
-//       return {
-//         valid: false,
-//         empty: false,
-//         message: `Maksimalna vrednost je ${max}${unitString}`,
-//       };
-//     }
-
-//     return {
-//       valid: true,
-//       empty: false,
-//     };
-//   }
-
-//   function validateActivity() {
-//     const value = Number(activitySelect.value);
-
-//     return {
-//       valid: value !== 0,
-//       empty: false,
-//       message: errorText.select,
-//     };
-//   }
-
-//   // ------------------------------------
-//   // Error UI
-//   // ------------------------------------
-
-//   function setFieldError(field, message = "") {
-//     const { input, error } = fields[field];
-
-//     const hasError = Boolean(message);
-
-//     // Border
-//     input.classList.toggle("error", hasError);
-
-//     // Error text
-//     if (error) {
-//       error.textContent = message;
-
-//       gsap.to(error, {
-//         autoAlpha: hasError ? 1 : 0,
-//         duration: 0.25,
-//       });
-//     }
-//   }
-
-//   // ------------------------------------
-//   // Validate everything
-//   // ------------------------------------
-
-//   function validateAll() {
-//     const age = validateNumberField("age");
-//     const height = validateNumberField("height");
-//     const weight = validateNumberField("weight");
-//     const activity = validateActivity();
-
-//     return {
-//       age,
-//       height,
-//       weight,
-//       activity,
-
-//       valid: age.valid && height.valid && weight.valid && activity.valid,
-
-//       hasInvalidField:
-//         !age.valid || !height.valid || !weight.valid || !activity.valid,
-
-//       hasEmptyField: age.empty || height.empty || weight.empty,
-//     };
-//   }
-
-//   // ------------------------------------
-//   // Main error message
-//   // ------------------------------------
-
-//   function getGlobalErrorMessage(state) {
-//     const errors = [];
-
-//     if (!state.age.valid && !state.age.empty) {
-//       errors.push(errorText.age);
-//     }
-
-//     if (!state.height.valid && !state.height.empty) {
-//       errors.push(errorText.height);
-//     }
-
-//     if (!state.weight.valid && !state.weight.empty) {
-//       errors.push(errorText.weight);
-//     }
-
-//     if (!state.activity.valid) {
-//       errors.push(errorText.select);
-//     }
-
-//     if (errors.length === 1) {
-//       return errors[0];
-//     }
-
-//     return "Više grešaka u unosu.";
-//   }
-
-//   // ------------------------------------
-//   // Update validation UI
-//   // ------------------------------------
-
-//   function updateErrorState() {
-//     const state = validateAll();
-
-//     // Individual field errors
-//     if (fields.age.touched) {
-//       setFieldError("age", state.age.valid ? "" : state.age.message);
-//     }
-
-//     if (fields.height.touched) {
-//       setFieldError("height", state.height.valid ? "" : state.height.message);
-//     }
-
-//     if (fields.weight.touched) {
-//       setFieldError("weight", state.weight.valid ? "" : state.weight.message);
-//     }
-
-//     if (fields.activity.touched) {
-//       setFieldError(
-//         "activity",
-//         state.activity.valid ? "" : state.activity.message,
-//       );
-//     }
-
-//     // ------------------------------------
-//     // Global error
-//     // ------------------------------------
-
-//     if (state.hasInvalidField) {
-//       // if (errorTextWrap) {
-//       //   errorTextWrap.style.display = "flex";
-//       // }
-
-//       // if (errorTextElement) {
-//       //   errorTextElement.textContent = getGlobalErrorMessage(state);
-//       // }
-
-//       // if (resultTextWrap) {
-//       //   resultTextWrap.style.display = "none";
-//       // }
-
-//       return state;
-//     }
-
-//     // Don't show an error while fields are
-//     // simply incomplete.
-//     if (state.hasEmptyField) {
-//       if (errorTextWrap) {
-//         errorTextWrap.style.display = "none";
-//       }
-
-//       if (errorTextElement) {
-//         errorTextElement.textContent = "";
-//       }
-
-//       if (resultTextWrap) {
-//         resultTextWrap.style.display = "none";
-//       }
-
-//       return state;
-//     }
-
-//     // ------------------------------------
-//     // Everything valid
-//     // ------------------------------------
-
-//     if (errorTextWrap) {
-//       errorTextWrap.style.display = "none";
-//     }
-
-//     if (errorTextElement) {
-//       errorTextElement.textContent = "";
-//     }
-
-//     if (resultTextWrap) {
-//       resultTextWrap.style.display = "flex";
-//     }
-
-//     return state;
-//   }
-
-//   // ------------------------------------
-//   // TDEE calculation
-//   // ------------------------------------
-
-//   function calcTDEE() {
-//     const state = validateAll();
-
-//     // Never calculate if the form isn't valid.
-//     if (!state.valid) {
-//       return;
-//     }
-
-//     const weight = Number(weightInput.value);
-//     const height = Number(heightInput.value);
-//     const age = Number(ageInput.value);
-
-//     const gender = page.querySelector('input[name="gender"]:checked')?.value;
-
-//     const activityIndexArray = [1.2, 1.375, 1.55, 1.725, 1.9];
-
-//     const activityIndex = activityIndexArray[Number(activitySelect.value) - 1];
-
-//     let BMR;
-
-//     if (gender === "women") {
-//       BMR = 10 * weight + 6.25 * height - 5 * age - 161;
-//     } else {
-//       BMR = 10 * weight + 6.25 * height - 5 * age + 5;
-//     }
-
-//     const TDEEResult = Math.round(BMR * activityIndex);
-
-//     // Update all activity result values
-//     for (let i = 0; i < activityIndexArray.length; i++) {
-//       const element = page.getElementById?.(String(i + 1));
-
-//       if (element) {
-//         element.textContent = TDEEResult;
-//       }
-//     }
-
-//     // Main animated result
-//     if (resultElement) {
-//       gsap.to(counter, {
-//         var: TDEEResult,
-//         duration: 0.5,
-
-//         onUpdate: () => {
-//           resultElement.textContent = Math.round(counter.var);
-//         },
-//       });
-//     }
-//   }
-
-//   // ------------------------------------
-//   // Input events
-//   // ------------------------------------
-
-//   ageInput.addEventListener("input", () => {
-//     fields.age.touched = true;
-
-//     const state = updateErrorState();
-
-//     if (state.valid) {
-//       calcTDEE();
-//     }
-//   });
-
-//   heightInput.addEventListener("input", () => {
-//     fields.height.touched = true;
-
-//     const state = updateErrorState();
-
-//     if (state.valid) {
-//       calcTDEE();
-//     }
-//   });
-
-//   weightInput.addEventListener("input", () => {
-//     fields.weight.touched = true;
-
-//     const state = updateErrorState();
-
-//     if (state.valid) {
-//       calcTDEE();
-//     }
-//   });
-
-//   // ------------------------------------
-//   // Blur events
-//   // ------------------------------------
-
-//   ageInput.addEventListener("blur", () => {
-//     fields.age.touched = true;
-
-//     const state = validateNumberField("age");
-
-//     if (state.empty) {
-//       setFieldError("age", "Unesite godine.");
-//     } else {
-//       setFieldError("age", state.valid ? "" : state.message);
-//     }
-
-//     updateErrorState();
-//   });
-
-//   heightInput.addEventListener("blur", () => {
-//     fields.height.touched = true;
-
-//     const state = validateNumberField("height");
-
-//     if (state.empty) {
-//       setFieldError("height", "Unesite visinu.");
-//     } else {
-//       setFieldError("height", state.valid ? "" : state.message);
-//     }
-
-//     updateErrorState();
-//   });
-
-//   weightInput.addEventListener("blur", () => {
-//     fields.weight.touched = true;
-
-//     const state = validateNumberField("weight");
-
-//     if (state.empty) {
-//       setFieldError("weight", "Unesite težinu.");
-//     } else {
-//       setFieldError("weight", state.valid ? "" : state.message);
-//     }
-
-//     updateErrorState();
-//   });
-
-//   // ------------------------------------
-//   // Activity select
-//   // ------------------------------------
-
-//   activitySelect.addEventListener("change", () => {
-//     fields.activity.touched = true;
-
-//     const state = updateErrorState();
-
-//     if (state.valid) {
-//       calcTDEE();
-//     }
-//   });
-
-//   // ------------------------------------
-//   // Gender
-//   // ------------------------------------
-
-//   genderInputs.forEach((input) => {
-//     input.addEventListener("change", () => {
-//       const state = validateAll();
-
-//       if (state.valid) {
-//         calcTDEE();
-//       }
-//     });
-//   });
-
-//   // ------------------------------------
-//   // Initial state
-//   // ------------------------------------
-
-//   if (errorTextWrap) {
-//     errorTextWrap.style.display = "none";
-//   }
-
-//   // if (resultTextWrap) {
-//   //   resultTextWrap.style.display = "none";
-//   // }
-
-//   if (DEBUG) {
-//     console.log("TDEE calculator initialized");
-//   }
-// }
-
 function initTDEECalculatorV3(page = document) {
   const weightMIN = 30;
   const weightMAX = 300;
@@ -2947,191 +2235,6 @@ function initTDEECalculatorV3(page = document) {
   if (errorTextElement) {
     errorTextElement.textContent = globalErrorText.empty;
   }
-}
-
-function initTDEECalculatorV2(page = document) {
-  var counter = { var: 0 };
-  let calculated = false;
-
-  function calcTDEE() {
-    let weight = weightInput.value;
-    let height = heightInput.value;
-    let age = ageInput.value;
-    let gender = String(
-      page.querySelector('input[name="gender"]:checked').value,
-    );
-    let BMR = 0;
-    let TDEEResult = 0;
-    const activityIndexArray = [1.2, 1.375, 1.55, 1.725, 1.9];
-
-    if (gender == "women") {
-      BMR = 10 * weight + 6.25 * height - 5 * age - 161;
-      TDEEResult = Math.round(
-        BMR * activityIndexArray[parseInt(activitySelect.value) - 1],
-      );
-    } else {
-      // men
-      BMR = 10 * weight + 6.25 * height - 5 * age + 5;
-      TDEEResult = Math.round(
-        BMR * activityIndexArray[parseInt(activitySelect.value) - 1],
-      );
-    }
-
-    for (let i = 0; i < activityIndexArray.length; i++) {
-      document.getElementById(String(i + 1)).textContent = TDEEResult;
-    }
-
-    let selectedActivityLevel = activitySelect.value;
-
-    let conuterElement = document.querySelector("[data-tdee-result-main]");
-
-    function animateResult(result) {
-      gsap.to(counter, 0.5, {
-        var: parseInt(result),
-        onUpdate: function () {
-          let nwc = parseInt(counter.var);
-          conuterElement.textContent = nwc;
-        },
-      });
-    }
-
-    animateResult(TDEEResult);
-    calculated = true;
-  }
-
-  function singleInputCheck(element, min, max) {
-    const value = Number(element.value);
-
-    return !(
-      element.value.trim() !== "" &&
-      Number.isFinite(value) &&
-      value >= min &&
-      value <= max
-    );
-  }
-
-  function selectCheck() {
-    return Number(activitySelect.value) === 0;
-  }
-
-  function hasAnyError() {
-    return ageError || heightError || weightError || selectError;
-  }
-
-  function getGlobalErrorMessage() {
-    const errors = [];
-
-    if (ageError) errors.push(errorText.age);
-    if (heightError) errors.push(errorText.height);
-    if (weightError) errors.push(errorText.weight);
-    if (selectError) errors.push(errorText.select);
-
-    return errors.length === 1 ? errors[0] : "Više grešaka u unosu.";
-  }
-
-  function setFieldError(errorElement, inputElement, hasError) {
-    const shouldShow = calculated && hasError;
-
-    inputElement.classList.toggle("error", shouldShow);
-
-    gsap.to(errorElement, {
-      autoAlpha: shouldShow ? 1 : 0,
-      duration: 0.25,
-    });
-  }
-
-  function updateErrorState() {
-    setFieldError(ageErrorElement, ageInput, ageError);
-    setFieldError(heightErrorElement, heightInput, heightError);
-    setFieldError(weightErrorElement, weightInput, weightError);
-    setFieldError(selectErrorElement, activitySelect, selectError);
-
-    if (hasAnyError()) {
-      errorTextWrap.style.display = "flex";
-      errorTextElement.innerText = getGlobalErrorMessage();
-      resultTextWrap.style.display = "none";
-      return;
-    }
-
-    errorTextWrap.style.display = "none";
-    errorTextElement.innerText = "";
-    resultTextWrap.style.display = "flex";
-
-    if (!hasAnyError()) {
-      calcTDEE();
-    }
-  }
-
-  const ageInput = document.querySelector("[data-tdee-age]");
-  const heightInput = document.querySelector("[data-tdee-height]");
-  const weightInput = document.querySelector("[data-tdee-weight]");
-  const activitySelect = document.querySelector("[data-activity-select]");
-  // const activityLevelResultRows = document.querySelectorAll("[data-tdee-result-row]");
-  const genderInputs = document.querySelectorAll('input[name="gender"]');
-
-  const resultTextWrap = document.querySelector("[data-tdee-result-text-wrap]");
-  const errorTextWrap = document.querySelector("[data-tdee-error-text-wrap]");
-  const errorTextElement = document.querySelector("[data-tdee-error-text]");
-  const errorText = {
-    age: "Neispravan unos za godine",
-    height: "Neispravan unos za visinu",
-    weight: "Neispravan unos za težinu",
-    select: "Odaberite nivo aktivnosti",
-  };
-  const ageErrorElement = document.querySelector("[data-tdee-age-error-text]");
-  const heightErrorElement = document.querySelector(
-    "[data-tdee-height-error-text]",
-  );
-  const weightErrorElement = document.querySelector(
-    "[data-tdee-weight-error-text]",
-  );
-  const selectErrorElement = document.querySelector(
-    "[data-tdee-activity-error-text]",
-  );
-
-  if (errorTextWrap) errorTextWrap.style.display = "none";
-
-  let ageError = true;
-  let heightError = true;
-  let weightError = true;
-  let selectError = true;
-
-  ageInput.addEventListener("input", () => {
-    ageError = singleInputCheck(ageInput, ageMIN, ageMAX);
-    updateErrorState();
-  });
-
-  heightInput.addEventListener("input", () => {
-    heightError = singleInputCheck(heightInput, heightMIN, heightMAX);
-    updateErrorState();
-  });
-
-  weightInput.addEventListener("input", () => {
-    weightError = singleInputCheck(weightInput, weightMIN, weightMAX);
-    updateErrorState();
-  });
-
-  activitySelect.addEventListener("change", () => {
-    selectError = selectCheck();
-    updateErrorState();
-  });
-
-  genderInputs.forEach((input) => {
-    input.addEventListener("change", () => {
-      if (!ageError && !heightError && !weightError && !selectError) {
-        calcTDEE();
-      }
-    });
-  });
-
-  const weightMIN = 30;
-  const weightMAX = 300;
-  const heightMIN = 100;
-  const heightMAX = 250;
-  const ageMIN = 16;
-  const ageMAX = 100;
-
-  if (DEBUG) console.log("TDEE calculator initialized");
 }
 
 //nav
