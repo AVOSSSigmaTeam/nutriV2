@@ -232,13 +232,13 @@ function runFirstLoadAnimation() {
     transitionLogoPath,
     {
       yPercent: (i) => -getY(i) * 1.3,
-      duration: 0.7,
+      duration: 0.75,
       ease: "expo.inOut",
       stagger: {
         each: -0.02,
       },
     },
-    "startEnter-=0.7",
+    "startEnter-=0.55"
   );
 
   // Main panel
@@ -246,12 +246,12 @@ function runFirstLoadAnimation() {
     transitionPanel,
     {
       yPercent: -200,
-      duration: 1,
+      duration: 0.85,
       ease: "power3.inOut",
       overwrite: "auto",
       immediateRender: false,
     },
-    "startEnter",
+    "startEnter"
   );
 
   // Bottom panel reveal
@@ -259,10 +259,10 @@ function runFirstLoadAnimation() {
     transitionPanelBottom,
     {
       scaleY: 0,
-      duration: 1,
+      duration: 0.85,
       ease: "power3.inOut",
     },
-    ">",
+    ">"
   );
 
   // Cleanup
