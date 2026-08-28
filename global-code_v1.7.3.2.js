@@ -262,7 +262,7 @@ function runFirstLoadAnimation() {
       duration: 1,
       ease: "power3.inOut",
     },
-    "<",
+    ">",
   );
 
   // Cleanup
