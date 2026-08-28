@@ -238,7 +238,7 @@ function runFirstLoadAnimation() {
         each: -0.02,
       },
     },
-    "startEnter-=0.55"
+    "startEnter-=0.45"
   );
 
   // Main panel
