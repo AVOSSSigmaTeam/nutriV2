@@ -225,20 +225,20 @@ function runFirstLoadAnimation() {
 
   const tl = gsap.timeline();
 
-  tl.add("startEnter", .75);
+  tl.add("startEnter", .7);
 
   // Logo starts moving out BEFORE the main panel
   tl.to(
     transitionLogoPath,
     {
       yPercent: (i) => -getY(i) * 1.3,
-      duration: 0.75,
+      duration: 0.7,
       ease: "expo.inOut",
       stagger: {
         each: -0.02,
       },
     },
-    "startEnter-=0.45"
+    "startEnter-=0.35"
   );
 
   // Main panel
@@ -246,7 +246,7 @@ function runFirstLoadAnimation() {
     transitionPanel,
     {
       yPercent: -200,
-      duration: 0.85,
+      duration: 0.95,
       ease: "power3.inOut",
       overwrite: "auto",
       immediateRender: false,
@@ -259,7 +259,7 @@ function runFirstLoadAnimation() {
     transitionPanelBottom,
     {
       scaleY: 0,
-      duration: 0.85,
+      duration: 0.95,
       ease: "power3.inOut",
     },
     ">"
