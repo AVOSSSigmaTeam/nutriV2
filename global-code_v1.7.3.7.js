@@ -225,7 +225,7 @@ function runFirstLoadAnimation() {
 
   const tl = gsap.timeline();
 
-  tl.add("startEnter", 1);
+  tl.add("startEnter", .75);
 
   // Logo starts moving out BEFORE the main panel
   tl.to(
