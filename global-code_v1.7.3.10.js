@@ -225,14 +225,14 @@ function runFirstLoadAnimation() {
 
   const tl = gsap.timeline();
 
-  tl.add("startEnter", .7);
+  tl.add("startEnter", .5);
 
   // Logo starts moving out BEFORE the main panel
   tl.to(
     transitionLogoPath,
     {
       yPercent: (i) => -getY(i) * 1.3,
-      duration: 0.7,
+      duration: 0.65,
       ease: "expo.inOut",
       stagger: {
         each: -0.02,
