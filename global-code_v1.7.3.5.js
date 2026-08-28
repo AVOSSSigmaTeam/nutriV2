@@ -232,13 +232,13 @@ function runFirstLoadAnimation() {
     transitionLogoPath,
     {
       yPercent: (i) => -getY(i) * 1.3,
-      duration: 0.75,
+      duration: 0.7,
       ease: "expo.inOut",
       stagger: {
         each: -0.02,
       },
     },
-    "startEnter-=0.55",
+    "startEnter-=0.7",
   );
 
   // Main panel
